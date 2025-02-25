@@ -18,20 +18,20 @@ Quicker的动作可以通过API调用，也可以通过快捷键调用。
 
 **WinLocation**
 
-Auto: 系统默认
-WithMouse1: 跟随鼠标（指针周围）
-WithMouse2: 跟随鼠标（指针右下,会偏移）
-CenterScreen: 屏幕中间
-TopLeft: 屏幕左上
-TopCenter: 屏幕中上
-TopRight: 屏幕右上
-BottomLeft: 屏幕左下
-BottomCenter: 屏幕中下
-BottomRight: 屏幕右下
-LeftCenter: 屏幕左中
-RightCenter: 屏幕右中
-FullScreen: 全屏
-Manual: 自定义位置
+Auto: `系统默认`
+WithMouse1: `跟随鼠标（指针周围）`
+WithMouse2: `跟随鼠标（指针右下,会偏移）`
+CenterScreen: `屏幕中间`
+TopLeft: `屏幕左上`
+TopCenter: `屏幕中上`
+TopRight: `屏幕右上`
+BottomLeft: `屏幕左下`
+BottomCenter: `屏幕中下`
+BottomRight: `屏幕右下`
+LeftCenter: `屏幕左中`
+RightCenter: `屏幕右中`
+FullScreen: `全屏`
+Manual: `自定义位置`
 
 ---
 
