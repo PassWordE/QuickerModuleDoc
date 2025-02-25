@@ -2,6 +2,18 @@
 
 [TOC]
 
+# Quicker介绍
+
+Quicker是一个Windows上的积木式编程软件，用它编写的程序叫“动作”，它具有诸多模块，每个模块都有自己的功能，通过这些模块的组合，我们可以完成各种各样的功能。
+
+每个模块在动作中可以有自己的变量，通过变量我们可以实现一些动态的效果，模块在动作中我们也叫做“步骤”（Step），一个步骤就是一个模块。
+
+Quicker的动作是用JSON格式编写的，JSON是一种轻量级的数据交换格式，它易于阅读和编写，同时也易于机器解析和生成。
+
+Quicker的动作可以通过API调用，也可以通过快捷键调用。
+
+---
+
 # 模块介绍
 
 ## 1.激活进程主窗口
@@ -824,7 +836,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 |  | (9)选项-Enum | readGlobalState | True |
+| type | 操作类型 |  | (9)选项-Enum（readGlobalState: 从网络读取数据; saveGlobalState: 写入数据到网络） | readGlobalState | True |
 | key | 状态名称 | 存储或读取的数据条目名称(键)。 | (0)字符串-Text |  | False |
 | value | 内容 | 要保存的数据值。使用*NULL*删除此状态的存储。 | (0)字符串-Text |  | False |
 | expireSeconds | 超时时间 | 请求超时时间（秒数） | (1)数字(小数)-Number | 2.5 | False |
@@ -1007,7 +1019,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 |  | (9)选项-Enum | upload_file | True |
+| type | 操作类型 |  | (9)选项-Enum（upload_file: 上传文件; upload_var: 上传变量内容; delete: 删除对象） | upload_file | True |
 | vendor | 服务商 |  | (9)选项-Enum | aliyun | True |
 | endpoint | Endpoint | 存储目标区域网址 | (0)字符串-Text |  | False |
 | objectKey | Key | 存储对象的Key。可以不填写（自动生成key），或填写以/结尾的前缀。 | (0)字符串-Text |  | False |
@@ -1197,7 +1209,7 @@
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | input | 列表 | 要处理的列表 | (4)文本列表-List |  | True |
-| useMultiThread | 线程模式 | ⚠通常不要选择! 请阅读文档详细了解后再使用。 | (9)选项-Enum | 0 | False |
+| useMultiThread | 线程模式 | ⚠通常不要选择! 请阅读文档详细了解后再使用。 | (9)选项-Enum（0: 单线程（顺序执行）; 1: 多线程（同时执行）） | 0 | False |
 | threadDelay | 线程启动间隔 | 多线程运行时，每个线程之间的启动时间间隔毫秒数。 | (12)数字(整数)-Integer | 5 | False |
 | concurrentThreadNum | 同时线程数 | 最多同时启动的线程数，请根据电脑配置和任务内容设置。 | (12)数字(整数)-Integer | 4 | False |
 | timeoutMs | 超时毫秒数 | 所有线程开启后，等待的超时时间，单位：毫秒。-1:不设置超时时间 | (12)数字(整数)-Integer | -1 | False |
@@ -1595,7 +1607,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| format | 文本数据格式 | 需要读取的剪贴板文本内容格式。通常请使用Unicode纯文本格式。 | (9)选项-Enum | UnicodeText | False |
+| format | 文本数据格式 | 需要读取的剪贴板文本内容格式。通常请使用Unicode纯文本格式。 | (9)选项-Enum（UnicodeText: 纯文本; Rtf; Html; CommaSeparatedValue: 带逗号分隔的值(csv); Custom: 自定义格式名） | UnicodeText | False |
 | customFormat | 格式名称 | 自定义的剪贴板格式名，请和实际剪贴板格式名一致。只支持实际为文本类型的内容。 | (0)字符串-Text |  | False |
 | encoding | 文本编码 | 读取自定义格式时候使用的编码类型 | (9)选项-Enum | utf-8 | True |
 | waitMs | 重试时间 | 每10ms重试一次，直到获取到文本。为0时不重试。 | (12)数字(整数)-Integer | 400 | False |
@@ -1758,10 +1770,10 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| source | 时间来源 | 时间数据来源 | (9)选项-Enum | currTime | False |
+| source | 时间来源 | 时间数据来源 | (9)选项-Enum（currTime: 当前时间; fromString: 从文本转换; fromUnixTimeStamp: 从Unix时间戳转换(秒); Source_UnixTimeStampMs: 从Unix时间戳转换(毫秒); fromVar: 时间变量） | currTime | False |
 | useUtc | 使用UTC时间 | 是表示使用UTC时间，否表示使用本地时间（电脑的当前时间）。 | (2)布尔值-Boolean | False | False |
 | timeStr | 待解析文本 | 待转换为时间值的文本 | (0)字符串-Text |  | False |
-| inputCulture | 语言文化 | 可选，待解析文本的语言文化。如zh-CN表示中文简体，en-US表示英文美国等。详情请参考文档。 | (0)字符串-Text | CURRENT | False |
+| inputCulture | 语言文化 | 可选，待解析文本的语言文化。如zh-CN表示中文简体，en-US表示英文美国等。详情请参考文档。 | (0)字符串-Text（CURRENT: 当前系统语言; zh-CN; en-US; ja-JP; ko-KR; fr-FR; de-DE; es-ES; it-IT; ru-RU; pt-BR） | CURRENT | False |
 | inputFormat | 数据格式 | 可选，待解析文本的数据格式，如yyyy表示4位数年份，MM表示2位数月份等。详情请参考文档。 | (0)字符串-Text |  | False |
 | timeVar | 时间变量 | 时间变量 | (6)时间日期-DateTime |  | False |
 | timeStampStr | Unix时间戳值 | 从1970年1月1日开始所经过的秒数或毫秒数。根据需要开启或关闭使用UTC时间选项。 | (0)字符串-Text |  | False |
@@ -1910,7 +1922,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| operation | 操作类型 |  | (9)选项-Enum | getPath | False |
+| operation | 操作类型 |  | (9)选项-Enum（getPath: 获取路径; setPath: 设置路径） | getPath | False |
 | path | 路径 |  | (0)字符串-Text |  | False |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
 
@@ -2077,7 +2089,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| format | 文本数据格式 | 需要读取的剪贴板文本内容格式。通常请使用Unicode纯文本格式。 | (9)选项-Enum | UnicodeText | False |
+| format | 文本数据格式 | 需要读取的剪贴板文本内容格式。通常请使用Unicode纯文本格式。 | (9)选项-Enum（UnicodeText: 纯文本（默认）; Rtf; Html; CommaSeparatedValue: 逗号分隔的值（csv）） | UnicodeText | False |
 | waitMs | 等待剪贴板时间 | 模拟复制键后，等待剪贴板变化的最长时间毫秒数。 | (12)数字(整数)-Integer | 250 | False |
 | repeat | 重试次数 | 【已过时，仅为兼容性保留】失败后重试的次数。 | (12)数字(整数)-Integer | 0 | False |
 | trim | 去除前后的空白 | 去除内容前后的空白（包括空行）。 | (2)布尔值-Boolean | False | False |
@@ -3837,7 +3849,7 @@
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | content | 内容 | 要输出的内容 | (0)字符串-Text |  | True |
-| method | 方法 | 发送内容使用的方法 | (9)选项-Enum | paste | True |
+| method | 方法 | 发送内容使用的方法 | (9)选项-Enum（input: 模拟输入; paste: 复制到剪贴板后粘贴(Ctrl+V)） | paste | True |
 | delayBeforePaste | 粘贴前延时 | 毫秒数。写入剪贴板以后，等待指定的时间后再发送粘贴按键(Ctrl+V) | (12)数字(整数)-Integer | 50 | False |
 | delayAfterPaste | 粘贴后延时 | 毫秒数。发送粘贴按键(Ctrl+V)之后等待的毫秒数 | (12)数字(整数)-Integer | 10 | False |
 | delayBetweenChar | 字符间延迟 | 模拟输入下一个字符之前等待的毫秒数。 | (12)数字(整数)-Integer | 0 | False |
@@ -3920,8 +3932,8 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 |  | (9)选项-Enum | LOCAL | False |
-| localSound | 提示音类型 |  | (9)选项-Enum | info | False |
+| type | 类型 |  | (9)选项-Enum（LOCAL: 内置声音提示; EXTERN: 电脑文件或网络文件; TTS: 朗读文本（系统TTS）） | LOCAL | False |
+| localSound | 提示音类型 |  | (9)选项-Enum（info: 信息; snip: 截图; succeed: 成功; warning: 警告; wrong: 错误） | info | False |
 | uri | 路径或URL | 音乐文件的本地路径或网址。 | (0)字符串-Text |  | False |
 | text | 文本内容 | 需要朗读的文本。 | (0)字符串-Text |  | False |
 | wait | 等待播放完成 |  | (2)布尔值-Boolean |  | False |
@@ -3939,10 +3951,45 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**播放内置声音提示：成功，并等待播放完成**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:playSound",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "LOCAL"
+        },
+        "localSound": {
+          "VarKey": null,
+          "Value": "succeed"
+        },
+        "wait": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -3964,7 +4011,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 | 操作类型 | (9)选项-Enum | showPanel | True |
+| type | 类型 | 操作类型 | (9)选项-Enum（showPanel: 显示面板; showSearch: 显示搜索框; closeSearch: 关闭搜索框; showCircleMenu: 显示轮盘菜单 (点击); togglePause: 禁用/启用; runLastAction: 运行最后使用的动作; startAppVoiceInput: 启动App语音输入; stopAllActions: 停止运行中的动作; reinstallMouseHook: 重新加载键鼠挂钩; ResetKeyboard: 重置键盘状态; showDashboardWindow: 显示仪表盘窗口; toggleTextFloatWindow: 开启/关闭文本悬浮窗功能; showConfigWindow: 显示配置窗口; showExeSettingWindow: 显示场景与动作管理窗口; closeAllFloatWindow: 关闭所有悬浮按钮; loadProfile: 加载动作页; loadExeProfiles: 加载指定应用程序的所有动作页（锁定切换）; loadExeProfilesNoLock: 加载指定应用程序的所有动作页（不锁定切换）; ToggleLockPanel: 锁定/解锁 动作页自动切换; editAction: 编辑动作; RestartQuicker: 重启Quicker; SetPushActiveClient: 推送服务：设置为活动客户端; StartSearchWithAction: 使用当前动作进行实时搜索; SearchWithCertainAction: 使用指定动作进行实时搜索; operation_show_context_menu: 显示剪贴板上下文菜单; LoadSkin: 加载外观/切换主题(专业版功能); ExitQuicker: 退出Quicker; FloatAction: 悬浮动作(专业版功能); ToggleFloatButtons: 切换所有悬浮按钮显示; ShowHideImageWindows: 显示或隐藏所有图片窗口; RemoveAction: 删除当前动作; GetActionInfo: 根据ID获取动作信息） | showPanel | True |
 | profileId | 动作页ID | 请在场景与动作管理中，查看动作页信息获取ID。 | (0)字符串-Text |  | True |
 | actionId | 动作ID或名称 | 在动作上点右键->信息可以查看动作信息。使用名称时不能有重名动作。获取动作信息时仅可填写动作Id。编辑动作时，使用%%id或%%name格式，可用于编辑公共子程序。 | (0)字符串-Text |  | True |
 | position | 位置 | 坐标，格式为：left,top | (0)字符串-Text | 200,200 | True |
@@ -3973,8 +4020,8 @@
 | followMousePosition | 跟随鼠标位置 |  | (2)布尔值-Boolean | True | False |
 | searchText | 预置的搜索内容 | 预先放入搜索框的内容 | (0)字符串-Text |  | False |
 | skinId | 外观ID | 请在外观网页中复制外观ID | (0)字符串-Text |  | True |
-| theme | 主题模式 | 可选切换为浅色或暗色模式 | (9)选项-Enum |  | False |
-| viewMode | 显示状态 |  | (9)选项-Enum | ByProcess | False |
+| theme | 主题模式 | 可选切换为浅色或暗色模式 | (9)选项-Enum（"": 不改变; auto: 跟随Windows; light: 浅色; dark: 暗色; toggle: 切换浅色和暗色） |  | False |
+| viewMode | 显示状态 |  | (9)选项-Enum（HideAll: 隐藏全部; ByProcess: 自动(按关联进程切换); ShowAll: 显示全部; ToggleHideAndAuto: 切换隐藏和自动） | ByProcess | False |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
 
 </details>
@@ -3992,10 +4039,37 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**打开Quicker配置窗口**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:quickeroperations",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "showConfigWindow"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -4060,7 +4134,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 | 操作类型 | (9)选项-Enum | REQUEST_ID | True |
+| type | 类型 | 操作类型 | (9)选项-Enum（REQUEST_ID: 创建进度条; UPDATE_PROGRESS: 更新进度; REMOVE: 去除进度条） | REQUEST_ID | True |
 | progressId | 进度条ID | 进度条的序号，用于后续更新或删除进度条 | (12)数字(整数)-Integer | 0 | False |
 | title | 进度条标题 | 进度条的标题(显示在进度条上方) | (0)字符串-Text |  | False |
 | percentage | 进度百分比 | 0到100之间的数字 | (1)数字(小数)-Number | 0 | False |
@@ -4134,7 +4208,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 | 操作类型 | (9)选项-Enum | StartAction | True |
+| type | 类型 | 操作类型 | (9)选项-Enum（StartAction: 运行动作; StopAction: 停止动作; ShowActionContextMenu: 显示动作右键菜单; StartCurrentAction: 运行当前动作（注意避免产生循环或递归）; StopOtherInstance: 停止当前动作的其它实例; GetRunningActionCount: 获取动作运行个数（自己编写动作时可用）） | StartAction | True |
 | actionId | 目标动作 | 要运行的其他动作的ID或名称(使用名称时需要完全匹配且不能有重名动作) | (0)字符串-Text |  | True |
 | onlyCustomMenu | 仅显示动作的自定义菜单 | 不显示编辑、复制等菜单 | (2)布尔值-Boolean | False | False |
 | inputParam | 命令参数 | 传递给目标动作的参数。存储在该动作的quicker_in_param变量中。 | (0)字符串-Text |  | True |
@@ -4186,7 +4260,7 @@
 | path | 路径或命令 | 要运行的命令或打开的文件路径、网址、URI等。 | (0)字符串-Text |  | True |
 | arg | 参数(可选) | 程序参数 | (0)字符串-Text |  | False |
 | setWorkingDir | 工作目录 | 可输入 0或留空(不设置,由windows默认)、1(软件所在目录)、具体的工作目录路径。 | (0)字符串-Text | 1 | False |
-| windowStyle | 窗口风格 | 设置期望的窗口风格，是否有效依赖于具体的软件。 | (9)选项-Enum | 0 | False |
+| windowStyle | 窗口风格 | 设置期望的窗口风格，是否有效依赖于具体的软件。 | (9)选项-Enum（0: 普通(Normal); 1: 隐藏(Hidden); 2: 最小化(Minimized); 3: 最大化(Maximized)） | 0 | False |
 | runas | 以管理员身份运行 | 以管理员身份运行软件或命令。 | (2)布尔值-Boolean | False | False |
 | waitInputIdle | 等待启动完成 | 等待进程完成后了初始化，可以接受用户输入。 | (2)布尔值-Boolean | False | False |
 | waitExit | 等待进程结束 | 等待进程结束后再执行后续操作步骤。 | (2)布尔值-Boolean | False | False |
@@ -4195,7 +4269,7 @@
 | alternativePath | 备用路径 | 文件在多个电脑上路径不同时，使用备用路径填写其他电脑上的文件路径。 | (0)字符串-Text |  | False |
 | username | 用户名 | 使用指定的用户运行 | (0)字符串-Text |  | False |
 | password | 密码 | 用户名对应的密码 | (0)字符串-Text |  | False |
-| outputEncoding | 控制台输出编码 | 控制台输出编码。如果输出遇到乱码，尝试修改此选项。 | (9)选项-Enum | oem | True |
+| outputEncoding | 控制台输出编码 | 控制台输出编码。如果输出遇到乱码，尝试修改此选项。 | (9)选项-Enum（utf8: UTF8; oem: OEM） | oem | True |
 | envVariables | 环境变量 | 为应用程序设置特定的环境变量值。每行一个，格式“变量名=值”，如“CONFIG_FILE=d:\config.json” | (0)字符串-Text |  | False |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
 
@@ -4243,14 +4317,14 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 | 操作类型 | (9)选项-Enum | locateByBitmapFile | True |
+| type | 类型 | 操作类型 | (9)（locateByBitmapFile: 查找图片(文件); locateByBitmapVar: 查找图片(变量); locateByColor: 查找颜色; locateByText: 查找文字） | locateByBitmapFile | True |
 | bmp | 位图路径 | 需要在屏幕中查找的位图路径。位图必须和屏幕图像完全匹配，不能压缩。此时X、Y的值为相对于搜索位图的左上角的偏移。 | (0)字符串-Text |  | True |
 | bmpVar | 位图变量 | 需要在屏幕中查找的位图。位图必须和屏幕图像完全匹配，不能压缩。此时X、Y的值为相对于搜索位图的左上角的偏移。 | (3)图片-Image |  | True |
 | searchText | 文字 | 要查找的文字。可使用多行指定多组可选文字，找到任意一组即可。 | (0)字符串-Text |  | False |
 | color | 颜色 | 要查找的颜色，如#FF0000 | (0)字符串-Text | #FF0000 | True |
-| bmpTargetType | 查找范围 | 位图查找范围 | (9)选项-Enum | MainScreen | False |
+| bmpTargetType | 查找范围 | 位图查找范围 | (9)选项-Enum（AllScreens: 所有屏幕; Rect: 坐标范围; CurrentWindow: 当前窗口; MainScreen: 主屏幕） | MainScreen | False |
 | searchRect | 查找坐标范围 | 可选。当“查找范围”为“坐标范围”时有效，格式为：left,top,right,bottom | (0)字符串-Text |  | False |
-| bmpPosition | 定位位置 | 定位点相对位图的位置 | (9)选项-Enum | Center | False |
+| bmpPosition | 定位位置 | 定位点相对位图的位置 | (9)选项-Enum（Center: 位图中间; TopLeft: 左上角; TopRight: 右上角; BottomLeft: 左下角; BottomRight: 右下角） | Center | False |
 | x | X偏移 | 定位点水平坐标偏移量（正值向右） | (12)数字(整数)-Integer | 0 | True |
 | y | Y偏移 | 定位点垂直坐标偏移量（正值向下） | (12)数字(整数)-Integer | 0 | True |
 | bmpColorError | 颜色容差 | 匹配像素时允许每个颜色通道的偏差值0-100，0表示精确匹配，速度最快。 | (12)数字(整数)-Integer | 10 | False |
@@ -4340,7 +4414,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 |  | (9)选项-Enum | single | True |
+| type | 类型 |  | (9)选项-Enum（single: 单选; multi: 多选） | single | True |
 | prompt | 窗口标题 |  | (0)字符串-Text | 请选择 | True |
 | note | 提示信息 |  | (0)字符串-Text |  | False |
 | items | 选项 | 每行一个选项，格式为 “文本” 或 “显示文本|值”。如需显示图标，格式请参考文档。 | (0)字符串-Text |  | True |
@@ -4348,7 +4422,7 @@
 | defaultValueMulti | 默认值 | 多选时默认选项，每行一个 | (0)字符串-Text |  | False |
 | showFilter | 启用筛选 | 是否显示筛选框。仅在且使用焦点时有效。 | (9)选项-Enum | auto | False |
 | filterContent | 筛选内容 | 预先显示的筛选内容 | (0)字符串-Text |  | False |
-| imeState | 输入法状态 | 筛选框输入法状态 | (9)选项-Enum | NO_CONTROL | False |
+| imeState | 输入法状态 | 筛选框输入法状态 | (9)选项-Enum（NO_CONTROL: 不控制; ON: 开启; OFF: 关闭） | NO_CONTROL | False |
 | operations | 右键/全局菜单 | 每行定义一个操作，具体格式请参考文档。 | (0)字符串-Text |  | False |
 | fontsize | 字体大小 |  | (1)数字(小数)-Number | 12 | True |
 | fontfamily | 字体名称 | 可选。设置字体名称。如有多个字体，使用逗号分隔。 | (0)字符串-Text |  | False |
@@ -4356,7 +4430,7 @@
 | autoCloseSeconds | 自动关闭 | 几秒后自动关闭选择窗口。0表示不自动关闭。 | (1)数字(小数)-Number | 0 | False |
 | winLocation | 窗口位置 | 在哪里显示选择窗口 | (9)选项-Enum | WithMouse1 | False |
 | maxWinSize | 最大尺寸/位置坐标 | 可选。设置选择窗口的最大尺寸，格式为：宽度,高度。支持像素数值或屏幕宽高百分比，详情请参考模块文档。 “窗口位置” 类型为 “自定义位置” 时用于指定显示位置，格式为：left,top,right,bottom | (0)字符串-Text |  | False |
-| keepLastPos | 使用上次位置 | 重复显示选择窗口时，保持上次的显示位置。 | (9)选项-Enum | 1 | False |
+| keepLastPos | 使用上次位置 | 重复显示选择窗口时，保持上次的显示位置。 | (9)选项-Enum（0: 不保持; 3: 保持本次运行的上次位置(左上角); 1: 保持本次运行的上次位置+宽度; 5: 保持本次运行的上次位置+尺寸; 7: 保持本次运行的上次窗口尺寸; 4: 总是保持上次位置(左上角); 2: 总是保持上次位置+宽度; 6: 总是保持上次位置+尺寸; 8: 总是保持上次窗口尺寸） | 1 | False |
 | noKeyboard | 不使用焦点 | 不抢占其他应用的焦点。此时无法使用键盘选择选项，只能用鼠标操作。 | (2)布尔值-Boolean | False | False |
 | closeOnDeactivated | 失去焦点后关闭窗口（仅在使用焦点时有效） |  | (2)布尔值-Boolean | False | False |
 | restoreForeground | 恢复活动窗口到弹出前 | 将前台窗口还原为弹窗前的活动窗口。否则将会还原到最后一个活动窗口上。 | (2)布尔值-Boolean | True | False |
@@ -4447,7 +4521,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| operation | 操作类型 |  | (9)选项-Enum | SendMessage | False |
+| operation | 操作类型 |  | (9)选项-Enum（SendMessage: SendMessage(等待返回，LParam为数字); SendMessageTextLParam: SendMessage(等待返回，LParam为文本); PostMessage: PostMessage(不等待返回)） | SendMessage | False |
 | hWnd | 窗口句柄hWnd | 留空或0表示前台窗口 | (12)数字(整数)-Integer |  | False |
 | wMsg | 消息 | 要发送的消息。 | (0)字符串-Text |  | False |
 | wParam | wParam参数 |  | (0)字符串-Text |  | False |
@@ -4493,7 +4567,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| mode | 操作 | 请选择操作类型 | (9)选项-Enum | show | False |
+| mode | 操作 | 请选择操作类型 | (9)选项-Enum（show: 显示窗口; update: 更新窗口; check: 检查是否关闭; close: 关闭窗口(如果还开着的话); waitClose: 等待用户关闭; showAndWaitClose: 显示窗口并等待用户关闭） | show | False |
 | title | 窗口标题 |  | (0)字符串-Text | 完成后继续 | True |
 | prompt | 提示文字 | 提示文字内容 | (0)字符串-Text | 请在完成操作后点下面的按钮 | True |
 | winLocation | 窗口位置 | 在哪里显示选择窗口 | (9)选项-Enum | BottomRight | False |
@@ -4504,7 +4578,7 @@
 | iconSize | 图标大小 | 按钮上图标的大小，单位为逻辑像素。 | (1)数字(小数)-Number | 16 | True |
 | autoCloseSeconds | 自动关闭 | 几秒后自动关闭。0表示不自动关闭。 | (1)数字(小数)-Number | 0 | False |
 | stopActionIfClose | 关闭窗口时（点右上角x按钮）后停止动作 |  | (2)布尔值-Boolean | True | False |
-| activateMode | 激活模式 |  | (9)选项-Enum | NotActivatable | False |
+| activateMode | 激活模式 |  | (9)选项-Enum（NotActivatable: 不支持激活（不占用焦点，仅能使用鼠标操作）; NotActivated: 支持激活，打开时不抢占焦点; AutoActivate: 支持激活，打开时抢占焦点） | NotActivatable | False |
 | help | 帮助按钮内容 | 点击弹出显示帮助内容，MarkDown格式 | (0)字符串-Text |  | False |
 
 </details>
@@ -4633,7 +4707,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| method | 操作类型 |  | (9)选项-Enum | default | False |
+| method | 操作类型 |  | (9)选项-Enum（default: 默认：停止动作或从子程序返回; forcestop: 停止动作：停止整个动作(即使在子程序中)） | default | False |
 | isError | 标记为出错 | 用作子程序或被其他动作调用时，返回出错状态。 | (2)布尔值-Boolean | False | False |
 | return | 返回值 | 被其他动作调用时，返回的动作结果。 | (0)字符串-Text |  | False |
 | showMessage | 提示消息 | 显示的提示信息。 | (0)字符串-Text |  | False |
@@ -4672,7 +4746,7 @@
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | param1 | 文本1 | 被比较的文本 | (0)字符串-Text |  | True |
-| type | 类型 | 比较方式 | (9)选项-Enum | > | True |
+| type | 类型 | 比较方式 | (9)选项-Enum（>; =; <; contains: 包含; startsWith: 以指定内容开始; endsWith: 以指定内容结束; match: 正则匹配; pinyinMatch: 包含指定内容，或匹配拼音、拼音首字母） | > | True |
 | param2 | 文本2 | 对比文本。拼音匹配时，也可用于指定拼音、拼音首字母。 | (0)字符串-Text |  | True |
 | case | 区分大小写 | 是否区分大小写 | (2)布尔值-Boolean | False | False |
 
@@ -4714,7 +4788,7 @@
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | data | 待处理内容 | 需要进行文本处理的内容 | (0)字符串-Text |  | False |
-| method | 处理 | 对文本进行什么处理 | (9)选项-Enum |  | False |
+| method | 处理 | 对文本进行什么处理 | (9)选项-Enum（toUpper: 英文转大写; toLower: 英文转小写; reverse: 前后反转; substring: 截取; trimStart: 去除前面空白字符; trimEnd: 去除后面空白字符; trim: 去除前后空白字符; urlEncode: URL编码; urlDecode: URL解码 (+解码为空格); urlDataDecode: URL数据解码 (保留+号); htmlEncode: Html编码; htmlDecode: Html解码; intercappedToSentence: 组合词拆分成句子(thisIsChina=>this Is China); base64Encode: Base64编码; base64Decode: Base64解码; removeEmptyLine: 去除空行; mergeEmptyLine: 合并多个空行; sortLinesAsc: 排序多行A-Z; sortLinesDesc: 排序多行Z-A; reverseLines: 翻转多行顺序; toTitleCase: 首字母大写; formatJson: 格式化JSON; md5: 计算MD5哈希; sha256Hash: 计算SHA256哈希; sha1Hash: 计算SHA1哈希; escapeJson: 转义文本为合法Json值; DecodeUnicode: 解码Unicode字串(\\uXXXX转普通字符); convertEncoding: 转换编码; toCnNum: 金额数字转换为大写; cn2num: 中文转数字; num2cn: 数字转中文; ExpandEnvironmentVariables: 替换环境变量; padLeft: 从左侧补齐长度; padRight: 从右侧补齐长度; insert: 插入内容; append: 追加内容; remove: 移除内容; removeZeroWidthChars: 移除零宽字符; html2text: HTML转纯文本） |  | False |
 | srcEncoding | 编码 |  | (0)字符串-Text | utf-8 | False |
 | dstEncoding | 目标编码 |  | (0)字符串-Text | gbk | False |
 | start | 开始位置 | 开始截取/插入位置，从0开始。如果为负值，表示从文本末尾开始向前的字符数。 | (12)数字(整数)-Integer | 0 | False |
@@ -4804,7 +4878,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| dataType | 数据类型 |  | (9)选项-Enum | text | True |
+| dataType | 数据类型 |  | (9)选项-Enum（text: 文本内容; file: 文件; imageVar: 图片变量） | text | True |
 | text | 文本内容 | 要保存的文本内容 | (0)字符串-Text |  | True |
 | imageVar | 图片变量 | 要保存的图片变量 | (3)图片-Image |  | False |
 | file | 文件路径 | 要保存的文件路径 | (0)字符串-Text |  | True |
@@ -4850,7 +4924,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 | 输入内容的类型 | (9)选项-Enum | text | True |
+| type | 类型 | 输入内容的类型 | (9)选项-Enum（text: 单行文本; multiline: 多行文本; number: 数字; date_time: 日期时间） | text | True |
 | prompt | 提示文字 | 提示用户输入什么内容。显示在输入框上方。 | (0)字符串-Text | 请输入内容 | True |
 | defaultValue | 默认值 | 默认填写到输入框中的内容 | (0)字符串-Text |  | False |
 | texttools | 文本选择工具 | 鼠标悬浮在文本框上时显示的小工具 | (0)字符串-Text |  | False |
@@ -4860,7 +4934,7 @@
 | fontfamily | 字体名称 | 可选。设置字体名称。如有2个字体，使用逗号分隔。 | (0)字符串-Text |  | False |
 | fontsize | 字体大小 |  | (1)数字(小数)-Number | 14 | True |
 | winLocation | 窗口位置 | 在哪里显示选择窗口 | (9)选项-Enum | CenterScreen | False |
-| imeState | 输入法状态 |  | (9)选项-Enum | NO_CONTROL | False |
+| imeState | 输入法状态 |  | (9)选项-Enum（NO_CONTROL: 不控制; ON: 开启; OFF: 关闭） | NO_CONTROL | False |
 | submitWithReturn | 回车提交结果（Shift+回车换行） |  | (2)布尔值-Boolean | False | False |
 | restoreFocus | 恢复活动窗口 | 用户输入后，是否将焦点还原到之前的活动窗口 | (2)布尔值-Boolean | True | False |
 | closeOnDeactivated | 失去焦点后关闭窗口 |  | (2)布尔值-Boolean | False | False |
@@ -4987,14 +5061,14 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 | 操作类型 | (9)选项-Enum | move | True |
+| type | 类型 | 操作类型 | (9)选项-Enum（move: 移动窗口; move_ex: 移动窗口(增强); setTopmost: 置顶窗口; toggleTopMost: 切换置顶状态; removeTopmost: 取消置顶窗口; setBottom: 置底窗口; show: 设置显示状态; SET_FOREGROUND: 设置为前台窗口; close: 关闭; kill: 强制关闭; set_trans: 设置或更新透明度） | move | True |
 | hWnd | 窗口句柄 | 要操作的窗口句柄（数字）。0或留空表示操作前台窗口。 | (12)数字(整数)-Integer |  | False |
 | x | X坐标 | 窗口左上角X坐标 | (12)数字(整数)-Integer | 100 | False |
 | y | Y坐标 | 窗口左上角Y坐标 | (12)数字(整数)-Integer | 100 | False |
 | width | 宽度 | 窗口宽度。-1时表示不更改窗口尺寸。 | (12)数字(整数)-Integer | 500 | False |
 | height | 高度 | 窗口高度。-1时表示不更改窗口尺寸。 | (12)数字(整数)-Integer | 500 | False |
 | area | 目标位置 | 窗口左,上,右,下的位置坐标 | (0)字符串-Text | 25%,25%,75%,75% | False |
-| showCmd | 显示状态 | 窗口显示状态，具体说明请参考Win32接口。 | (9)选项-Enum | 3 | True |
+| showCmd | 显示状态 | 窗口显示状态，具体说明请参考Win32接口。 | (9)选项-Enum（3: 最大化(SW_MAXIMIZE); 6: 最小化(SW_MINIMIZE); 9: 显示并恢复大小(SW_RESTORE); 0: 隐藏(SW_HIDE); 5: 显示(SW_SHOW); TOGGLE_MAXMIZE: 切换最大化/恢复） | 3 | True |
 | alpha | 不透明度Alpha | 数字0-255：0为全透明，255为不透明。-数字：将当前透明度增加一些。+数字：将透明度减少一些。 | (0)字符串-Text | 128 | False |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
 
@@ -5036,7 +5110,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 | 操作类型 | (9)选项-Enum | auto | True |
+| type | 类型 | 操作类型 | (9)选项-Enum（auto; html; text; image; rtf; csv; custom: 自定义格式; clear; clearHistory: 清空剪贴板历史(Win10+)） | auto | True |
 | customFormat | 格式名 | 自定义的剪贴板格式名 | (0)字符串-Text |  | True |
 | input | 输入 | 要写入剪贴板的数据 | (99)任意类型-Any |  | True |
 | html | HTML内容 | HTML代码片段 | (0)字符串-Text |  | True |
@@ -5125,7 +5199,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 |  | (9)选项-Enum | OpenUrl | False |
+| type | 操作类型 |  | (9)选项-Enum（OpenUrl: 打开网页; OpenAndWaitLoad: 打开网页并等待加载完成; OpenUrlAndWaitClose: 打开网页并等待窗口关闭; SendMessage: 发送消息; ExecuteScript: 执行脚本; CheckWindowState: 获取窗口状态; Close: 关闭窗口(如果尚未关闭); Reload: 重新加载/刷新; Stop: 停止加载; CheckInstalled: 检查是否安装WebView2; MultiTab_OpenUrl: 【多标签】打开网址; MultiColumn_OpenUrl: 【多列】打开网址） | OpenUrl | False |
 | url | 网址或HTML内容 | 网页地址/文件路径或html代码内容 | (0)字符串-Text |  | True |
 | urlList | 网址列表 | 每行一个：网址，或“标题|网址”，或“[图标]标题|网址”格式。 | (4)文本列表-List |  | True |
 | additionalBrowserArguments | 附加的浏览器参数 | 用于设置代理等用途 | (0)字符串-Text |  | True |
@@ -5136,7 +5210,7 @@
 | icon | 窗口图标 | 显示在窗口左上角的图标。支持fa:内置图报名:#RRGGBB或图标网址。 | (0)字符串-Text |  | False |
 | defaultBgColor | 默认背景色 | 可选。设置窗口的默认背景色。 | (0)字符串-Text |  | False |
 | autoCloseKey | 窗口标识 | (仅必要时使用)用于关闭之前打开的具有此标识的WebView2窗口。使用=表示当前动作ID。 | (0)字符串-Text | = | False |
-| modeForExists | 如果窗口已存在 |  | (9)选项-Enum | SkipThisStep | False |
+| modeForExists | 如果窗口已存在 |  | (9)选项-Enum（SkipThisStep: 跳过此步骤; UpdateUrl: 更新网址; UpdateUrlAndPosition: 更新网址和窗口位置; RecreateWindow: 关闭并重建窗口; BringToFront: 激活窗口） | SkipThisStep | False |
 | script | JS脚本 | 可选。 | (0)字符串-Text |  | True |
 | sendMessage | 消息内容 | Json格式的消息内容。词典变量会自动转换成json。 | (0)字符串-Text |  | True |
 | winLocation | 窗口位置 | 在哪里显示选择窗口 | (9)选项-Enum | CenterScreen | False |
@@ -5146,10 +5220,10 @@
 | topMost | 置顶显示 |  | (2)布尔值-Boolean | False | False |
 | showInTaskbar | 显示任务栏图标 |  | (2)布尔值-Boolean | True | False |
 | noActivate | 不占用焦点 | 不占用焦点时也无法在窗口中输入文字 | (2)布尔值-Boolean | False | False |
-| closeWhenLostFocus | 失去焦点后 |  | (9)选项-Enum | False | False |
+| closeWhenLostFocus | 失去焦点后 |  | (9)选项-Enum（false: 不执行操作; true: 关闭窗口; hide: 隐藏窗口; minimize: 最小化窗口; close_if_not_topmost: 如果未置顶，关闭窗口; hide_if_not_topmost: 如果未置顶，隐藏窗口; minimize_if_not_topmost: 如果未置顶，最小化窗口） | False | False |
 | escCloseWindow | 按Esc关闭窗口 |  | (2)布尔值-Boolean | False | False |
 | showToolbar | 显示工具栏 |  | (2)布尔值-Boolean | False | False |
-| windowStyle | 窗口风格 |  | (9)选项-Enum | normal | False |
+| windowStyle | 窗口风格 |  | (9)选项-Enum（normal: 正常; none: 无边框） | normal | False |
 | clearCookies | 关闭窗口时清理Cookie |  | (2)布尔值-Boolean | False | False |
 | addDevTool | 添加DevTools桥 |  | (2)布尔值-Boolean | False | False |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
@@ -5202,10 +5276,10 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 | 比较方式 | (9)选项-Enum | fromString | True |
+| type | 类型 | 比较方式 | (9)选项-Enum（fromString: 通过文本指定颜色; selectFromScreen: 从屏幕选取颜色; fromScreenPosition: 取屏幕指定位置颜色; editOrSelectColor: 编辑/选择颜色） | fromString | True |
 | colorStr | 颜色 | 颜色的文本值, 格式支持：#223344, #FF223344(ARGB顺序), Red, rgb(200,200,200), rgba(200,200,200,0.5), CMYK(0,0,0,0)或CMYK:0,0,0,0 | (0)字符串-Text |  | True |
 | location | 坐标 | 格式为:“横坐标X,纵坐标Y” | (0)字符串-Text | 0,0 | True |
-| format | 输出文本格式 | 输出的颜色文本值格式，用以转换颜色值的格式 | (9)选项-Enum | HEX_RGB | True |
+| format | 输出文本格式 | 输出的颜色文本值格式，用以转换颜色值的格式 | (9)选项-Enum（HEX_RGB: 十六进制RGB: #6496C8; HEX_ARGB: 十六进制ARGB: #FF6496C8; rgba: HTML: rgba(100,150,200,1); rgb: HTML: rgb(100,150,200); DOT_RGB: RGB: 100,150,200; DOT_RGBA: RGBA: 100,150,200,255; DOT_ARGB: ARGB: 255,100,150,200; float_rgba: 浮点: 0.39f, 0.59f, 0.78f, 1.00f; Swift: Swift: UIColor(red:0.39, green:0.59, blue:0.78, alpha:1.00); CMYK: CMYK: 50,25,0,22; HSL: hsl(210,47.6%,58.8%); hsla: hsla(210,47.6%,58.8%,1); HSV_HSB: HSV/HSB: 210°,50,78.4） | HEX_RGB | True |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
 
 </details>
@@ -5255,7 +5329,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 | 比较方式 | (9)选项-Enum | getdate | True |
+| type | 类型 | 比较方式 | (9)选项-Enum（getdate: 取日期值（去除当天的时间部分）; timespan: 计算时间差（日期时间2 减 日期时间）; endtime: 计算结束时间; localToUtc: 本地时间转换为UTC时间; utcToLocal: UTC时间转换为本地时间） | getdate | True |
 | time1 | 日期时间 | 要计算的时间值 | (6)时间日期-DateTime |  | True |
 | time2 | 日期时间2 | 要计算的第二个时间值 | (6)时间日期-DateTime |  | True |
 | formatString | 格式化字符串 | 时间差转换为文本时的格式化字符串。d:天数,hh:小时,mm:分钟,ss:秒。符号.:需要使用\转义 | (0)字符串-Text | d\.hh\:mm\:ss | True |
@@ -5310,7 +5384,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 |  | (9)选项-Enum | setOriginValue | False |
+| type | 操作类型 |  | (9)选项-Enum（get: 取值; set: 设置值 (文本类型); setOriginValue: 设置值 (变量原始类型); remove: 删除一项; clear: 清空; keyList: 获取键(Key)列表; valueList: 获取值列表; reverse: 翻转键值; queryStringToDict: 查询字符串转换为词典(name1=value1&name2=value2...); dictToQueryString: 词典转换为查询字符串; dictToQueryStringNoEncode: 词典转换为查询字符串(不对键和值进行URL编码)） | setOriginValue | False |
 | dict | 词典 | 要操作的词典变量 | (10)词典-Dict |  | False |
 | queryString | 查询字符串 | 要解析的查询字符串 | (0)字符串-Text |  | False |
 | key | 键 | 要操作元素的键值。 | (0)字符串-Text |  | False |
@@ -5366,7 +5440,7 @@
 | matchCase | 匹配大小写 | 是否大小写敏感。0表示否，1表示是。 | (2)布尔值-Boolean | 0 | False |
 | useRegex | 使用正则匹配 | 是否使用正则匹配。0表示否，1表示是。 | (2)布尔值-Boolean | 0 | False |
 | maxCount | 最大结果数量 | -1表示不限制 | (12)数字(整数)-Integer | 100 | True |
-| sort | 排序方式 |  | (9)选项-Enum | 1 | True |
+| sort | 排序方式 |  | (9)选项-Enum（1: 名称顺序 NAME_ASCENDING; 2: 名称倒序 NAME_DESCENDING; 3: 路径顺序 PATH_ASCENDING; 4: 路径倒序 PATH_DESCENDING; 5: 大小顺序 SIZE_ASCENDING; 6: 大小倒序 SIZE_DESCENDING; 7: 扩展名顺序 EXTENSION_ASCENDING; 8: 扩展名倒序 EXTENSION_DESCENDING; 9: 类型名顺序 TYPE_NAME_ASCENDING; 10: 类型名倒序 TYPE_NAME_DESCENDING; 11: 创建时间顺序 DATE_CREATED_ASCENDING; 12: 创建时间倒序 DATE_CREATED_DESCENDING; 13: 修改时间顺序 DATE_MODIFIED_ASCENDING; 14: 修改时间倒序 DATE_MODIFIED_DESCENDING; 15: 属性顺序 ATTRIBUTES_ASCENDING; 16: 属性倒序 ATTRIBUTES_DESCENDING; 17: 文件列表文件名顺序 FILE_LIST_FILENAME_ASCENDING; 18: 文件列表文件名倒序 FILE_LIST_FILENAME_DESCENDING; 19: 运行次数顺序 RUN_COUNT_ASCENDING; 20: 运行次数倒序 RUN_COUNT_DESCENDING; 21: 最后变更时间顺序 DATE_RECENTLY_CHANGED_ASCENDING; 22: 最后变更时间倒序 DATE_RECENTLY_CHANGED_DESCENDING; 23: 最后访问时间顺序 DATE_ACCESSED_ASCENDING; 24: 最后访问时间倒序 DATE_ACCESSED_DESCENDING; 25: 最后运行时间顺序 DATE_RUN_ASCENDING; 26: 最后运行时间倒序 DATE_RUN_DESCENDING） | 1 | True |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
 
 </details>
@@ -5409,7 +5483,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 | 操作类型 | (9)选项-Enum |  | True |
+| type | 操作类型 | 操作类型 | (9)选项-Enum（copyInto: 复制到指定目录下; copyIntoWithShell: 复制到指定目录下(Windows); copyTo: 复制为（指定结果名称或路径）; moveInto: 移动到指定目录下; moveIntoWithShell: 移动到指定目录下(Windows); rename: 移动/重命名为（指定结果名称或完整路径）; deleteFile: 删除文件（不支持文件夹）; deleteEmptyFolder: 删除空文件夹; recycle: 移入回收站; recycleNoUi: 移入回收站（安静模式，自动确认操作）; makeDir: 创建文件夹; createFile: 创建空文件; enumFiles: 获取文件夹内的文件; enumDirs: 获取文件夹内的子文件夹; copyFile: 复制文件/文件夹（自动）【不建议使用】; moveFile: 移动/重命名文件(夹)（自动）【不建议使用】） |  | True |
 | path | 路径 | 要操作的文件或文件夹路径 | (0)字符串-Text |  | False |
 | dstPath | 目标路径/名称 | 复制/移动的目标路径或新文件、文件名。详情请参考文档。 | (0)字符串-Text |  | False |
 | searchPattern | 搜索内容 | 筛选文件或目录名。可以包含通配符*和?，或“regex:正则表达式”。搜索文件时也可以为分号隔开的多个后缀名如.jpg;.png;.bmp | (0)字符串-Text | * | False |
@@ -5495,9 +5569,9 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| operation | 操作类型 |  | (9)选项-Enum | getSelection | False |
+| operation | 操作类型 |  | (9)选项-Enum（getSelection: 获取选择的文件; setSelection: 设置选择的文件） | getSelection | False |
 | waitMs | 等待剪贴板时间 | 通过复制方式获取选择文件时，等待剪贴板变化的最长时间毫秒数。 | (12)数字(整数)-Integer | 200 | False |
-| sortType | 排序文件列表 | 获取多个文件时，根据需要可以对文件列表进行排序。仅支持文件。 | (9)选项-Enum | Default | False |
+| sortType | 排序文件列表 | 获取多个文件时，根据需要可以对文件列表进行排序。仅支持文件。 | (9)选项-Enum（Default: 默认（文件名自然排序）; Origin: 原始（系统返回顺序）; FileName: 文件名（字母顺序）; FileNameNature: 文件名（自然顺序）; FileSizeAsc: 文件大小（从小到大）; FileSizeDesc: 文件大小（从大到小）; CreationTimeDesc: 创建时间（从新到旧）; CreationTimeAsc: 创建时间（从旧到新）; LastAccessTimeDesc: 最后访问时间（从晚到早）; LastAccessTimeAsc: 最后访问时间（从早到晚）; LastWriteTimeDesc: 最后写入时间（从晚到早）; LastWriteTimeAsc: 最后写入时间（从早到晚）） | Default | False |
 | pathList | 路径或文件名 | 要选中的路径或文件名。支持使用 “regex:表达式” “pinyin:筛选” 选择匹配的文件。 | (0)字符串-Text |  | False |
 | stopIfFail | 失败后中止动作 | 获取失败后，是否停止后续动作的执行。 | (2)布尔值-Boolean | True | False |
 | winHandle | 指定窗口句柄 | 指定要操作的资源管理器窗口，留空时表示前台窗口。（仅支持资源管理器） | (12)数字(整数)-Integer |  | False |
@@ -5545,7 +5619,7 @@
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | path | 文件路径 | 要读取的文件的完整路径。 | (0)字符串-Text |  | True |
-| type | 格式 | 文件内容类型 | (9)选项-Enum | text | True |
+| type | 格式 | 文件内容类型 | (9)选项-Enum（text: 文本; image: 图片） | text | True |
 | encoding | 文件编码 | 文件的编码格式 | (9)选项-Enum | utf-8 | True |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
 
@@ -5588,7 +5662,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 | 打开文件：选择一个已存在的文件。保存文件：选择文件要保存的目标位置。 | (9)选项-Enum | openFile | True |
+| type | 操作类型 | 打开文件：选择一个已存在的文件。保存文件：选择文件要保存的目标位置。 | (9)选项-Enum（saveFile: 保存文件; openFile: 打开文件; openMultiFile: 打开多个文件） | openFile | True |
 | filter | 文件类型筛选器 | 文件类型筛选器，格式为：类型1|扩展名1|类型2|扩展名2。如：文本文件(*.txt)|*.txt|C#文件|*.cs|所有文件|*.* | (0)字符串-Text | 文本文件|*.txt|所有文件|*.* | False |
 | defaultExt | 默认扩展名 | 默认的文件扩展名，应该是筛选器里的一种 | (0)字符串-Text | .txt | False |
 | initDir | 初始路径 | 初始文件夹路径 | (0)字符串-Text |  | False |
@@ -5685,7 +5759,7 @@
 | addUtf8Bom | 添加UTF-BOM | UTF8编码文件是否写入BOM标记 | (2)布尔值-Boolean | False | False |
 | appendMode | 添加到文件末尾 | 如果文件已存在，则添加到文件的末尾 | (2)布尔值-Boolean | False | False |
 | addNewLine | 添加空行 | 在文件末尾添加空行 | (2)布尔值-Boolean | False | False |
-| newLineChars | 统一换行字符 |  | (9)选项-Enum |  | True |
+| newLineChars | 统一换行字符 |  | (9)选项-Enum（: 默认（不处理）; \r\n; \r; \n） |  | True |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
 
 </details>
@@ -5725,7 +5799,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 |  | (9)选项-Enum | Zip | False |
+| type | 操作类型 |  | (9)选项-Enum（Zip: 创建Zip文件; Unzip: 解压缩Zip文件） | Zip | False |
 | sourcePath | 源路径 | 待压缩的文件夹或文件路径。多个文件时每个文件一行。 | (0)字符串-Text |  | True |
 | targetZipFile | Zip文件路径 | 压缩时：目标文件的路径。留空时自动生成临时文件。点(.)表示待压缩的文件夹或文件所在位置。 | (0)字符串-Text |  | True |
 | sourceZipFile | Zip文件路径 | 待解压的文件路径。 | (0)字符串-Text |  | True |
@@ -5777,7 +5851,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 截图类型 | 截取图片的屏幕区域类型 | (9)选项-Enum | select | False |
+| type | 截图类型 | 截取图片的屏幕区域类型 | (9)选项-Enum（select: 选择区域; full_screen: 所有屏幕; primary_screen: 主屏幕; fixed_area: 固定区域; window: 窗口 (屏幕可见内容); windowBackground: 窗口 (支持后台显示)） | select | False |
 | area | 截图区域 | 要截取的屏幕坐标位置（像素值），格式为：left,top,right,bottom。默认不包含右边和底边像素。 | (0)字符串-Text |  | False |
 | windowHandle | 窗口句柄 | 要截取的窗口句柄数字。0或留空表示截取前台窗口。 | (12)数字(整数)-Integer | 0 | False |
 | delay | 截图前延迟时间 | 等待多少毫秒后开始截图 | (12)数字(整数)-Integer | 0 | True |
@@ -5921,7 +5995,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| sourceType | 图片来源 |  | (9)选项-Enum | var | False |
+| sourceType | 图片来源 |  | (9)选项-Enum（var: 图片变量; file: 图片文件） | var | False |
 | bmpFile | 文件路径 | 图片文件的完整路径 | (0)字符串-Text |  | True |
 | bmpVar | 图片变量 |  | (3)图片-Image |  | True |
 | autoRotate | 计算旋转后的宽高 | 如果Exif中包含旋转角度信息，则获取旋转后的宽高 | (2)布尔值-Boolean | False | False |
@@ -5972,7 +6046,7 @@
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | img | 图片 | 要转换的图片 | (3)图片-Image |  | True |
-| type | 操作类型 | 对图片的转换操作类型 | (9)选项-Enum | resize_percent | False |
+| type | 操作类型 | 对图片的转换操作类型 | (9)选项-Enum（resize_percent: 缩放图片(指定比例); resize_pixel: 缩小图片(指定像素); Clone: 复制图片; Invert: 反色; GrayScale: 灰度; Rotate: 旋转; Filters: 组合处理; GenerateIco: 生成图标文件(.ico)） | resize_percent | False |
 | resizePercent | 缩放比例 | 缩小或放大到原来的百分之多少 | (1)数字(小数)-Number | 50 | False |
 | maxWidth | 最大宽度 | 最大宽度(像素数)，0表示自动 | (12)数字(整数)-Integer | 0 | False |
 | maxHeight | 最大高度 | 最大高度(像素数)，0表示自动 | (12)数字(整数)-Integer | 0 | False |
@@ -6063,7 +6137,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| source | 操作/来源 | 图片来源类型 | (9)选项-Enum | var | False |
+| source | 操作/来源 | 图片来源类型 | (9)选项-Enum（file: 显示：图片文件或网络图片; var: 显示：变量中的图片; clipboard: 显示：剪贴板图片; closeWindow: 关闭图片窗口; getState: 获取图片窗口信息; getImageWindows: 获取所有图片窗口标识） | var | False |
 | path | 路径/网址 | 图片文件的路径或网址。 | (0)字符串-Text |  | True |
 | imgVar | 图片变量 | 从指定变量中加载图片 | (3)图片-Image |  | True |
 | scale | 初始缩放比例 | 可以为小数，1表示原始大小，-1表示对大图自动调整缩放比例 | (1)数字(小数)-Number | 1 | True |
@@ -6161,7 +6235,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 | 转换操作类型 | (9)选项-Enum | imgToBase64 | False |
+| type | 操作类型 | 转换操作类型 | (9)选项-Enum（imgToBase64: 图片或文件转Base64文本; base64ToImg: Base64文本转图片） | imgToBase64 | False |
 | img | 图片 | 要转换的图片（图片变量或文件路径） | (3)图片-Image |  | True |
 | addHeader | 添加data头 | 是否添加“data:image/png;base64,”头 | (2)布尔值-Boolean | False | False |
 | base64 | Base64编码 | 要转换的编码文本 | (0)字符串-Text |  | True |
@@ -6247,7 +6321,7 @@
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | list | 列表 | 要操作的列表变量 | (4)文本列表-List |  | False |
-| type | 操作类型 |  | (9)选项-Enum | none | False |
+| type | 操作类型 |  | (9)选项-Enum（none: 无操作（仅用于获取列表信息）; getAt: 读取某位置元素; append: 添加元素到末尾; insertAt: 插入元素; setAt: 设置/更新某序号元素; remove: 去除元素(指定值，有多个时去除第一个); removeAllByValue: 去除元素(指定值，有多个时去除全部); removeAt: 去除元素(指定位置); removeByMatch: 去除元素(匹配正则表达式的项); removeByNotMatch: 去除元素(不匹配正则表达式的项); clear: 清空列表; sortAsc: 排序A-Z（输出到结果）; sortDesc: 排序Z-A（输出到结果）; sortAscNature: 自然排序A-Z（输出到结果）; FileSizeAsc: 排序文件列表：文件大小（从小到大）; FileSizeDesc: 排序文件列表：文件大小（从大到小）; CreationTimeDesc: 排序文件列表：创建时间（从新到旧）; CreationTimeAsc: 排序文件列表：创建时间（从旧到新）; LastAccessTimeDesc: 排序文件列表：最后访问时间（从晚到早）; LastAccessTimeAsc: 排序文件列表：最后访问时间（从早到晚）; LastWriteTimeDesc: 排序文件列表：最后写入时间（从晚到早）; LastWriteTimeAsc: 排序文件列表：最后写入时间（从早到晚）; reverse: 倒置; sub: 截取（输出到结果）; concat: 拼接（输出到结果）; distinct: 去除重复（输出到结果）; indexOf: 获取值的序号; filterByRegex: 筛选（正则,输出到结果）; filterByDefault: 筛选（模糊匹配,输出到结果）; filterByContains: 筛选（包含）; filterByStarts: 筛选（开始）; filterByEnds: 筛选（结束）） | none | False |
 | list2 | 列表2 | 要拼接的列表 | (4)文本列表-List |  | False |
 | pos | 序号 | 目标元素的序号，从0开始。负值表示从后向前的第几个。 | (12)数字(整数)-Integer | 0 | False |
 | length | 长度 | 操作元素的数量 | (12)数字(整数)-Integer | 1 | False |
@@ -6464,7 +6538,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| format | 格式 | 转换为文本时使用的格式 | (9)选项-Enum | D | False |
+| format | 格式 | 转换为文本时使用的格式 | (9)选项-Enum（D: 默认：00000000-0000-0000-0000-000000000000; N: 去除连字符：00000000000000000000000000000000; B: 大括号包围：{00000000-0000-0000-0000-000000000000}; P: 小括号包围：(00000000-0000-0000-0000-000000000000); X: 十六进制：{0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}}） | D | False |
 | upper | 大写 | 字母输出为大写格式。 | (2)布尔值-Boolean | False | False |
 
 </details>
@@ -6504,7 +6578,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| operation | 工作模式 | 工作模式：编辑某个词典的值，或编辑一些变量的值 | (9)选项-Enum | variables | False |
+| operation | 工作模式 | 工作模式：编辑某个词典的值，或编辑一些变量的值 | (9)选项-Enum（variables: 编辑动作变量的值; dict: 编辑词典数据; dict_dynamic: 编辑词典数据（动态）） | variables | False |
 | dictVar | 词典变量 | 表单需要编辑的词典变量 | (10)词典-Dict |  | False |
 | title | 窗口标题 | 表单窗口标题文字 | (0)字符串-Text | 填写表单 | True |
 | formDef | 表单定义 |  | (11)表单-Form |  | True |
@@ -6645,7 +6719,7 @@
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | script | 脚本内容 | 要运行的脚本内容 | (0)字符串-Text |  | True |
-| type | 脚本类型 | 要执行的脚本类型 | (9)选项-Enum | CMD_K | True |
+| type | 脚本类型 | 要执行的脚本类型 | (9)选项-Enum（CMD_K: CMD命令 (完成后保留窗口); CMD_C: CMD命令 (完成后关闭窗口); CMD_H: CMD命令 (隐藏命令行窗口); BAT: BAT批处理脚本(.bat); CMD_F: CMD批处理脚本(.cmd); PS: PowerShell脚本(.ps1); AHK: AutoHotKey脚本(.ahk); CUSTOM: 自定义脚本类型） | CMD_K | True |
 | ext | 扩展名 | 自定义脚本文件的扩展名(如: .ps1 ) | (0)字符串-Text |  | True |
 | encoding | 文件编码 | 写入文件的编码格式 | (9)选项-Enum | default | True |
 | runner | 使用指定软件 | 使用指定的程序运行脚本。如果双击脚本可以直接运行，则不需要指定。 | (0)字符串-Text |  | True |
@@ -6694,7 +6768,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 |  | (9)选项-Enum | readActionState | True |
+| type | 操作类型 |  | (9)选项-Enum（readActionState: 读取动作状态; saveActionState: 写入动作状态; UpdateActionBadge: 设置徽标文字; UpdateOverlyIcon: 设置徽标图标; UpdateContextMenu: 设置附加的右键菜单项; readGlobalState: 【谨慎使用】读取全局状态; saveGlobalState: 【谨慎使用】写入全局状态） | readActionState | True |
 | key | 名称 | 存储或读取的状态条目名称。 | (0)字符串-Text |  | False |
 | defaultValue | 默认值 | 读取失败的时候返回的值 | (0)字符串-Text |  | False |
 | value | 值 | 要保存的状态值。使用*NULL*删除此状态的存储。 | (0)字符串-Text |  | False |
@@ -6798,16 +6872,16 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| operation | 接口/引擎 | OCR接口或引擎。离线引擎安装方式请参考模块文档。 | (9)选项-Enum | QuickerServerOcr | True |
+| operation | 接口/引擎 | OCR接口或引擎。离线引擎安装方式请参考模块文档。 | (9)选项-Enum（QuickerServerOcr: Quicker OCR引擎; WindowsOcr: Windows10/11 内置OCR引擎; baidu-basic: 百度通用文字识别（自定义帐号）; baidu-quicker: 百度通用文字识别（Quicker帐号）; baidu-custom: 百度自定义接口识别（自定义帐号）; table_quicker: 表格识别（Quicker服务）） | QuickerServerOcr | True |
 | apiKey | ApiKey | 请填写OCR帐号的ApiKey | (0)字符串-Text |  | True |
 | secretKey | SecretKey | 请填写OCR帐号的SecretKey | (0)字符串-Text |  | True |
 | imgVar | 图片变量 | 从指定变量中加载图片 | (3)图片-Image |  | True |
-| punctuationType | 转换标点符号 | 合并文本时，是否转换标点符号 | (9)选项-Enum | no | True |
-| mergeChapter | 合并段落 | 是否智能合并段落。 | (9)选项-Enum | no | True |
-| interface | 接口名称或网址 | 接口的完整网址，或 https://aip.baidubce.com/rest/2.0/ocr/v1/ 后面的部分 | (0)字符串-Text |  | False |
+| punctuationType | 转换标点符号 | 合并文本时，是否转换标点符号 | (9)选项-Enum（no: 不转换; sbc: 全角符号; dbc: 半角符号） | no | True |
+| mergeChapter | 合并段落 | 是否智能合并段落。 | (9)选项-Enum（no: 不合并; merge: 合并） | no | True |
+| interface | 接口名称或网址 | 接口的完整网址，或 https://aip.baidubce.com/rest/2.0/ocr/v1/ 后面的部分 | (0)字符串-Text（general_basic: 通用文字识别（标准版）; general: 通用文字识别（标准含位置版）; accurate_basic: 通用文字识别（高精度版）; accurate: 通用文字识别（高精度含位置版）; handwriting: 手写文字识别; numbers: 数字识别; doc_analysis_office: 办公文档识别; form: 表格文字识别(同步接口); qrcode: 二维码识别） |  | False |
 | options | 附加参数 | 请参考百度官方/Quicker服务接口说明。每行一个参数，使用option:value的格式。 | (10)词典-Dict |  | False |
-| lang | 语言 | 待识别内容的语言。表格识别仅支持中英混合和英文。 | (0)字符串-Text |  | False |
-| offlineMode | 离线模式 | 是否使用离线引擎。自动：安装离线引擎时使用离线，否则使用在线。 | (9)选项-Enum | Auto | False |
+| lang | 语言 | 待识别内容的语言。表格识别仅支持中英混合和英文。 | (0)字符串-Text（CHN_ENG: 中英混合; ENG: 英语; KOR: 韩语; JAP: 日语; CHT: 繁体中文; LAT: 拉丁语; ARA: 阿拉伯语） |  | False |
+| offlineMode | 离线模式 | 是否使用离线引擎。自动：安装离线引擎时使用离线，否则使用在线。 | (9)选项-Enum（Auto: 自动; OnlineOnly: 仅使用在线服务; OfflineOnly: 仅使用离线引擎） | Auto | False |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
 
 </details>
@@ -6851,10 +6925,10 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| operation | 模式 |  | (9)选项-Enum | default | False |
+| operation | 模式 |  | (9)选项-Enum（default: 标准; custom: 自定义） | default | False |
 | message | 消息内容 | 弹窗显示的消息内容。“自定义”模式时，也支持“MD:Markdown内容”。 | (0)字符串-Text | Hello. | True |
 | title | 标题 | 消息窗口标题。留空时自动使用动作名称。 | (0)字符串-Text | Quicker | True |
-| icon | 图标 | 消息窗口图标 | (9)选项-Enum | Asterisk | True |
+| icon | 图标 | 消息窗口图标 | (9)选项-Enum（: 无; Information: 信息; Question: 疑问; Warning: 警告; Error: 错误） | Asterisk | True |
 | customIcon | 图标 | 消息窗口图标。 | (0)字符串-Text | Information | True |
 | buttons | 按钮 | 消息窗口图标 | (9)选项-Enum | OK | True |
 | customButtons | 按钮 | 每行定义一个按钮，格式为 “文本” 或 “[图标]显示文本(提示内容)|值”。 | (0)字符串-Text | [fa:Regular_Check:#4caf50]是(_Y)|Yes
@@ -6941,7 +7015,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| operation | 操作类型 | 操作类型 | (9)选项-Enum |  | True |
+| operation | 操作类型 | 操作类型 | (9)选项-Enum（ApplicationInfo: 获取当前Excel应用信息; OpenFile: 工作簿: 打开工作簿; SaveWorkbook: 工作簿: 保存工作簿; CloseWorkbook: 工作簿: 关闭工作簿; CreateWorkbook: 工作簿: 创建工作簿; SelectWorksheet: 工作表：选择工作表） |  | True |
 | path | 文件/模板路径 | 完整路径。创建工作簿时，用于指定模板文件。 | (0)字符串-Text |  | False |
 | workbook | 工作簿对象 | 根据具体操作，可用参数不同。请参考文档。 | (98)对象(Object)-Object |  | False |
 | params | 参数 | 根据具体操作，可用参数不同。请参考文档。 | (0)字符串-Text |  | False |
@@ -6991,8 +7065,8 @@
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | range | 区域 | 可以输入区域变量、留空(表示当前选择区域）、used(表示当前工作表的使用区域)或区域范围如A1:E9等，请参考文档。 | (98)对象(Object)-Object |  | False |
-| subRange | 限定子范围 | 根据需要，将要操作的目标限定为一个子区域 | (9)选项-Enum | FullArea | True |
-| operation | 操作类型 | 操作类型 | (9)选项-Enum | SetValue | True |
+| subRange | 限定子范围 | 根据需要，将要操作的目标限定为一个子区域 | (9)选项-Enum（FullArea: 整个区域; FirstRow: 区域内的第一行; FirstColumn: 区域内的第一列; LastRow: 区域内最后一行; LastColumn: 区域内最后一列; ActiveCell: 活动单元格; EntireRow: 整行(包含区域外); EntireColumn: 整列(包含区域外); Rows: 所有行(区域范围内); Columns: 所有列(区域范围内)） | FullArea | True |
+| operation | 操作类型 | 操作类型 | (9)选项-Enum（SetValue: 设置值; SetFormula: 设置公式; SetNumberFormat: 设置数值格式; SetCellSize: 行高,列宽; SetStyle: 设置格式; CallMethod: 调用方法; Replace: 替换内容; GetRangeInfo: 获取区域信息） | SetValue | True |
 | value | 参数 | 要设置的内容 | (99)任意类型-Any |  | False |
 | cellSize | 行高,列宽 | -表示不改变，auto表示自动，数字表示具体值。如auto,auto表示自适应高度和宽度 | (99)任意类型-Any |  | False |
 | style | 格式 | 要设置的格式内容。每行一个格式设置，请参考模块文档了解详细参数设置。 | (0)字符串-Text |  | False |
@@ -7053,7 +7127,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| operation | 操作类型 | 要执行的操作。所有操作仅在输入法启用的情况下有效。 | (9)选项-Enum | GET_STATE | True |
+| operation | 操作类型 | 要执行的操作。所有操作仅在输入法启用的情况下有效。 | (9)选项-Enum（ENABLE: 切换为中文; DISABLE: 切换为英文; RESTORE: 恢复; GET_STATE: 是否为中文状态？） | GET_STATE | True |
 
 </details>
 <details>
@@ -7092,7 +7166,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| mode | 运行模式 | 普通模式：在Quicker进程中执行；低权限模式：在单独的进程中执行，可用于COM操作。 | (9)选项-Enum | normal | True |
+| mode | 运行模式 | 普通模式：在Quicker进程中执行；低权限模式：在单独的进程中执行，可用于COM操作。 | (9)选项-Enum（normal_roslyn: 普通模式v2 (Roslyn); normal: 普通模式v1 (CodeDOM); low_permission_roslyn: 低权限模式v2 (Roslyn); low_permission: 低权限模式v1 (CodeDOM); generate_assembly: 生成程序集） | normal | True |
 | script | 脚本内容 | 要运行的脚本内容 | (0)字符串-Text | //.cs  文件类型，便于外部编辑时使用
 // 引用必要的命名空间
 using System.Windows.Forms;
@@ -7326,13 +7400,13 @@ quicker.context.SetVarValue('text', 'hello world')
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 | 操作类型。按下和抬起需要配对使用。 | (9)选项-Enum | TriggerMenu | False |
+| type | 操作类型 | 操作类型。按下和抬起需要配对使用。 | (9)选项-Enum（TriggerMenu: 触发窗口菜单; TriggerControl: 触发窗口控件; GetControlInfo: 获取窗口控件信息; GetCursorPointControlInfo: 获取鼠标指针位置控件信息; GetControlInfoByPosition: 获取指定位置控件信息; GetFocusedControlInfo: 获取焦点控件信息） | TriggerMenu | False |
 | window | 窗口句柄 | 要操作哪个窗口的控件。不填写=使用前台窗口；或窗口句柄数字。 | (0)字符串-Text |  | False |
 | menuPath | 菜单路径 | 菜单的展开路径。每行写一个级别的菜单名（需完全匹配） | (0)字符串-Text |  | False |
 | expandDelay | 展开延时 | 等待下级菜单展开的时间(ms) | (12)数字(整数)-Integer | 200 | False |
 | control | 控件XPath或Name | 控件的XPath或Name。XPath以/开始。 | (0)字符串-Text |  | False |
 | controlType | 控件类型 | 可选。当有多个名称相同但类型不同的控件时区分。 | (9)选项-Enum | 0 | False |
-| controlOperation | 动作 | 对控件执行的操作。 | (9)选项-Enum | Auto | False |
+| controlOperation | 动作 | 对控件执行的操作。 | (9)选项-Enum（Auto: 自动; Invoke: 调用（按钮、菜单项等）; LeftClick: 鼠标左键单击; MiddleClick: 鼠标中键单击; RightClick: 鼠标右键单击; LeftDoubleClick: 鼠标左键双击; Select: 单选：选择（单选框、标签页等）; AddToSelection: 多选：添加到多选（多选列表等）; RemoveFromSelection: 多选：从多选中移除（多选列表）; ToggleItemSelection: 多选：切换选中状态; Expand: 展开折叠：展开（菜单等）; Collapse: 展开折叠：折叠（菜单等）; ToggleExpandCollapse: 展开折叠：切换展开折叠（菜单等）; Toggle: 切换：切换（检查框等）; ToggleOn: 切换：开（检查框等）; ToggleOff: 切换：关（检查框等）; SetValue: 设置值） | Auto | False |
 | value | 值 | 仅用于 “设置值” 操作。 | (0)字符串-Text |  | False |
 | pointLocation | 坐标位置 | 指定要检查的控件的屏幕坐标位置，格式为“x,y” | (0)字符串-Text |  | False |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
@@ -7385,7 +7459,7 @@ quicker.context.SetVarValue('text', 'hello world')
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 | 操作类型。按下和抬起需要配对使用。 | (9)选项-Enum | get_key_state | False |
+| type | 类型 | 操作类型。按下和抬起需要配对使用。 | (9)选项-Enum（get_key_state: 获取按键状态; key_down: 按下按键; key_up: 抬起按键; key_keydown_v1: 按下Quicker虚拟键V1; key_keyup_v1: 抬起Quicker虚拟键V1） | get_key_state | False |
 | key | 按键 | 要操作或检查状态的按键(单个)。可以为键值或键名，具体请参考文档。 | (0)字符串-Text |  | False |
 | getRealMouseState | 获取按键的实际状态（在远程时无法获取） |  | (2)布尔值-Boolean | False | False |
 | keepMs | 保持按下时间 | 保持此虚拟键按下的时间（毫秒数），之后会自动抬起。 | (12)数字(整数)-Integer | 1000 | False |
@@ -7428,16 +7502,16 @@ quicker.context.SetVarValue('text', 'hello world')
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 | 操作类型。按下和抬起需要配对使用。 | (9)选项-Enum | TriggerMenu | False |
+| type | 操作类型 | 操作类型。按下和抬起需要配对使用。 | (9)选项-Enum（TriggerMenu: 触发窗口菜单; TriggerControl: 触发窗口控件; GetControlInfo: 获取窗口控件信息; GetCursorPointControlInfo: 获取鼠标指针位置控件信息; GetFocusedControlInfo: 获取焦点控件信息; GetControlInfoByPosition: 获取指定位置控件信息; UpdateSaveAsDialogPath） | TriggerMenu | False |
 | window | 窗口句柄 | 要操作哪个窗口的控件。不填写=使用前台窗口；或窗口句柄数字。 | (0)字符串-Text |  | False |
 | menuPath | 菜单路径 | 菜单的展开路径。每行写一个级别的菜单名（需完全匹配） | (0)字符串-Text |  | False |
 | expandDelay | 展开延时 | 等待下级菜单展开的时间(ms) | (12)数字(整数)-Integer | 200 | False |
 | control | 控件名 | 控件名，请确保唯一性。 | (0)字符串-Text |  | False |
 | controlType | 控件类型 | 可选。当有多个名称相同但类型不同的控件时区分。 | (9)选项-Enum | 0 | False |
-| controlOperation | 动作 | 对控件执行的操作。 | (9)选项-Enum | Auto | False |
+| controlOperation | 动作 | 对控件执行的操作。 | (9)选项-Enum（Auto: 自动; Invoke: 调用（按钮、菜单项等）; LeftClick: 鼠标左键单击; MiddleClick: 鼠标中键单击; RightClick: 鼠标右键单击; LeftDoubleClick: 鼠标左键双击; Select: 单选：选择（单选框、标签页等）; AddToSelection: 多选：添加到多选（多选列表等）; RemoveFromSelection: 多选：从多选中移除（多选列表）; ToggleItemSelection: 多选：切换选中状态; Expand: 展开折叠：展开（菜单等）; Collapse: 展开折叠：折叠（菜单等）; ToggleExpandCollapse: 展开折叠：切换展开折叠（菜单等）; Toggle: 切换：切换（检查框等）; ToggleOn: 切换：开（检查框等）; ToggleOff: 切换：关（检查框等）; SetValue: 设置值） | Auto | False |
 | value | 值 | 仅用于 “设置值” 操作。 | (0)字符串-Text |  | False |
 | path | 路径 | 要更新的路径 | (0)字符串-Text |  | False |
-| autoCreateDir | 自动创建文件夹 | 如果目录不存在则自动创建。 | (9)选项-Enum | no | False |
+| autoCreateDir | 自动创建文件夹 | 如果目录不存在则自动创建。 | (9)选项-Enum（no: 不自动创建; auto: 自动创建：自动（根据后缀自动判断路径为文件还是文件夹路径）; asFilePath: 自动创建：给定文件路径; asFolderPath: 自动创建：给定文件夹路径） | no | False |
 | pointLocation | 坐标位置 | 指定要检查的控件的屏幕坐标位置，格式为“x,y” | (0)字符串-Text |  | False |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
 
@@ -7575,12 +7649,12 @@ quicker.context.SetVarValue('text', 'hello world')
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| operation | 操作类型 |  | (9)选项-Enum | extractText | False |
-| source | 源HTML | 原始HTML内容，或网址，或根节点对象 | (0)字符串-Text |  | True |
+| operation | 操作类型 |  | (9)选项-Enum（extractText: 读取文本内容; extractText: 读取表格内容）| extractText | False |
+| source | 源HTML | 原始HTML内容，或网址，或根节点对象 | (0)字符串-Text（auto: 自动检测 (加载两次); gb2312: GB2312编码; utf-8: UTF8编码） |  | True |
 | encoding | 网页编码类型 | 通过网址加载内容时，使用指定的编码。留空时默认为UTF8。 | (0)字符串-Text |  | False |
 | xpath | 节点XPath | 内容的XPath，详细说明请参考文档 | (0)字符串-Text |  | True |
-| selectTarget | 提取方式 | 提取单个节点还是符合条件的所有节点。 | (9)选项-Enum | single | False |
-| returnType | 提取内容类型 | 要提取的节点信息。 | (9)选项-Enum | InnerHtml | False |
+| selectTarget | 提取方式 | 提取单个节点还是符合条件的所有节点。 | (9)选项-Enum（single: 第一个符合条件的节点; all: 所有符合条件的节点） | single | False |
+| returnType | 提取内容类型 | 要提取的节点信息。 | (9)选项-Enum（InnerHtml: innerHtml 内部HTML; InnerText: innerText 内部文本; OuterHtml: outerHTML 节点全部HTML; Attribute: Attribute 节点的某个属性; Node: 节点对象） | InnerHtml | False |
 | attribute | 属性名称 | 仅在提取节点属性时有效。指定属性的名称。 | (0)字符串-Text |  | False |
 | writeToSheet | 写入工作表对象 | 将提取到的表格内容写入工作表对象中。 | (98)对象(Object)-Object |  | False |
 | stopIfFail | 失败后停止动作 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
@@ -7717,7 +7791,7 @@ quicker.context.SetVarValue('text', 'hello world')
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| operation | 操作类型 |  | (9)选项-Enum | getInfo | False |
+| operation | 操作类型 |  | (9)选项-Enum（getInfo: 提取文件路径信息; changeExt: 更改扩展名，其它不变; changeName: 更改文件名(含扩展名)，所在目录不变; changeNameWithoutExt: 更改文件名(不含扩展名和所在目录); changeDir: 更改所在目录，文件名不变; combine: 合并路径 (拼接)） | getInfo | False |
 | path | 路径 | 待处理或拼接的路径 | (0)字符串-Text |  | True |
 | newExtension | 新的扩展名 | 新的扩展名，如：.png | (0)字符串-Text |  | True |
 | newFileName | 新的文件名 | 新的文件名，如：abcd.png | (0)字符串-Text |  | True |
@@ -7770,7 +7844,7 @@ quicker.context.SetVarValue('text', 'hello world')
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| getGroup | 提取方式 | 输出的内容根据提取内容有所不同，请参考模块文档。 | (9)选项-Enum | 0 | True |
+| getGroup | 提取方式 | 输出的内容根据提取内容有所不同，请参考模块文档。 | (9)选项-Enum（0: 各匹配项的值; 1: 第一个匹配项的组; 2: 各匹配项的组） | 0 | True |
 | data | 输入 | 要提取内容的文本 | (0)字符串-Text |  | True |
 | pattern | 正则表达式 | 用于提取内容的正则表达式 | (0)字符串-Text |  | True |
 | ignoreCase | 忽略大小写 | 不区分英文大小写 | (2)布尔值-Boolean | False | False |
@@ -7824,7 +7898,7 @@ quicker.context.SetVarValue('text', 'hello world')
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 | 是否等待窗口关闭后继续 | (9)选项-Enum | NO_WAIT | False |
+| type | 操作类型 | 是否等待窗口关闭后继续 | (9)选项-Enum（NO_WAIT: 显示窗口，不等待关闭（立即开始执行后续的步骤）; WAIT: 显示窗口，等待关闭; CLOSE_WINDOW: 关闭窗口; GET_WIN_INFO: 获取窗口信息; APPEND_TEXT: 追加内容; ACTIVATE_WINDOW: 显示和激活窗口; WAIT_CLOSE: 等待窗口关闭; GET_ALL_WINDOWS: 获取所有文本窗口; GET_ACTION_WINDOWS: 获取当前动作创建的所有文本窗口） | NO_WAIT | False |
 | text | 文本内容 | 要显示的文本内容 | (0)字符串-Text |  | True |
 | title | 窗口标题 | 窗口标题文字 | (0)字符串-Text | 文本窗口 | True |
 | operations | 工具栏操作 | 用于显示在窗口工具栏。每行一个选项，格式为 “文本” 或 “显示文本|值”。 | (0)字符串-Text |  | True |
@@ -7936,7 +8010,7 @@ quicker.context.SetVarValue('text', 'hello world')
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 |  | (9)选项-Enum | single | True |
+| type | 操作类型 |  | (9)选项-Enum（single: 普通（替换一种内容）; batch: 批量（替换多种内容）） | single | True |
 | input | 输入 | 要提取内容的文本 | (0)字符串-Text |  | True |
 | batchReplaceData | 查找和替换内容 | 每行一对查找和替换内容，中间使用|||或|分隔。例如将a替换成A，写作:a|A 或 a|||A | (0)字符串-Text |  | True |
 | old | 查找内容 | 要替换的内容 | (0)字符串-Text |  | True |
