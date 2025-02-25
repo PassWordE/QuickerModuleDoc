@@ -2670,9 +2670,225 @@
 <summary>范例</summary>
 
 
-**范例1**
+**多线程同时运行两个步骤组，第一个步骤组内容为：等待3000毫秒，如果用户未按下“弹窗提示或确认”模块任何按钮，则模拟按下键盘左Alt+Y组合键以快速点击第一个按钮；第二个步骤内容为“弹窗提示或确认模块”，其中有3个按钮，默认的按钮值为Yes。两个线程都运行结束后，显示按钮的值**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "btn",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:group",
+      "InputParams": {
+        "skipErr": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "skipWhenDebugging": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "useMultiThread": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "waitAny": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errorMessage": null
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:group",
+          "InputParams": {},
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:delay",
+              "InputParams": {
+                "delayMs": {
+                  "VarKey": null,
+                  "Value": "3000"
+                },
+                "monitorWaitWin": {
+                  "VarKey": null,
+                  "Value": "0"
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:simpleIf",
+              "InputParams": {
+                "condition": {
+                  "VarKey": null,
+                  "Value": "$={btn}==\"\""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": [
+                {
+                  "StepRunnerKey": "sys:keyInput",
+                  "InputParams": {
+                    "keys": {
+                      "VarKey": null,
+                      "Value": "{\"CtrlKeys\":[164],\"Keys\":[89]}"
+                    },
+                    "repeat": {
+                      "VarKey": null,
+                      "Value": "1"
+                    },
+                    "interval": {
+                      "VarKey": null,
+                      "Value": "1"
+                    },
+                    "holdMs": {
+                      "VarKey": null,
+                      "Value": "-1"
+                    }
+                  },
+                  "OutputParams": {},
+                  "IfSteps": null,
+                  "ElseSteps": null,
+                  "Note": "",
+                  "Disabled": false,
+                  "Collapsed": false,
+                  "DelayMs": 0
+                }
+              ],
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": [],
+          "Note": null,
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:group",
+          "InputParams": {},
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:MsgBox",
+              "InputParams": {
+                "operation": {
+                  "VarKey": null,
+                  "Value": "custom"
+                },
+                "message": {
+                  "VarKey": null,
+                  "Value": "Hello."
+                },
+                "title": {
+                  "VarKey": null,
+                  "Value": "Quicker"
+                },
+                "customIcon": {
+                  "VarKey": null,
+                  "Value": "Information"
+                },
+                "customButtons": {
+                  "VarKey": null,
+                  "Value": "[fa:Regular_Check:#4caf50]第一个按钮(_Y)|按钮1\r\n[fa:Regular_Times:#dc3545]第二个按钮(_N)|按钮2\r\n[fa:Light_Undo:#444444]取消(_C)|Cancel"
+                },
+                "defaultButton": {
+                  "VarKey": null,
+                  "Value": "Yes"
+                },
+                "restoreFocus": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "result": "btn"
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": [],
+          "Note": null,
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        },
+        "msg": {
+          "VarKey": "btn",
+          "Value": null
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "style": {
+          "VarKey": null,
+          "Value": "Default"
+        },
+        "clickAction": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -2695,13 +2911,13 @@
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | url | 网址 | 要打开的网页地址 | (0)字符串-Text | https:// | True |
-| method | 方法 | Http请求的类型 | (9)选项-Enum | GET | True |
+| method | 方法 | Http请求的类型 | (9)选项-Enum（GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS） | GET | True |
 | header | 请求头 | 发送的HttpHeader。每行一个header，格式为Name:Value | (0)字符串-Text |  | False |
 | cookie | Cookie | 请求的cookie内容 | (0)字符串-Text |  | False |
-| bodyType | 请求体类型 | Http 请求体的内容 | (9)选项-Enum | JSON | True |
+| bodyType | 请求体类型 | Http 请求体的内容 | (9)选项-Enum（JSON, FORM: 文本表单, FILE: MultiPart表单, BinaryFile: 单个文件或图片变量（二进制）, Text: 纯文本） | JSON | True |
 | body | 请求体 | Http 请求 BODY。格式要求详见模块帮助。 | (0)字符串-Text |  | False |
 | contentType | 内容类型 | 选填。上传内容的ContentType，适用于“单个文件或图片变量（二进制）”或“纯文本” 请求体类型。 | (0)字符串-Text |  | False |
-| resultType | 结果类型 | Http请求的结果类型 | (9)选项-Enum | Text | True |
+| resultType | 结果类型 | Http请求的结果类型 | (9)选项-Enum（Text: 文本, Image: 图片, File: 文件） | Text | True |
 | ua | UserAgent |  | (0)字符串-Text | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 | False |
 | expireSeconds | 超时时间 | 请求超时时间（秒数） | (1)数字(小数)-Number | 100 | False |
 | noAutoRedirect | 禁止重定向 | 是否禁止自动跳转 | (2)布尔值-Boolean | False | False |
@@ -2730,9 +2946,357 @@
 <summary>范例</summary>
 
 
-**范例1**
+**获取选中文本，判断选中文本是否以“熊曰开头”，是的话HTTP请求进行解密，否则HTTP请求进行加密。最后将返回的文本发送到窗口中去**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "熊曰",
+      "Type": 0,
+      "Desc": "默认的文本变量",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "原始文本",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSelectedText",
+      "InputParams": {
+        "format": {
+          "VarKey": null,
+          "Value": "UnicodeText"
+        },
+        "repeat": {
+          "VarKey": null,
+          "Value": "2"
+        },
+        "useActionParam": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "output": "原始文本",
+        "outputEncoded": null,
+        "url": null,
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "http://hi.pcmoe.net/index.html"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$= {原始文本}.IndexOf(\"熊曰：\", StringComparison.OrdinalIgnoreCase) >= 0"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "解密"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:http",
+          "InputParams": {
+            "url": {
+              "VarKey": null,
+              "Value": "http://hi.pcmoe.net/bear.php"
+            },
+            "method": {
+              "VarKey": null,
+              "Value": "POST"
+            },
+            "header": {
+              "VarKey": null,
+              "Value": "connection:keep-alive\r\nx-requested-with:XMLHttpRequest\r\ndnt:1\r\nx-token:07B97AA644E8\r\naccept:*/*\r\nreferer:http://hi.pcmoe.net/index.html\r\naccept-language:zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            "cookie": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "bodyType": {
+              "VarKey": null,
+              "Value": "FORM"
+            },
+            "body": {
+              "VarKey": null,
+              "Value": "$$mode=Bear&code=Decode&txt={原始文本}"
+            },
+            "contentType": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "resultType": {
+              "VarKey": null,
+              "Value": "Text"
+            },
+            "ua": {
+              "VarKey": null,
+              "Value": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Mobile Safari/537.36 Edg/93.0.961.38"
+            },
+            "expireSeconds": {
+              "VarKey": null,
+              "Value": "100"
+            },
+            "noAutoRedirect": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "showProgress": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "skipCertVerify": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "statusCode": null,
+            "respHeaders": null,
+            "respCookies": null,
+            "content": "熊曰",
+            "imgResult": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "加密"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:stringProcess",
+          "InputParams": {
+            "data": {
+              "VarKey": "原始文本",
+              "Value": null
+            },
+            "method": {
+              "VarKey": null,
+              "Value": "urlEncode"
+            },
+            "srcEncoding": {
+              "VarKey": null,
+              "Value": "utf-8"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "output": "原始文本",
+            "isSuccess": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:http",
+          "InputParams": {
+            "url": {
+              "VarKey": null,
+              "Value": "http://hi.pcmoe.net/bear.php"
+            },
+            "method": {
+              "VarKey": null,
+              "Value": "POST"
+            },
+            "header": {
+              "VarKey": null,
+              "Value": "connection:keep-alive\r\nx-requested-with:XMLHttpRequest\r\ndnt:1\r\nx-token:07B97AA644E8\r\naccept:*/*\r\nreferer:http://hi.pcmoe.net/index.html\r\naccept-language:zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"
+            },
+            "cookie": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "bodyType": {
+              "VarKey": null,
+              "Value": "FORM"
+            },
+            "body": {
+              "VarKey": null,
+              "Value": "$$mode=Bear&code=Encode&txt={原始文本}"
+            },
+            "contentType": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "resultType": {
+              "VarKey": null,
+              "Value": "Text"
+            },
+            "ua": {
+              "VarKey": null,
+              "Value": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Mobile Safari/537.36 Edg/93.0.961.38"
+            },
+            "expireSeconds": {
+              "VarKey": null,
+              "Value": "100"
+            },
+            "noAutoRedirect": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "showProgress": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "skipCertVerify": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "statusCode": null,
+            "respHeaders": null,
+            "respCookies": null,
+            "content": "熊曰",
+            "imgResult": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:outputText",
+      "InputParams": {
+        "content": {
+          "VarKey": "熊曰",
+          "Value": null
+        },
+        "method": {
+          "VarKey": null,
+          "Value": "paste"
+        },
+        "delayBeforePaste": {
+          "VarKey": null,
+          "Value": "50"
+        },
+        "delayAfterPaste": {
+          "VarKey": null,
+          "Value": "10"
+        },
+        "appendReturn": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -2764,11 +3328,8 @@
 <details>
 <summary>范例</summary>
 
+见其他模块相关即可
 
-**范例1**
-```json
-
-```
 </details>
 
 ***
@@ -2803,10 +3364,42 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**模拟按下LeftAlt+LeftCtrl+LeftShift+G并循环3次，每次间隔20毫秒**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:keyInput",
+      "InputParams": {
+        "keys": {
+          "VarKey": null,
+          "Value": "{\"CtrlKeys\":[164,162,160],\"Keys\":[71]}"
+        },
+        "repeat": {
+          "VarKey": null,
+          "Value": "3"
+        },
+        "interval": {
+          "VarKey": null,
+          "Value": "20"
+        },
+        "holdMs": {
+          "VarKey": null,
+          "Value": "-1"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -2828,14 +3421,14 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 | 操作类型 | (9)选项-Enum | restore | True |
+| type | 类型 | 操作类型 | (9)选项-Enum（restore: 还原鼠标位置; move: 移动距离; moveTo: 移动到(x,y分别指定); moveToXy: 移动到(x,y一同指定); click: 单击; dbclick: 双击; down: 按下; up: 抬起; scroll: 滚动; ctrlDown: 按下Ctrl; ctrlUp: 松开Ctrl; shiftDown: 按下Shift; shiftUp: 松开Shift; toWinTL: 移动到窗口位置：相对于窗口左上角; toWinTR: 移动到窗口位置：相对于窗口右上角; toWinBL: 移动到窗口位置：相对于窗口左下角; toWinBR: 移动到窗口位置：相对于窗口右下角; toWinCenter: 移动到窗口位置：窗口中心; moveToWinXy: 移动到窗口位置：xy一同指定; locateByBitmap: 移动到位图位置(图片文件); locateByBitmapVar: 移动到位图位置(图片变量); getMouseOriginPosition: 获取鼠标位置(弹出面板前位置); getMouseCurrentPosition: 获取鼠标位置及指针类型(当前位置); showIndicator: 显示鼠标位置提示） | restore | True |
 | hWnd | 窗口句柄 | 目标窗口的句柄。留空或 0 表示操作前台窗口。 | (12)数字(整数)-Integer |  | False |
-| btn | 按钮 | 操作哪个按钮 | (9)选项-Enum | left | True |
+| btn | 按钮 | 操作哪个按钮 | (9)选项-Enum（left: 左键; right: 右键; middle: 中键; x1: X1; x2: X2） | left | True |
 | bmp | 位图路径 | 需要在屏幕中查找的位图路径。位图必须和屏幕图像完全匹配，不能压缩。此时X、Y的值为相对于搜索位图的左上角的偏移。 | (0)字符串-Text |  | True |
 | bmpVar | 位图变量 | 需要在屏幕中查找的位图。位图必须和屏幕图像完全匹配，不能压缩。此时X、Y的值为相对于搜索位图的左上角的偏移。 | (3)图片-Image |  | True |
-| bmpTargetType | 查找范围 | 位图查找范围 | (9)选项-Enum | MainScreen | False |
+| bmpTargetType | 查找范围 | 位图查找范围 | (9)选项-Enum（MainScreen: 主屏幕; CurrentWindow: 当前窗口; Rect: 坐标范围） | MainScreen | False |
 | searchRect | 查找坐标范围 | 当“查找范围”为“坐标范围”时有效，格式为：left,top,right,bottom | (0)字符串-Text |  | False |
-| bmpPosition | 定位位置 | 查找到图片后，鼠标指针移动到的位置 | (9)选项-Enum | Center | False |
+| bmpPosition | 定位位置 | 查找到图片后，鼠标指针移动到的位置 | (9)选项-Enum（Center: 位图中间; TopLeft: 左上角; TopRight: 右上角; BottomLeft: 左下角; BottomRight: 右下角） | Center | False |
 | bmpColorError | 颜色容差 | 匹配像素时允许每个颜色通道的偏差值0-100，0表示精确匹配，速度最快。 | (12)数字(整数)-Integer | 10 | False |
 | maxFindCount | 最大匹配数量 | 找图的最大匹配数量。将对每个查找到的目标执行附加动作。 | (12)数字(整数)-Integer | 1 | False |
 | retryCount | 重试次数 | 未找到位图时的重试次数。每次重试间隔300ms。 | (12)数字(整数)-Integer | 1 | False |
@@ -2844,7 +3437,7 @@
 | xy | 坐标 | 格式为：x,y，如：100,200。也可以使用百分比表示，如：50%,50% 表示屏幕中心。 | (0)字符串-Text |  | True |
 | xyForWin | 相对坐标 | 格式为：x,y，如：100,200（相对于窗口左上角向右100，向下200）。也可以使用百分比表示，如：50%,50% 表示窗口中心。 | (0)字符串-Text |  | True |
 | slowMove | 逐渐移动到目标 | 逐渐移动而不是直接移动到目标位置。 | (2)布尔值-Boolean | False | False |
-| extAction | 移动后操作 | 移动位置后，需要执行的动作 | (9)选项-Enum | none | True |
+| extAction | 移动后操作 | 移动位置后，需要执行的动作 | (9)选项-Enum（none: 无; left: 左键单击; leftDbClick: 左键双击; right: 右键单击; middle: 中键单击） | none | True |
 | restoreMousePos | 操作完成后恢复鼠标位置 |  | (2)布尔值-Boolean | False | False |
 | stopIfFail | 失败后中止动作 | 获取位置失败后，是否停止后续动作的执行。 | (2)布尔值-Boolean | True | False |
 
@@ -2864,10 +3457,78 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**鼠标移动到200,300并双击鼠标左键然后回到原位，接着逐渐移动到500,800并单击鼠标中键**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:mouse",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "moveToXy"
+        },
+        "xy": {
+          "VarKey": null,
+          "Value": "200,300"
+        },
+        "slowMove": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "extAction": {
+          "VarKey": null,
+          "Value": "leftDbClick"
+        },
+        "restoreMousePos": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:mouse",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "moveToXy"
+        },
+        "xy": {
+          "VarKey": null,
+          "Value": "500,800"
+        },
+        "slowMove": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "extAction": {
+          "VarKey": null,
+          "Value": "middle"
+        },
+        "restoreMousePos": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -2889,10 +3550,10 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 类型 | 消息的类型 | (9)选项-Enum | Info | True |
+| type | 类型 | 消息的类型 | (9)选项-Enum（Success: 成功; Info: 信息; Warning: 告警; Error: 错误; WindowsToast: Windows 通知 (win10+)） | Info | True |
 | msg | 消息内容 | 显示的消息内容 | (0)字符串-Text |  | True |
 | maxLines | 最大行数 | 显示内容的最大行数，0表示不限 | (12)数字(整数)-Integer | 0 | True |
-| style | 风格 |  | (9)选项-Enum | Default | True |
+| style | 风格 |  | (9)选项-Enum（Default: 默认（显示在屏幕底部）; Style2: 风格2（显示在屏幕右侧）） | Default | True |
 | clickAction | 点击命令 | 点击时运行命令（如网址等可以在Win+R中执行的文本，仅支持默认风格提示）。默认为复制提示文字。 | (0)字符串-Text |  | False |
 
 </details>
@@ -2903,10 +3564,96 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**弹出一条“此消息可点击”的通知，点击后带参（当前动作标题）运行当前动作，并提示**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$={quicker_in_param}!=\"\""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            },
+            "msg": {
+              "VarKey": null,
+              "Value": "$${quicker_in_param}"
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            },
+            "clickAction": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            },
+            "msg": {
+              "VarKey": null,
+              "Value": "此消息可点击"
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            },
+            "clickAction": {
+              "VarKey": null,
+              "Value": "$=\"quicker:runaction:\" + _context.ActionId + \"?\" + _context.ActionTitle"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -2929,7 +3676,7 @@
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | param1 | 数字1 | 左侧的数字 | (1)数字(小数)-Number | 0 | True |
-| type | 类型 | 比较方式 | (9)选项-Enum | > | True |
+| type | 类型 | 比较方式 | (9)选项-Enum（>; >=; =; <; <=） | > | True |
 | param2 | 数字2 | 右侧的数字 | (1)数字(小数)-Number | 0 | True |
 
 </details>
@@ -2944,10 +3691,56 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**判断数字1是否大于等于3**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "value",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:numCompare",
+      "InputParams": {
+        "param1": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": ">="
+        },
+        "param2": {
+          "VarKey": null,
+          "Value": "3"
+        }
+      },
+      "OutputParams": {
+        "value": "value"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -2987,9 +3780,41 @@
 <summary>范例</summary>
 
 
-**范例1**
+**默认浏览器打开https://www.baidu.com**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:openUrl",
+      "InputParams": {
+        "url": {
+          "VarKey": null,
+          "Value": "https://www.baidu.com"
+        },
+        "browser": {
+          "VarKey": null,
+          "Value": "default"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -3031,10 +3856,49 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**模拟输入Quicker123到窗口中去，每个字符之间等待3毫秒，输入完毕后添加回车**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:outputText",
+      "InputParams": {
+        "content": {
+          "VarKey": null,
+          "Value": "Quicker123"
+        },
+        "method": {
+          "VarKey": null,
+          "Value": "input"
+        },
+        "delayBetweenChar": {
+          "VarKey": null,
+          "Value": "3"
+        },
+        "appendReturn": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
