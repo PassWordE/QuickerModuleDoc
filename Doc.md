@@ -33,6 +33,8 @@ RightCenter: 屏幕右中
 FullScreen: 全屏
 Manual: 自定义位置
 
+---
+
 # 模块介绍
 
 ## 1.激活进程主窗口
