@@ -42,6 +42,7 @@
 <details>
 <summary>范例</summary>
 
+
 **激活{pid}进程的主窗口，未能获取到窗口类名时，查找窗口类名"abcbbc"，或者查找窗口标题"TellMe123"，如果进程不存在，以{path}路径启动程序**
 返回值
 * 是否成功：{isSuccess}
@@ -211,7 +212,7 @@
 
 ***
 
-## 跳出循环（break）
+## 跳出循环(break)
 
 **功能描述**
 > 跳出循环（“每个” 或 “重复” 模块）
@@ -224,17 +225,11 @@
 
 <details>
 <summary>传入参数</summary>
-
-| Key | Name | Description | Type | Default | Required |
-| :----: | :----: | :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>传出参数</summary>
-
-| Key | Name | Description | Type |
-| :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>范例</summary>
@@ -463,7 +458,6 @@
 <details>
 <summary>范例</summary>
 
-
 **获取{folder}\1.txt的文件信息，如果文件长度{fileLength}大于500字节，在屏幕下方显示“文件长度大于500”，否则在屏幕下方显示“文件长度：{fileLength}小于500，md5为：{md5hash}”并结束动作**
 ```json
 {
@@ -673,10 +667,142 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**检查微信（WeChat）是否已启动，已启动则提示微信主窗口句柄，否则提示微信未启动**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "handle",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:checkProcessExists",
+      "InputParams": {
+        "process": {
+          "VarKey": null,
+          "Value": "WeChat"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "isExists": null,
+        "pid": null,
+        "pidList": null,
+        "path": null,
+        "mainWinHandle": "handle",
+        "mainwinTitle": null,
+        "startTime": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$={handle} > 0"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            },
+            "msg": {
+              "VarKey": null,
+              "Value": "$=\"微信已启动，窗口句柄为\"+{handle}"
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            },
+            "clickAction": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "Error"
+            },
+            "msg": {
+              "VarKey": null,
+              "Value": "微信未启动"
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            },
+            "clickAction": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -719,10 +845,147 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "text",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "状态名称必须是字符串格式"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "步骤说明：写入“今天天气不错”到云存储“CloudKey”中\r\n如果写入*NULL*则删除云端数据（星号也需要写进去）"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:clouddata",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "saveGlobalState"
+        },
+        "key": {
+          "VarKey": null,
+          "Value": "CloudKey"
+        },
+        "value": {
+          "VarKey": null,
+          "Value": "今天天气不错"
+        },
+        "expireSeconds": {
+          "VarKey": null,
+          "Value": "2.5"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "err": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "步骤说明：写入云存储“CloudKey”中读取数据，并保存到变量“text”中去"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:clouddata",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "readGlobalState"
+        },
+        "key": {
+          "VarKey": null,
+          "Value": "CloudKey"
+        },
+        "expireSeconds": {
+          "VarKey": null,
+          "Value": "2.5"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "value": "text",
+        "err": null,
+        "errCode": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -787,25 +1050,131 @@
 
 <details>
 <summary>传入参数</summary>
-
-| Key | Name | Description | Type | Default | Required |
-| :----: | :----: | :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>传出参数</summary>
-
-| Key | Name | Description | Type |
-| :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**无限循环，每次循环给count+1，count大于等于10时结束动作**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "count",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:repeat",
+      "InputParams": {
+        "count": {
+          "VarKey": null,
+          "Value": "-1"
+        },
+        "stopCondition": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "startIndex": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "repeatDelayMs": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "progressBarTitle": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "count": "count"
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:if",
+          "InputParams": {
+            "condition": {
+              "VarKey": null,
+              "Value": "$={count}<10"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:continue",
+              "InputParams": {},
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": null,
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": [
+            {
+              "StepRunnerKey": "sys:stop",
+              "InputParams": {
+                "method": {
+                  "VarKey": null,
+                  "Value": "default"
+                },
+                "isError": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "return": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "showMessage": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -850,7 +1219,6 @@
 <details>
 <summary>范例</summary>
 
-
 **[范例参考<跳出循环>](#跳出循环（break）)**
 </details>
 
@@ -889,10 +1257,82 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**获取进程名称、程序路径、pid**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "进程名称",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "程序路径",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "pid",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getActiveProcessInfo",
+      "InputParams": {
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "path": "程序路径",
+        "procName": "进程名称",
+        "pid": "pid",
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -929,10 +1369,49 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "link",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getChromeUrl",
+      "InputParams": {
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "output": "link",
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -970,10 +1449,50 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "list",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getClipboardFiles",
+      "InputParams": {
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "list",
+        "elapsedMs": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -1011,10 +1530,50 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "clipImage",
+      "Type": 3,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getClipboardImage",
+      "InputParams": {
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "clipImage",
+        "elapsedMs": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -1060,9 +1619,124 @@
 <summary>范例</summary>
 
 
-**范例1**
+**获取文本到text变量**
 ```json
+{
+  "Variables": [
+    {
+      "Key": "text",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getClipboardText",
+      "InputParams": {
+        "format": {
+          "VarKey": null,
+          "Value": "UnicodeText"
+        },
+        "waitMs": {
+          "VarKey": null,
+          "Value": "400"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "text",
+        "url": null,
+        "elapsedMs": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
 
+**获取HTML Format格式文本**
+```json
+{
+  "Variables": [
+    {
+      "Key": "text",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getClipboardText",
+      "InputParams": {
+        "format": {
+          "VarKey": null,
+          "Value": "Custom"
+        },
+        "customFormat": {
+          "VarKey": null,
+          "Value": "HTML Format"
+        },
+        "encoding": {
+          "VarKey": null,
+          "Value": "utf-8"
+        },
+        "waitMs": {
+          "VarKey": null,
+          "Value": "400"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "text",
+        "url": null,
+        "elapsedMs": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -1124,10 +1798,97 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**获取当前时间1天2小时3分钟后的时间**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "datetime",
+      "Type": 6,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getCurrentTime",
+      "InputParams": {
+        "source": {
+          "VarKey": null,
+          "Value": "currTime"
+        },
+        "useUtc": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addDays": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "addHours": {
+          "VarKey": null,
+          "Value": "2"
+        },
+        "addMinutes": {
+          "VarKey": null,
+          "Value": "3"
+        },
+        "addSeconds": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addMonths": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "format": {
+          "VarKey": null,
+          "Value": "yyyy-MM-dd HH:mm:ss"
+        },
+        "outputCulture": {
+          "VarKey": null,
+          "Value": "CURRENT"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "datetime",
+        "strValue": null,
+        "timeStamp": null,
+        "timeStampMs": null,
+        "year": null,
+        "month": null,
+        "day": null,
+        "hour": null,
+        "minute": null,
+        "second": null,
+        "dayOfWeek": null,
+        "dayOfYear": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -1168,10 +1929,56 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**获取资源管理器当前路径**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "path",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getExplorerPath",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "getPath"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "output": "path",
+        "allPathList": null,
+        "lastPath": null,
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -1207,10 +2014,48 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**获取桌面路径**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "path",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getFolderPath",
+      "InputParams": {
+        "folder": {
+          "VarKey": null,
+          "Value": "Desktop"
+        }
+      },
+      "OutputParams": {
+        "path": "path"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -1256,10 +2101,76 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**最长等待250毫秒获取选中文本并去除文本前后空白，失败后中止动作。**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "text",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSelectedText",
+      "InputParams": {
+        "format": {
+          "VarKey": null,
+          "Value": "UnicodeText"
+        },
+        "waitMs": {
+          "VarKey": null,
+          "Value": "250"
+        },
+        "repeat": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "trim": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "tryNoClipboard": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "useActionParam": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "text",
+        "outputEncoded": null,
+        "url": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -1278,10 +2189,7 @@
 
 <details>
 <summary>传入参数</summary>
-
-| Key | Name | Description | Type | Default | Required |
-| :----: | :----: | :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>传出参数</summary>
@@ -1323,10 +2231,132 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**获取当前动作名称，动作ID，电脑机器名称，是否为Quicker专业版，Quicker版本号**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "MachineName",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "isPro",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "quickerVersion",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "actionId",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "actionName",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSysInfo",
+      "InputParams": {},
+      "OutputParams": {
+        "MachineName": "MachineName",
+        "userName": null,
+        "userDomainName": null,
+        "OsVersion": null,
+        "isWin10": null,
+        "isWin11": null,
+        "isAutoRun": null,
+        "startupSeconds": null,
+        "isLocked": null,
+        "sysEnv": null,
+        "primaryScreenRes": null,
+        "isFullscreen": null,
+        "isNetworkConnected": null,
+        "lanIp": null,
+        "quickerVersion": "quickerVersion",
+        "isPro": "isPro",
+        "unionId": null,
+        "hasBaiduAccount": null,
+        "runnedSeconds": null,
+        "actionId": "actionId",
+        "actionName": "actionName",
+        "sharedActionId": null,
+        "sharedActionRevision": null,
+        "actionCount": null,
+        "isDebugging": null,
+        "trigger": null,
+        "textParam": null,
+        "imageParam": null,
+        "isWinInDarkMode": null,
+        "quickerThemeMode": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -1348,7 +2378,7 @@
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| which | 目标窗口 | 判断哪个窗口的信息 | (9)选项-Enum | foreground | True |
+| which | 目标窗口 | 判断哪个窗口的信息 | (9)选项-Enum（foreground: 前台窗口; selectWindow: 选择一个窗口; pointing: 弹出面板前鼠标位置的窗口（可能为子窗口）; pointing_root: 弹出面板前鼠标位置窗口的根窗口; pointing_now: 当前鼠标位置的窗口（可能为子窗口）; pointing_now_root: 当前鼠标位置窗口的根窗口; fromHwnd: 句柄指定的窗口; findWindow: 查找顶层窗口 (单个窗口); top_windows: 所有顶层窗口; findChildWindow: 查找子窗口/控件 (单个窗口); child_windows: 查找子窗口 (多个窗口)） | foreground | True |
 | hWnd | 窗口句柄hWnd | 未指定时使用前台窗口句柄 | (12)数字(整数)-Integer |  | False |
 | className | 窗口类名 | 要查找窗口的类名（ClassName），为空时不检查此项。 | (0)字符串-Text |  | False |
 | windowName | 窗口名称 | 要查找窗口的标题，为空时不检查此项。 | (0)字符串-Text |  | False |
@@ -1389,10 +2419,217 @@
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**获取前台窗口句柄**
 ```json
+{
+  "Variables": [
+    {
+      "Key": "handle",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getWindowTitle",
+      "InputParams": {
+        "which": {
+          "VarKey": null,
+          "Value": "foreground"
+        },
+        "winRectIncludeInvisibleBorder": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": null,
+        "className": null,
+        "handle": "handle",
+        "pid": null,
+        "procName": null,
+        "path": null,
+        "parent": null,
+        "root": null,
+        "rootOwner": null,
+        "rect": null,
+        "rectNoSize": null,
+        "rectDict": null,
+        "isTopmost": null,
+        "isVisible": null,
+        "showState": null,
+        "alpha": null,
+        "allChildWindows": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
 
+**获取前台窗口下名称为"咿呀咿呀"的子窗口句柄和窗口位置，获取失败不会停止动作，如果获取到则显示窗口位置信息**
+```json
+{
+  "Variables": [
+    {
+      "Key": "handle",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "rectDict",
+      "Type": 10,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "isSuccess",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getWindowTitle",
+      "InputParams": {
+        "which": {
+          "VarKey": null,
+          "Value": "findChildWindow"
+        },
+        "hWnd": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "className": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "windowName": {
+          "VarKey": null,
+          "Value": "咿呀咿呀"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": "isSuccess",
+        "handle": "handle",
+        "rectNoSize": null,
+        "rectDict": "rectDict",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": "isSuccess",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            },
+            "msg": {
+              "VarKey": "rectDict",
+              "Value": null
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            },
+            "clickAction": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -1522,7 +2759,7 @@
 </details>
 <details>
 <summary>传出参数</summary>
-
+无
 </details>
 <details>
 <summary>范例</summary>
@@ -1561,10 +2798,7 @@
 </details>
 <details>
 <summary>传出参数</summary>
-
-| Key | Name | Description | Type |
-| :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>范例</summary>
@@ -1664,10 +2898,7 @@
 </details>
 <details>
 <summary>传出参数</summary>
-
-| Key | Name | Description | Type |
-| :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>范例</summary>
@@ -2005,17 +3236,11 @@
 
 <details>
 <summary>传入参数</summary>
-
-| Key | Name | Description | Type | Default | Required |
-| :----: | :----: | :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>传出参数</summary>
-
-| Key | Name | Description | Type |
-| :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>范例</summary>
@@ -2328,10 +3553,7 @@
 </details>
 <details>
 <summary>传出参数</summary>
-
-| Key | Name | Description | Type |
-| :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>范例</summary>
@@ -2464,7 +3686,7 @@
 </details>
 <details>
 <summary>传出参数</summary>
-
+无
 </details>
 <details>
 <summary>范例</summary>
@@ -2555,10 +3777,7 @@
 </details>
 <details>
 <summary>传出参数</summary>
-
-| Key | Name | Description | Type |
-| :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>范例</summary>
@@ -2874,10 +4093,7 @@
 </details>
 <details>
 <summary>传出参数</summary>
-
-| Key | Name | Description | Type |
-| :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>范例</summary>
@@ -4312,10 +5528,7 @@
 </details>
 <details>
 <summary>传出参数</summary>
-
-| Key | Name | Description | Type |
-| :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>范例</summary>
@@ -4494,10 +5707,7 @@
 </details>
 <details>
 <summary>传出参数</summary>
-
-| Key | Name | Description | Type |
-| :----: | :----: | :----: | :----: |
-
+无
 </details>
 <details>
 <summary>范例</summary>
