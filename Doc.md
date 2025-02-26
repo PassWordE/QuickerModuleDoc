@@ -11661,9 +11661,1108 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
+**生成一个乘法口诀表**
 ```json
+{
+  "Variables": [
+    {
+      "Key": "isSuccess",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "worksheet",
+      "Type": 99,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "workbook",
+      "Type": 99,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "x",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "y",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "filePath",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "创建新的excel工作簿"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:excelreadwrite",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "newWorkbook"
+        },
+        "fileType": {
+          "VarKey": null,
+          "Value": "XSSF"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "workbook": "workbook"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "演示选中某个工作簿"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:excelreadwrite",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "getSheetByName"
+        },
+        "workbook": {
+          "VarKey": "workbook",
+          "Value": null
+        },
+        "sheetName": {
+          "VarKey": null,
+          "Value": "Sheet1"
+        },
+        "createSheetIfNotExist": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "sheet": "worksheet",
+        "firstRow": null,
+        "lastRow": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "生成乘法口诀"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:repeat",
+      "InputParams": {
+        "count": {
+          "VarKey": null,
+          "Value": "9"
+        },
+        "stopCondition": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "startIndex": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "repeatDelayMs": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "count": "x"
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:repeat",
+          "InputParams": {
+            "count": {
+              "VarKey": "x",
+              "Value": null
+            },
+            "stopCondition": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "startIndex": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "repeatDelayMs": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "count": "y"
+          },
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:excelreadwrite",
+              "InputParams": {
+                "operation": {
+                  "VarKey": null,
+                  "Value": "setCell"
+                },
+                "worksheet": {
+                  "VarKey": "worksheet",
+                  "Value": null
+                },
+                "cellAddress": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "rowIndex": {
+                  "VarKey": null,
+                  "Value": "$= {x}-1"
+                },
+                "cellIndex": {
+                  "VarKey": null,
+                  "Value": "$= {y}-1"
+                },
+                "cellType": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "cellValue": {
+                  "VarKey": null,
+                  "Value": "$= {y}.ToString() + \" X \" + {x}.ToString() + \" = \" + ({x}*{y}).ToString()"
+                },
+                "dataFormat": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "cellLink": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "isSuccess": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "示例：调用NPOI方法"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:assign",
+      "InputParams": {
+        "input": {
+          "VarKey": null,
+          "Value": "$={worksheet}.SetColumnWidth(1, 50*256)"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "保存并关闭工作簿"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:GenTempFilePath",
+      "InputParams": {
+        "ext": {
+          "VarKey": null,
+          "Value": ".xlsx"
+        }
+      },
+      "OutputParams": {
+        "filePath": "filePath"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:excelreadwrite",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "save"
+        },
+        "filePath": {
+          "VarKey": "filePath",
+          "Value": null
+        },
+        "workbook": {
+          "VarKey": "workbook",
+          "Value": null
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:run",
+      "InputParams": {
+        "path": {
+          "VarKey": "filePath",
+          "Value": null
+        },
+        "arg": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "runas": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "alternativePath": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "setWorkingDir": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "windowStyle": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "waitInputIdle": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "waitExit": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "username": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "password": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "pid": null,
+        "mainWinHandle": null,
+        "mainWinTitle": null,
+        "stdout": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:excelObjects",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "SaveWorkbook"
+        },
+        "path": {
+          "VarKey": null,
+          "Value": "d:\\test.xlsx"
+        },
+        "workbook": {
+          "VarKey": "workbook",
+          "Value": null
+        },
+        "params": {
+          "VarKey": null,
+          "Value": "CloseApplication=false"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": "isSuccess"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": true,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
 
+**从Excel表格中，根据某一列的特定值提取数据并显示。数据存放在Excel的第一个sheet中；第一行为标题行。标题前后不要有空格（最好中间也不要有）。首次使用时会弹窗进行动作设置（也可在动作右键菜单中选择设置）。未选中内容时，在弹出的输入框中输入值查询。查询内容中，可以使用%表示模糊匹配的通配符。 如果没有此符号，则使用精确匹配。**
+```json
+{
+  "Variables": [
+    {
+      "Key": "filePath",
+      "Type": 0,
+      "Desc": "文件路径",
+      "DefaultValue": "",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "checkField",
+      "Type": 0,
+      "Desc": "要判断的列名",
+      "DefaultValue": "",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "checkValue",
+      "Type": 0,
+      "Desc": "搜索的字段值",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "table",
+      "Type": 13,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "rows",
+      "Type": 99,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "tableClone",
+      "Type": 13,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "rowCount",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "isSelected",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "尝试获取选中的内容"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:getSelectedText",
+      "InputParams": {
+        "format": {
+          "VarKey": null,
+          "Value": "UnicodeText"
+        },
+        "waitMs": {
+          "VarKey": null,
+          "Value": "450"
+        },
+        "repeat": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "trim": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "useActionParam": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": "isSelected",
+        "output": "checkValue",
+        "outputEncoded": null,
+        "url": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "设置（右键菜单，或者文件不存在时）"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$= {quicker_in_param} == \"settings\" || File.Exists({filePath}) == false"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:form",
+          "InputParams": {
+            "title": {
+              "VarKey": null,
+              "Value": "动作设置"
+            },
+            "formDef": {
+              "VarKey": null,
+              "Value": "{\"Fields\":[{\"FieldKey\":\"filePath\",\"Label\":\"Excel文件路径\",\"HelpText\":\"文件需要是一个规范的表格，在第一个Sheet中第一行为表头，下面行为数据\",\"HelpLink\":null,\"InputMethod\":1,\"SelectionItems\":\"\",\"IsRequired\":true,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"SelectSingleFile\",\"VisibleExpression\":\"\"},{\"FieldKey\":\"checkField\",\"Label\":\"查找的字段\",\"HelpText\":\"根据哪个字段的值定位行数据\",\"HelpLink\":null,\"InputMethod\":1,\"SelectionItems\":\"\",\"IsRequired\":true,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"VisibleExpression\":\"\"}]}"
+            },
+            "help": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "titleColumnWidth": {
+              "VarKey": null,
+              "Value": "100"
+            },
+            "windowWidth": {
+              "VarKey": null,
+              "Value": "500"
+            },
+            "restoreFocus": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "topMost": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "markdownhelp": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "如果没有选中内容，则输入要搜索的值"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$={checkValue}.IsNullOrEmpty()"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:userInput",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "text"
+            },
+            "prompt": {
+              "VarKey": null,
+              "Value": "$$请输入查询的值({checkField} = ?)"
+            },
+            "defaultValue": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "pattern": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "isRequired": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "restoreFocus": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "closeOnDeactivated": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "texttools": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "fontfamily": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "fontsize": {
+              "VarKey": null,
+              "Value": "14"
+            },
+            "winLocation": {
+              "VarKey": null,
+              "Value": "CenterScreen"
+            },
+            "imeState": {
+              "VarKey": null,
+              "Value": "NO_CONTROL"
+            },
+            "help": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "textValue": "checkValue",
+            "isEmpty": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "从excel表中加载数据"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:tableoperation",
+      "InputParams": {
+        "table": {
+          "VarKey": "table",
+          "Value": null
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "importExcel"
+        },
+        "excelFilePath": {
+          "VarKey": "filePath",
+          "Value": null
+        },
+        "sheetName": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "startRowNum": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "rowCount": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "筛选结果"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:tableoperation",
+      "InputParams": {
+        "table": {
+          "VarKey": "table",
+          "Value": null
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "select"
+        },
+        "filterExpression": {
+          "VarKey": null,
+          "Value": "$=\r\n// 如果包含%，进行模糊匹配。\r\nvar op = {checkValue}.Contains(\"%\") ? \" LIKE \" : \" = \";\r\n\r\nreturn \"[\" + {checkField} + \"]\" + op + \"'\" + {checkValue}.Trim() + \"'\";"
+        },
+        "sort": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "rows": "rows",
+        "firstRow": null,
+        "rowCount": "rowCount",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "将筛选结果放入新表"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:assign",
+      "InputParams": {
+        "input": {
+          "VarKey": null,
+          "Value": "$=DataTable table = {table}.Clone();\r\n\r\nforeach(DataRow row in {rows}){\r\n\ttable.ImportRow(row);\r\n}\r\n\r\nreturn table;"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "tableClone"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "显示结果"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:tableoperation",
+      "InputParams": {
+        "table": {
+          "VarKey": "tableClone",
+          "Value": null
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "manage"
+        },
+        "gridSelectionMode": {
+          "VarKey": null,
+          "Value": "Cells"
+        },
+        "isReadOnly": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "selectedRows": null,
+        "rowCount": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
