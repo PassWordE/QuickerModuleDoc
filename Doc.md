@@ -11175,7 +11175,7 @@ quicker.context.SetVarValue('text', 'hello world')
 
 # 其他示例动作
 
-<detail>
+<details>
 <summary>合并选择的文本文件到以“合并文本”+时间戳+后缀名的新文件中去，合并完成后提示是否删除原文件</summary>
 
 ```json
@@ -11754,4 +11754,4 @@ quicker.context.SetVarValue('text', 'hello world')
   "SubPrograms": []
 }
 ```
-</detail>
+</details>
