@@ -1061,7 +1061,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -4130,10 +4129,97 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**循环100次，每次间隔30毫秒，当前运行次数为count变量，当count等于50时终止循环**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "count",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:repeat",
+      "InputParams": {
+        "count": {
+          "VarKey": null,
+          "Value": "100"
+        },
+        "stopCondition": {
+          "VarKey": null,
+          "Value": "$={count}==50"
+        },
+        "startIndex": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "repeatDelayMs": {
+          "VarKey": null,
+          "Value": "30"
+        },
+        "progressBarTitle": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "count": "count"
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            },
+            "msg": {
+              "VarKey": "count",
+              "Value": null
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            },
+            "clickAction": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -4173,10 +4259,182 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**创建一个进度条，ID为progressId。创建一个循环100次的循环，每次间隔30毫秒，当前运行次数为count变量，每次运行更新进度条：标题为循环100次，底部文字为“这是一行底部说明文字”，当count等于50时终止循环，循环结束后移除进度条**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "count",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "progressId",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:reportProgress",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "REQUEST_ID"
+        }
+      },
+      "OutputParams": {
+        "progressId": "progressId"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:repeat",
+      "InputParams": {
+        "count": {
+          "VarKey": null,
+          "Value": "100"
+        },
+        "stopCondition": {
+          "VarKey": null,
+          "Value": "$={count}==50"
+        },
+        "startIndex": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "repeatDelayMs": {
+          "VarKey": null,
+          "Value": "30"
+        },
+        "progressBarTitle": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "count": "count"
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:reportProgress",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "UPDATE_PROGRESS"
+            },
+            "progressId": {
+              "VarKey": "progressId",
+              "Value": null
+            },
+            "title": {
+              "VarKey": null,
+              "Value": "循环100次"
+            },
+            "percentage": {
+              "VarKey": "count",
+              "Value": null
+            },
+            "text": {
+              "VarKey": null,
+              "Value": "这是一行底部说明文字"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            },
+            "msg": {
+              "VarKey": "count",
+              "Value": null
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            },
+            "clickAction": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:reportProgress",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "REMOVE"
+        },
+        "progressId": {
+          "VarKey": "progressId",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -4204,10 +4462,24 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
-**范例1**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:restoreActiveWindow",
+      "InputParams": {},
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": null,
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -4253,10 +4525,78 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**本动作中有2个步骤。1：停止当前动作的其他实例；2：带参数“123”以“调试模式”运行“窗口测试”动作，并等待动作运行结束**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:runAction",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "StopOtherInstance"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:runAction",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "StartAction"
+        },
+        "actionId": {
+          "VarKey": null,
+          "Value": "窗口测试"
+        },
+        "inputParam": {
+          "VarKey": null,
+          "Value": "123"
+        },
+        "wait": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "debug": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "actionTitle": null,
+        "output": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -4313,10 +4653,144 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**带参数“123”以管理员身份最小化运行“XX.exe”，返回主窗口句柄mainWinHandle，工作目录为软件所在目录，等待进程启动完成和启动结束后执行下一个步骤（输出“启动完毕”）**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "mainWinHandle",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:run",
+      "InputParams": {
+        "path": {
+          "VarKey": null,
+          "Value": "XX.exe"
+        },
+        "arg": {
+          "VarKey": null,
+          "Value": "123"
+        },
+        "runas": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "activateWindowIfRunning": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "activateWindowHotkey": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "alternativePath": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "setWorkingDir": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "windowStyle": {
+          "VarKey": null,
+          "Value": "2"
+        },
+        "waitInputIdle": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "waitExit": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "username": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "password": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "outputEncoding": {
+          "VarKey": null,
+          "Value": "oem"
+        },
+        "envVariables": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "pid": null,
+        "mainWinHandle": "mainWinHandle",
+        "mainWinTitle": null,
+        "stdout": null,
+        "stdoutOnly": null,
+        "stderr": null,
+        "exitCode": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        },
+        "msg": {
+          "VarKey": null,
+          "Value": "启动完毕"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "style": {
+          "VarKey": null,
+          "Value": "Default"
+        },
+        "clickAction": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -4370,10 +4844,99 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**在坐标范围200,300,800,500查找文字“王中王”，最多重试2次，跳过WindowsOCR引擎，找到后定位点XY分别偏移3和4，第一个匹配点firstPoint，所有匹配点allPoints**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "firstPoint",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "allPoints",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:searchBmp",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "locateByText"
+        },
+        "searchText": {
+          "VarKey": null,
+          "Value": "王中王"
+        },
+        "bmpTargetType": {
+          "VarKey": null,
+          "Value": "Rect"
+        },
+        "searchRect": {
+          "VarKey": null,
+          "Value": "200,300,800,500"
+        },
+        "x": {
+          "VarKey": null,
+          "Value": "3"
+        },
+        "y": {
+          "VarKey": null,
+          "Value": "4"
+        },
+        "retryCount": {
+          "VarKey": null,
+          "Value": "2"
+        },
+        "ignoreWindowsOcr": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "firstPoint": "firstPoint",
+        "allPoints": "allPoints",
+        "imgIndex": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -4410,10 +4973,37 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**在资源管理器中定位C:\Windows\System32\notepad.exe**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:SelectFileInExplorer",
+      "InputParams": {
+        "path": {
+          "VarKey": null,
+          "Value": "C:\\Windows\\System32\\notepad.exe"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -4482,10 +5072,293 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**出现在屏幕中间的多选菜单，标题“选择想吃的”，底部提示文字“可多选”，选项有番茄香蕉苹果（苹果使用了font awesome图标），默认选中“番茄”和“香蕉”，不允许在不选择任何选项时点击确定，返回所选值multiSelected**
 ```json
+{
+  "Variables": [
+    {
+      "Key": "multiSelected",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:select",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "multi"
+        },
+        "prompt": {
+          "VarKey": null,
+          "Value": "选择想吃的"
+        },
+        "note": {
+          "VarKey": null,
+          "Value": "可多选"
+        },
+        "items": {
+          "VarKey": null,
+          "Value": "番茄|Tomato\r\n香蕉|Banana\r\n[fa:Light_Pen:#99AAFF]苹果|Apple"
+        },
+        "defaultValueMulti": {
+          "VarKey": null,
+          "Value": "Banana\r\nTomato"
+        },
+        "showFilter": {
+          "VarKey": null,
+          "Value": "auto"
+        },
+        "filterContent": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "maxWinSize": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "keepLastPos": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "closeOnDeactivated": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "restoreForeground": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "allowOkWhenEmpty": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfCancel": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "imeState": {
+          "VarKey": null,
+          "Value": "NO_CONTROL"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "12"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "iconsize": {
+          "VarKey": null,
+          "Value": "16"
+        },
+        "autoCloseSeconds": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "noKeyboard": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "windowKey": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "help": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "selectedIndexList": null,
+        "multiSelected": "multiSelected",
+        "extraOperation": null,
+        "selectedFullItems": null,
+        "filterContent": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
 
+**出现在鼠标位置的单选菜单，标题“选择想玩的”，底部提示文字“双击确认”，选项有滑板旱冰跑步（跑步使用了自定义值Run），默认选中“旱冰”，不启用筛选，允许在不选择任何选项时点击确定，返回所选值textValue**
+```json
+{
+  "Variables": [
+    {
+      "Key": "textValue",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:select",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "single"
+        },
+        "prompt": {
+          "VarKey": null,
+          "Value": "选择想玩的"
+        },
+        "note": {
+          "VarKey": null,
+          "Value": "双击确认"
+        },
+        "items": {
+          "VarKey": null,
+          "Value": "滑板\r\n旱冰\r\n跑步|Run"
+        },
+        "defaultValue": {
+          "VarKey": null,
+          "Value": "旱冰"
+        },
+        "showFilter": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "filterContent": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "WithMouse1"
+        },
+        "maxWinSize": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "keepLastPos": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "closeOnDeactivated": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "restoreForeground": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "allowOkWhenEmpty": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "enableQuickConfirm": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfCancel": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "imeState": {
+          "VarKey": null,
+          "Value": "NO_CONTROL"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "12"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "iconsize": {
+          "VarKey": null,
+          "Value": "16"
+        },
+        "autoCloseSeconds": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "noKeyboard": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "windowKey": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "help": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "textValue": "textValue",
+        "selectedIndex": null,
+        "extraOperation": null,
+        "selectedFullItems": null,
+        "selectedItemTitle": null,
+        "filterContent": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -4517,10 +5390,30 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**模拟发送d键**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:sendKeys",
+      "InputParams": {
+        "keys": {
+          "VarKey": null,
+          "Value": "d"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -4563,10 +5456,180 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
-**范例1**
+**对前台窗口进行“最大化”，等待1000毫秒后“最小化”，再等待1000毫秒后“还原窗口”**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "hwnd",
+      "Type": 1,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getWindowTitle",
+      "InputParams": {
+        "which": {
+          "VarKey": null,
+          "Value": "foreground"
+        }
+      },
+      "OutputParams": {
+        "output": null,
+        "className": null,
+        "handle": "hwnd"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:sendMessage",
+      "InputParams": {
+        "hWnd": {
+          "VarKey": "hwnd",
+          "Value": null
+        },
+        "wMsg": {
+          "VarKey": null,
+          "Value": "0x0112"
+        },
+        "wParam": {
+          "VarKey": null,
+          "Value": "0xF030"
+        },
+        "lParam": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "最大化窗口",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:delay",
+      "InputParams": {
+        "delayMs": {
+          "VarKey": null,
+          "Value": "1000"
+        },
+        "monitorWaitWin": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:sendMessage",
+      "InputParams": {
+        "hWnd": {
+          "VarKey": "hwnd",
+          "Value": null
+        },
+        "wMsg": {
+          "VarKey": null,
+          "Value": "0x0112"
+        },
+        "wParam": {
+          "VarKey": null,
+          "Value": "0xF020"
+        },
+        "lParam": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "最小化窗口",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:delay",
+      "InputParams": {
+        "delayMs": {
+          "VarKey": null,
+          "Value": "1000"
+        },
+        "monitorWaitWin": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:sendMessage",
+      "InputParams": {
+        "hWnd": {
+          "VarKey": "hwnd",
+          "Value": null
+        },
+        "wMsg": {
+          "VarKey": null,
+          "Value": "0x0112"
+        },
+        "wParam": {
+          "VarKey": null,
+          "Value": "0xF120"
+        },
+        "lParam": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "还原窗口",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -4575,7 +5638,7 @@ Manual: `自定义位置`
 ## 41.显示等待窗口
 
 **功能描述**
-> 显示一个等待用户完成某个操作的提示窗口。
+> 显示一个等待用户完成某个操作的提示窗口。用户点击等待窗口下部的按钮，窗口将关闭。点击右上角的X按钮，将会弹窗询问是否终止当前动作。
 
 **官方文档**
 > https://getquicker.net/KC/Help/Doc/showwaitwin
@@ -4615,10 +5678,78 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:showWaitWin",
+      "InputParams": {
+        "mode": {
+          "VarKey": null,
+          "Value": "show"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "完成后继续"
+        },
+        "prompt": {
+          "VarKey": null,
+          "Value": "请在完成操作后点下面的按钮"
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "BottomRight"
+        },
+        "progress": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "btnText": {
+          "VarKey": null,
+          "Value": "完成"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "12"
+        },
+        "iconSize": {
+          "VarKey": null,
+          "Value": "16"
+        },
+        "stopActionIfClose": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "autoCloseSeconds": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "activateMode": {
+          "VarKey": null,
+          "Value": "NotActivatable"
+        },
+        "help": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -4649,7 +5780,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -4703,7 +5833,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -4740,7 +5869,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -4782,7 +5910,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -4832,7 +5959,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -4873,7 +5999,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -4919,7 +6044,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -4979,7 +6103,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -5021,7 +6144,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -5056,7 +6178,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -5106,7 +6227,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -5153,7 +6273,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -5194,7 +6313,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -5272,7 +6390,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -5324,7 +6441,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -5380,7 +6496,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -5426,7 +6541,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -5479,7 +6593,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -5526,7 +6639,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -5564,7 +6676,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -5614,7 +6725,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -5657,7 +6767,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -5706,7 +6815,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -5748,7 +6856,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -5794,7 +6901,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -5847,7 +6953,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -5894,7 +6999,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -5946,7 +7050,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -5990,7 +7093,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -6041,7 +7143,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -6090,7 +7191,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -6132,7 +7232,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -6190,7 +7289,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -6230,7 +7328,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -6274,7 +7371,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -6315,7 +7411,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -6366,7 +7461,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -6416,7 +7510,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -6457,7 +7550,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -6491,7 +7583,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -6534,7 +7625,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -6573,7 +7663,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -6635,7 +7724,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -6670,7 +7758,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -6713,7 +7800,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -6764,7 +7850,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -6814,7 +7899,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -6868,7 +7952,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -6921,7 +8004,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -6971,7 +8053,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -7010,7 +8091,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -7059,7 +8139,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -7123,7 +8202,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -7161,7 +8239,6 @@ Manual: `自定义位置`
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -7253,7 +8330,6 @@ namespace MyNamespace
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -7301,7 +8377,6 @@ function exec(){
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -7342,7 +8417,6 @@ quicker.context.SetVarValue('text', 'hello world')
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -7395,7 +8469,6 @@ quicker.context.SetVarValue('text', 'hello world')
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -7455,7 +8528,6 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -7497,7 +8569,6 @@ quicker.context.SetVarValue('text', 'hello world')
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -7557,7 +8628,6 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -7601,7 +8671,6 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -7644,7 +8713,6 @@ quicker.context.SetVarValue('text', 'hello world')
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -7694,7 +8762,6 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -7734,7 +8801,6 @@ quicker.context.SetVarValue('text', 'hello world')
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -7786,7 +8852,6 @@ quicker.context.SetVarValue('text', 'hello world')
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -7840,7 +8905,6 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -7893,7 +8957,6 @@ quicker.context.SetVarValue('text', 'hello world')
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -7963,7 +9026,6 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -8005,7 +9067,6 @@ quicker.context.SetVarValue('text', 'hello world')
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
@@ -8055,7 +9116,6 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-
 **范例1**
 ```json
 
@@ -8096,7 +9156,6 @@ quicker.context.SetVarValue('text', 'hello world')
 </details>
 <details>
 <summary>范例</summary>
-
 
 **范例1**
 ```json
