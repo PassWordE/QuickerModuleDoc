@@ -11173,6 +11173,502 @@ quicker.context.SetVarValue('text', 'hello world')
 
 ***
 
+## 114.Office软件辅助
+
+**功能描述**
+> 辅助控制Office软件
+
+**官方文档**
+> https://getquicker.net/KC/Help/Doc/officehelper
+
+**内部名称**
+> sys:officehelper
+
+<details>
+<summary>传入参数</summary>
+
+| Key | Name | Description | Type | Default | Required |
+| :----: | :----: | :----: | :----: | :----: | :----: |
+| operation | 操作类型 |  | (9)选项-Enum（execVBA: 执行VBA宏代码; setFormats: 设置格式/对象属性赋值; executeMsoCommand: 执行界面命令; getProgId: 获取ProgId） | execVBA | True |
+| appType | 应用程序 |  | (9)选项-Enum（word_wps: Word或WPS文字（根据前台进程自动识别）; word; wps: wps文字; excel_et: EXCEL或WPS表格（根据前台进程自动识别）; excel; et: wps表格; powerpoint_wpp: PowerPoint或WPS幻灯片（根据前台进程自动识别）; powerpoint; wpp） | word_wps | True |
+| code | 宏名称或VBA代码 | 宏的名称，或VBA代码（将执行第一个找到的Sub或Function） | (0)字符串-Text | Sub Hello() MsgBox "Hello World" End Sub | False |
+| waitResp | 最长等待时间(ms) | 最长的等待返回结果的，毫秒数 | 数字(小数)-Number | 10000 | False |
+| command | 命令ID | 界面按钮所对应的命令ID | (0)字符串-Text |  | False |
+| formats | 格式设置/属性赋值代码 |  | (0)字符串-Text |  | False |
+
+</details>
+<details>
+<summary>传出参数</summary>
+
+| Key | Name | Description | Type |
+| :----: | :----: | :----: | :----: |
+| isSuccess | 是否成功 | 操作是否成功 | (2)布尔值-Boolean |
+| progId | ProgId | 获取程序的Progld，可用于在C#里得到对应的Application对象。 | (0)字符串-Text |
+
+</details>
+<details>
+<summary>范例</summary>
+
+**获取选中文本到变量text，再到用户输入框，再以text变量内容为前台的word或wps添加批注**
+```json
+{
+  "Variables": [
+    {
+      "Key": "text",
+      "Type": 0,
+      "Desc": "默认的文本变量",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSelectedText",
+      "InputParams": {
+        "format": {
+          "VarKey": null,
+          "Value": "UnicodeText"
+        },
+        "waitMs": {
+          "VarKey": null,
+          "Value": "250"
+        },
+        "repeat": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "trim": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "tryNoClipboard": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "useActionParam": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "text",
+        "outputEncoded": null,
+        "url": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:userInput",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "text"
+        },
+        "prompt": {
+          "VarKey": null,
+          "Value": "请输入批注内容"
+        },
+        "defaultValue": {
+          "VarKey": "text",
+          "Value": null
+        },
+        "pattern": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "isRequired": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "restoreFocus": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "closeOnDeactivated": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "texttools": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "extraSettings": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "20"
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "imeState": {
+          "VarKey": null,
+          "Value": "ON"
+        },
+        "help": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "textValue": "text",
+        "isEmpty": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:officehelper",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "execVBA"
+        },
+        "appType": {
+          "VarKey": null,
+          "Value": "word_wps"
+        },
+        "code": {
+          "VarKey": null,
+          "Value": "$$Sub CreateNewComment()\r\n    Dim MyRange As Range\r\n    Dim MyComment As Comment\r\n    Dim CommentText As String\r\n    \r\n    '设置批注内容为text\r\n    CommentText = \"{text}\"\r\n    \r\n    '设置选中的文本范围\r\n    Set MyRange = Selection.Range\r\n    \r\n    '在选中文本处添加新批注\r\n    Set MyComment = ActiveDocument.Comments.Add(MyRange, CommentText)\r\n    \r\nEnd Sub"
+        },
+        "waitResp": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "waitMs": {
+          "VarKey": null,
+          "Value": "10000"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "resp": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
+**冻结窗格**
+```json
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "下面步骤代码中的叹号表示对属性值取反。"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:officehelper",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "setFormats"
+        },
+        "appType": {
+          "VarKey": null,
+          "Value": "excel_et"
+        },
+        "formats": {
+          "VarKey": null,
+          "Value": "application\r\n\t.ActiveWindow.FreezePanes = !"
+        },
+        "waitResp": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
+**配合C#冻结窗格**
+```json
+{
+  "Variables": [
+    {
+      "Key": "progId",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "为兼容Excel和WPS，先根据前台进程获取ProgId（用于调用接口的程序对象标识）"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:officehelper",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "getProgId"
+        },
+        "appType": {
+          "VarKey": null,
+          "Value": "excel_et"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "progId": "progId"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "使用c#代码获取程序对象并执行逻辑"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:csscript",
+      "InputParams": {
+        "mode": {
+          "VarKey": null,
+          "Value": "low_permission"
+        },
+        "scriptForLp": {
+          "VarKey": null,
+          "Value": "$$//.cs  文件类型，便于外部编辑时使用\r\n// 引用必要的命名空间\r\nusing System.Runtime.InteropServices;\r\n\r\n// Quicker将会调用的函数\r\npublic static string Exec(string paramValue)\r\n{\r\n   dynamic app = Marshal.GetActiveObject(\"{progId}\");\r\n    \r\n    app.ActiveWindow.FreezePanes = !app.ActiveWindow.FreezePanes;\r\n    \r\n    Marshal.ReleaseComObject(app);\r\n    return \"ok\";\r\n}\r\n"
+        },
+        "paramValue": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "reference": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "waitResp": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "enableCache": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "resp": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
+</details>
+
+***
+
+## 115.Excel文件读写
+
+**功能描述**
+> 读取Excel文件内容或写入Excel文件
+
+**官方文档**
+> https://getquicker.net/KC/Help/Doc/excelreadwrite
+
+**内部名称**
+> sys:excelreadwrite
+
+<details>
+<summary>传入参数</summary>
+
+| Key | Name | Description | Type | Default | Required |
+| :----: | :----: | :----: | :----: | :----: | :----: |
+| operation | 操作类型 |  | (9)选项-Enum（load: 打开Workbook; newWorkbook: 创建Workbook; save: 保存Workbook; getSheet: 获取Sheet; createSheet: 创建Sheet; getRow: 获取行; getCellByValue: 查找单元格（根据值）; getCell: 读取单元格; setCell: 写入单元格; writeData: 写入多行数据; mergeCells: 合并单元格; freezePane: 冻结窗格; autoFilter: 自动筛选; setStyle: 设置区域单元格样式; readData: 批量提取数据; batchReplace: 批量模板替换） |  | True |
+| filePath | 文件路径 | 要打开或写入的Excel文件路径 | (0)字符串-Text |  | False |
+| fileType | 工作簿类型 |  | (9)选项-Enum（XSSF: .xlsx 2007版Excel; HSSF: xls 2003版Excel） |  | False |
+| workbook | 工作簿对象 | 需要操作的工作簿对象 | (99)任意类型-Any |  | False |
+| sheetIndex | 工作表序号或名称 | 以0开始计算的序号或名称 | (0)字符串-Text |  | False |
+| sheetName | 工作表名称 | 要打开的工作表名称 | (0)字符串-Text |  | False |
+| rowIndex | 行序号 | 以0开始计算的序号 | (12)数字(整数)-Integer | 0 | False |
+| cellValue | 值 | 设置单元格的值 | (0)字符串-Text |  | False |
+| worksheet | 工作表对象 | 需要操作的工作表对象 | (99)任意类型-Any |  | False |
+| cellAddress | 单元格地址 | 类似于"D5"这样的单元格位置名称。或在下方使用行序号和单元格序号指定（两种二选一） | (0)字符串-Text |  | False |
+| cellIndex | 列序号 | 单元格在所在行里的序号，从0开始 | (12)数字(整数)-Integer | 0 | False |
+| cellType | 单元格类型 |  | (9)选项-Enum（"": 自动; String: 文本; Numeric: 数字或日期; Boolean: 布尔; Formula: 公式; Blank: 空白） |  | False |
+| dataFormat | 数据格式 | 设置单元格的DataFormat | (0)字符串-Text |  | False |
+| cellLink | 链接 | 可以为网址、邮件地址（mailto:who@domain.com)工作表名称、文件路径 | (0)字符串-Text |  | False |
+| sourceData | 源数据 | 可以为工作表对象、表格变量或对象列表 | (99)任意类型-Any |  | False |
+| columnMapping | 字段映射 | 复制哪些字段信息到目标工作表。请参考文档了解使用方法。 | (0)字符串-Text |  | False |
+| writeTitleRow | 写入标题行 | 是否输出标题行 | (2)布尔值-Boolean | True | False |
+| cellRange | 单元格范围 | 类似于"A1:B5"格式，或"开始行号,结束行号,开始列号,结束列号方式(从0开始的序号)。 | (0)字符串-Text |  | False |
+| styleData | 样式 |  | (0)字符串-Text |  | False |
+| readDataMap | 提取数据定义 | 每行一条规则：“字段:[工作表序号或名称]单元格地址” | (0)字符串-Text |  | False |
+| replaceDict | 替换词典数据 | 词典格式数据。键为要查找的字段，值为要填充的内容。 | (10)词典-Dict |  | False |
+| replacePrefixSuffix | 占位符前后缀 | 第一行写前缀，第二行写后缀。“前缀+字段名+后缀“组成要查找和替换的目标，如”{{姓名}}”。 | (0)字符串-Text | {{\r\n}} | False |
+
+</details>
+<details>
+<summary>传出参数</summary>
+
+| Key | Name | Description | Type |
+| :----: | :----: | :----: | :----: |
+| isSuccess | 是否成功 | 操作是否成功 | (2)布尔值-Boolean |
+| workbook | 工作簿对象 | 用于在后续步骤中继续操作工作簿。 | (99)任意类型-Any |
+| numberOfSheets | 工作表个数 | 工作簿中的工作表个数。 | (12)数字(整数)-Integer |
+| worksheetNameList | 工作表名称列表 | 工作簿中的工作表名列表。 | (4)文本列表-List |
+| sheet | 工作表对象 | 返回指定的工作表。加载文件时返回工作簿中的第一个工作表对象 | (99)任意类型-Any |
+| firstRow | 首行序号 | 工作表首行序号。 | (12)数字(整数)-Integer |
+| lastRow | 末行序号 | 工作表有内容的最后一行序号。 | (12)数字(整数)-Integer |
+| names | 名称数据 | 工作簿中定义的名称数据，返回json格式 | (0)字符串-Text |
+| firstCellNum | 首个单元格序号 | 工作表有内容的最后一行序号。 | (12)数字(整数)-Integer |
+| lastCellNum | 末个单元格序号 | 一行的最后一个单元格的序号。 | (12)数字(整数)-Integer |
+| cellAddress | 单元格地址 | 查找到的单元格地址 | (99)任意类型-Any |
+| hasValue | 是否有值 | 单元格是否有值 | (2)布尔值-Boolean |
+| cellValue | 值 | 单元格的值 | (0)字符串-Text |
+| cellTextValue | 文本值 | 文本格式的单元格内容 | (0)字符串-Text |
+| cellType | 类型 | 单元格的类型 | (0)字符串-Text |
+| cellFormula | 公式 | 单元格的公式值 | (0)字符串-Text |
+| cellDataFormatString | 数据格式字符串 | 数据格式的字符串表示 | (0)字符串-Text |
+| dictData | 数据词典 | 从工作薄加载的数据 | (10)词典-Dict |
+
+</details>
+<details>
+<summary>范例</summary>
+
+**范例1**
+```json
+
+```
+</details>
+
+***
+
 # 其他示例动作
 
 <details>
