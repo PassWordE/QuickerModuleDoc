@@ -12768,6 +12768,380 @@ quicker.context.SetVarValue('text', 'hello world')
 
 ***
 
+## 116.Shell文件操作
+
+**功能描述**
+> 针对文件的Windows Shell相关操作
+
+**官方文档**
+> https://getquicker.net/KC/Help/Doc/shelloperation
+
+**内部名称**
+> sys:shelloperation
+
+<details>
+<summary>传入参数</summary>
+
+| Key | Name | Description | Type | Default | Required |
+| :----: | :----: | :----: | :----: | :----: | :----: |
+| operation | 操作类型 |  | (9)选项-Enum（getverb: 获取文件的可用动词列表（verb）; ） | getverb: 获取文件的可用动词列表（verb）; execverb: 对文件执行动词（verb）; gettitles: 获取文件的可用菜单标题列表; execbytitle: 对文件执行菜单（指定菜单标题）; : 显示系统上下文菜单 | True |
+| pathOrExt | 文件路径或扩展名 | 需要获取可用动词的文件类型，可使用扩展名如.txt或提供完整文件名。 | (0)字符串-Text | .txt | False |
+| pathList | 文件路径列表 | 要操作文件的完整路径的列表。每个文件将会被依次调用 | (4)文本列表-List |  | False |
+| verb | 动词 | Shell操作动词，需要在当前电脑上支持才能正常运行。 | (0)字符串-Text |  | False |
+| title | 菜单标题 | 菜单上的标题文字，需要准确匹配。 | (0)字符串-Text |  | False |
+
+</details>
+<details>
+<summary>传出参数</summary>
+
+| Key | Name | Description | Type |
+| :----: | :----: | :----: | :----: |
+| isSuccess | 是否成功 | 操作是否成功 | (2)布尔值-Boolean |
+| verbs | 动词列表 | 每项格式为：描述文字|动词 | (4)文本列表-List |
+| titles | 菜单标题列表 |  | (4)文本列表-List |
+
+</details>
+<details>
+<summary>范例</summary>
+
+**批量打印文件**
+```json
+{
+  "Variables": [
+    {
+      "Key": "filePaths",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:shelloperation",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "execverb"
+        },
+        "pathList": {
+          "VarKey": "filePaths",
+          "Value": null
+        },
+        "verb": {
+          "VarKey": null,
+          "Value": "print"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
+**选择文件后，使用此动作，获得该文件所支持的Shell菜单信息。**
+```json
+{
+  "Variables": [
+    {
+      "Key": "files",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "verbs",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "titles",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSelectedFiles",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "getSelection"
+        },
+        "waitMs": {
+          "VarKey": null,
+          "Value": "200"
+        },
+        "sortType": {
+          "VarKey": null,
+          "Value": "Default"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "files": "files",
+        "firstFile": null,
+        "fileNames": null,
+        "firstFileName": null,
+        "fileCount": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:shelloperation",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "getverb"
+        },
+        "pathOrExt": {
+          "VarKey": "files",
+          "Value": null
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "verbs": "verbs"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:shelloperation",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "gettitles"
+        },
+        "pathOrExt": {
+          "VarKey": "files",
+          "Value": null
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "titles": "titles"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showText",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "NO_WAIT"
+        },
+        "text": {
+          "VarKey": null,
+          "Value": "$$动词：\r\n{verbs}\r\n\r\n\r\n标题：\r\n{titles}"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "结果内容"
+        },
+        "autoCloseKey": {
+          "VarKey": null,
+          "Value": "="
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "winSize": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "14"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "bgColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "textColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "highlight": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "autoSaveToState": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "closeWhenLostFocus": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "showLineNum": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "autoWrap": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "showBuildInToolbar": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "copyWholeLine": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "caretPosition": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "updateIfExists": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "windowHandle": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:shelloperation",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "execbytitle"
+        },
+        "pathList": {
+          "VarKey": "files",
+          "Value": null
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "邮件收件人"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
+</details>
+
+***
+
 # 其他示例动作
 
 <details>
