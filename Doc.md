@@ -14036,6 +14036,84 @@ quicker.context.SetVarValue('text', 'hello world')
 
 ***
 
+## 118.自定义窗口
+
+**功能描述**
+> 创建和显示自定义窗口
+
+**官方文档**
+> https://getquicker.net/KC/Help/Doc/customwindow
+
+**内部名称**
+> sys:customwindow
+
+<details>
+<summary>传入参数</summary>
+
+| Key | Name | Description | Type | Default | Required |
+| :----: | :----: | :----: | :----: | :----: | :----: |
+| table | 表格变量 | 要操作的表格变量 | (13)表格-Table |  | True |
+
+</details>
+<details>
+<summary>传出参数</summary>
+
+| Key | Name | Description | Type |
+| :----: | :----: | :----: | :----: |
+| isSuccess | 是否成功 | 操作是否成功 | (2)布尔值-Boolean |
+
+</details>
+<details>
+<summary>范例</summary>
+
+**范例1**
+```json
+
+```
+
+</details>
+
+***
+
+## 119.自定义操作窗
+
+**功能描述**
+> 自定义悬浮操作窗口，点击后直接执行操作，不隐藏。
+
+**官方文档**
+> https://getquicker.net/KC/Help/Doc/custompanel
+
+**内部名称**
+> sys:custompanel
+
+<details>
+<summary>传入参数</summary>
+
+| Key | Name | Description | Type | Default | Required |
+| :----: | :----: | :----: | :----: | :----: | :----: |
+| table | 表格变量 | 要操作的表格变量 | (13)表格-Table |  | True |
+
+</details>
+<details>
+<summary>传出参数</summary>
+
+| Key | Name | Description | Type |
+| :----: | :----: | :----: | :----: |
+| isSuccess | 是否成功 | 操作是否成功 | (2)布尔值-Boolean |
+
+</details>
+<details>
+<summary>范例</summary>
+
+**范例1**
+```json
+
+```
+
+</details>
+
+***
+
 # 其他示例动作
 
 <details>
