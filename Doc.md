@@ -9449,7 +9449,106 @@ Manual: `自定义位置`
 
 **范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "savedPath",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "解压成功",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "resultPath",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:zip",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "Unzip"
+        },
+        "sourceZipFile": {
+          "VarKey": "savedPath",
+          "Value": null
+        },
+        "outputPath": {
+          "VarKey": null,
+          "Value": "."
+        },
+        "password": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "overwrite": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "skipOverwriteError": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "showProgress": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": "解压成功",
+        "resultPath": "resultPath",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -9494,9 +9593,86 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**等待30毫秒后截图屏幕上200,300,500,800的区域存入变量img和剪贴板，并将所截图区域坐标存入rect变量**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "rect",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "img",
+      "Type": 3,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:screenCapture",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "fixed_area"
+        },
+        "area": {
+          "VarKey": null,
+          "Value": "200,300,500,800"
+        },
+        "delay": {
+          "VarKey": null,
+          "Value": "30"
+        },
+        "toClip": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "includeRightBottomBorder": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "img": "img",
+        "rect": "rect",
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -9544,9 +9720,88 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**将文本abcd转为二维码图片img**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "img",
+      "Type": 3,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:createQrCode",
+      "InputParams": {
+        "code": {
+          "VarKey": null,
+          "Value": "abcd"
+        },
+        "pixelsPerModule": {
+          "VarKey": null,
+          "Value": "4"
+        },
+        "darkColor": {
+          "VarKey": null,
+          "Value": "#FF000000"
+        },
+        "lightColor": {
+          "VarKey": null,
+          "Value": "#FFFFFFFF"
+        },
+        "icon": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "iconPercent": {
+          "VarKey": null,
+          "Value": "15"
+        },
+        "iconBorderWidth": {
+          "VarKey": null,
+          "Value": "6"
+        },
+        "drawQuietZones": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "saveToPdfPath": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "img": "img",
+        "svg": null,
+        "ascii": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -9588,9 +9843,99 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "img",
+      "Type": 3,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "rect",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "isSuccess",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:whiteboard",
+      "InputParams": {
+        "winPosition": {
+          "VarKey": "rect",
+          "Value": null
+        },
+        "bgColor": {
+          "VarKey": null,
+          "Value": "#0F5B89F5"
+        },
+        "penColor": {
+          "VarKey": null,
+          "Value": "#FFFF0000"
+        },
+        "enableTransparent": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "imageWithBackground": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": "isSuccess",
+        "result": "img",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -9637,9 +9982,82 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "width",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "height",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:imageinfo",
+      "InputParams": {
+        "sourceType": {
+          "VarKey": null,
+          "Value": "file"
+        },
+        "bmpFile": {
+          "VarKey": null,
+          "Value": "D:\\1.png"
+        },
+        "autoRotate": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "width": "width",
+        "height": "height",
+        "rotateDegree": null,
+        "dateTimeOriginal": null,
+        "exifData": null,
+        "rawExifData": null,
+        "fileTypeFromData": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -9685,9 +10103,178 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**列表文件亮度增加30%，对比对比度增加30%，注释掉的行（用于生成灰度图像），自动旋转，高于指定亮度的像素修改为白色**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "path",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "fileList",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "prefix",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "processed_",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "savePath",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSelectedFiles",
+      "InputParams": {
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "files": "fileList",
+        "firstFile": "path",
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:each",
+      "InputParams": {
+        "input": {
+          "VarKey": "fileList",
+          "Value": null
+        },
+        "useMultiThread": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "threadDelay": {
+          "VarKey": null,
+          "Value": "5"
+        }
+      },
+      "OutputParams": {
+        "item": "path",
+        "count": null
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": "$= Path.Combine(Path.GetDirectoryName({path}), {prefix}+Path.GetFileName({path}))"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "savePath"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:imgProcess",
+          "InputParams": {
+            "img": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "Filters"
+            },
+            "filterParams": {
+              "VarKey": null,
+              "Value": "$$\r\nLoad:{path}\r\nBrightness:30\r\nContrast:30\r\nAutoRotate:\r\nWhiteThreshold:220\r\nSave:{savePath}"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "result": null,
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -9723,15 +10310,6 @@ Manual: `自定义位置`
 | code | 值 | 识别出的二维码内容 | (0)字符串-Text |
 | codeList | 全部二维码值 | 当一个图片含有多个二维码，且需要返回所有结果时使用。 | (4)文本列表-List |
 
-</details>
-<details>
-<summary>范例</summary>
-
-**范例1**
-```json
-
-```
-</details>
 
 ***
 
@@ -9783,9 +10361,171 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**显示剪贴板图片，并在按下W后关闭图片显示**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:showImage",
+      "InputParams": {
+        "source": {
+          "VarKey": null,
+          "Value": "clipboard"
+        },
+        "scale": {
+          "VarKey": null,
+          "Value": "-1"
+        },
+        "opacity": {
+          "VarKey": null,
+          "Value": "0.7"
+        },
+        "autoCloseKey": {
+          "VarKey": null,
+          "Value": "abc"
+        },
+        "autoCloseTime": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "winPosition": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "waitClose": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "showDropShadow": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "showTaskbarIcon": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "noActivate": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "closeWhenLostFocus": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "tooltip": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "hwnd": null,
+        "finalPosition": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:waitKeyboard",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "waitKeyDown"
+        },
+        "waitingKeys": {
+          "VarKey": null,
+          "Value": "W"
+        },
+        "modifierKeys": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "maxWaitSeconds": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "filterEvent": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "waitKeyUp": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "ignoreSimulated": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "help": {
+          "VarKey": null,
+          "Value": "请按键..."
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "TopCenter"
+        },
+        "mouseThrough": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "keyCode": null,
+        "keyValue": null,
+        "holdTimeMs": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showImage",
+      "InputParams": {
+        "source": {
+          "VarKey": null,
+          "Value": "closeWindow"
+        },
+        "autoCloseKey": {
+          "VarKey": null,
+          "Value": "abc"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
