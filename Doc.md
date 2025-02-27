@@ -8685,9 +8685,48 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**生成txt临时文件名称到filePath变量**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "filePath",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:GenTempFilePath",
+      "InputParams": {
+        "ext": {
+          "VarKey": null,
+          "Value": ".txt"
+        }
+      },
+      "OutputParams": {
+        "filePath": "filePath"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -8733,9 +8772,66 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**获取选择的第一个文件**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "firstFile",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSelectedFiles",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "getSelection"
+        },
+        "waitMs": {
+          "VarKey": null,
+          "Value": "200"
+        },
+        "sortType": {
+          "VarKey": null,
+          "Value": "Default"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "files": null,
+        "firstFile": "firstFile",
+        "fileNames": null,
+        "firstFileName": null,
+        "fileCount": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -8776,9 +8872,225 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**读取下载目录下的a.txt并用文本窗口显示出来**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "folder",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "filePath",
+      "Type": 0,
+      "Desc": "文件路径",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "fileContent",
+      "Type": 0,
+      "Desc": "文件内容",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "isSuccess",
+      "Type": 2,
+      "Desc": "读取文件是否成功",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getFolderPath",
+      "InputParams": {
+        "folder": {
+          "VarKey": null,
+          "Value": "Downloads"
+        }
+      },
+      "OutputParams": {
+        "path": "folder"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "获取下载目录路径",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:pathExtraction",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "combine"
+        },
+        "path": {
+          "VarKey": "folder",
+          "Value": null
+        },
+        "path2": {
+          "VarKey": null,
+          "Value": "a.txt"
+        }
+      },
+      "OutputParams": {
+        "resultPath": "filePath"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "生成 a.txt 的完整路径",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:readFile",
+      "InputParams": {
+        "path": {
+          "VarKey": "filePath",
+          "Value": null
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "text"
+        },
+        "encoding": {
+          "VarKey": null,
+          "Value": "utf-8"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "txt": "fileContent",
+        "isSuccess": "isSuccess",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "读取文件内容",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": "isSuccess",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:showText",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "NO_WAIT"
+            },
+            "text": {
+              "VarKey": "fileContent",
+              "Value": null
+            },
+            "title": {
+              "VarKey": null,
+              "Value": "a.txt 内容"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "显示文件内容",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "Error"
+            },
+            "msg": {
+              "VarKey": null,
+              "Value": "无法读取 a.txt 文件"
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            },
+            "clickAction": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "显示错误消息",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "检查读取是否成功",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -8823,9 +9135,78 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**选择多个文件，返回选择的文件名列表pathList**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "pathList",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:selectFile",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "openMultiFile"
+        },
+        "filter": {
+          "VarKey": null,
+          "Value": "文本文件|*.txt|所有文件|*.*"
+        },
+        "defaultExt": {
+          "VarKey": null,
+          "Value": ".txt"
+        },
+        "initDir": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "initFileName": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "title": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "pathList": "pathList",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -8865,9 +9246,62 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**让用户在D:\\选择文件夹，返回选择的path**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "path",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:selectFolder",
+      "InputParams": {
+        "prompt": {
+          "VarKey": null,
+          "Value": "请选择文件夹"
+        },
+        "initDir": {
+          "VarKey": null,
+          "Value": "D:\\"
+        },
+        "showOpenedDirs": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "path": "path",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -8910,9 +9344,61 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**将“abcdefg”写入D:\\1.txt，统一换行字符为\r\n，如果文件已存在，则添加到文件末尾**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:WriteTextFile",
+      "InputParams": {
+        "content": {
+          "VarKey": null,
+          "Value": "abcdefg"
+        },
+        "filePath": {
+          "VarKey": null,
+          "Value": "D:\\1.txt"
+        },
+        "encoding": {
+          "VarKey": null,
+          "Value": "utf-8"
+        },
+        "addUtf8Bom": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "appendMode": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "addNewLine": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "newLineChars": {
+          "VarKey": null,
+          "Value": "\r\n"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
