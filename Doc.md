@@ -12784,7 +12784,7 @@ quicker.context.SetVarValue('text', 'hello world')
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| operation | 操作类型 |  | (9)选项-Enum（getverb: 获取文件的可用动词列表（verb）; ） | getverb: 获取文件的可用动词列表（verb）; execverb: 对文件执行动词（verb）; gettitles: 获取文件的可用菜单标题列表; execbytitle: 对文件执行菜单（指定菜单标题）; : 显示系统上下文菜单 | True |
+| operation | 操作类型 |  | (9)选项-Enum（getverb: 获取文件的可用动词列表（verb）; ） | getverb: 获取文件的可用动词列表（verb）; execverb: 对文件执行动词（verb）; gettitles: 获取文件的可用菜单标题列表; execbytitle: 对文件执行菜单（指定菜单标题）; showmenu: 显示系统上下文菜单 | True |
 | pathOrExt | 文件路径或扩展名 | 需要获取可用动词的文件类型，可使用扩展名如.txt或提供完整文件名。 | (0)字符串-Text | .txt | False |
 | pathList | 文件路径列表 | 要操作文件的完整路径的列表。每个文件将会被依次调用 | (4)文本列表-List |  | False |
 | verb | 动词 | Shell操作动词，需要在当前电脑上支持才能正常运行。 | (0)字符串-Text |  | False |
@@ -13125,6 +13125,900 @@ quicker.context.SetVarValue('text', 'hello world')
       },
       "OutputParams": {
         "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
+</details>
+
+***
+
+## 117.表格数据操作
+
+**功能描述**
+> 表格变量的相关处理操作
+
+**官方文档**
+> https://getquicker.net/KC/Help/Doc/tableoperation
+
+**内部名称**
+> sys:tableoperation
+
+<details>
+<summary>传入参数</summary>
+
+| Key | Name | Description | Type | Default | Required |
+| :----: | :----: | :----: | :----: | :----: | :----: |
+| table | 表格变量 | 要操作的表格变量 | (13)表格-Table |  | True |
+| type | 操作类型 |  | (9)选项-Enum（info: 获取信息; addRow: 添加行; update: 更新行; manage: 查看或编辑数据; select: 查询或筛选行（Select）; clear: 清除所有行; deleteRows: 删除符合条件的行; deleteColumns: 删除列; importCsv: 从CSV文本加载数据; importJson: 从Json文本加载数据; importExcel: 从Excel工作表加载数据; export_text: 导出文本数据; exportExcel: 导出Excel文件） | True |
+| rowData | 行数据 | 包含行数据的词典：更新行时，仅包含要更新的列的内容。 | (10)词典-Dict |  | false |
+| filterExpression | 筛选表达式 |  | (0)字符串-Text |  | false |
+| sort | 排序 |  | (0)字符串-Text |  | false |
+| gridSelectionMode | 选择模式 | 注：单元格模式不支持返回选择的行。 | (9)选项-Enum（Cells: 单元格（类似Excel））; OneRow: 行：0行或1行; OneRowRequired: 行：1行（必选）; Rows: 行：0.1或多行; RowsRequired: 行：一行或多行（必选）） | Cells | false |
+| isReadOnly | 只读模式 | 是否以只读模式打开 | (2)布尔值-Boolean |  | false |
+| windowTitle | 窗口标题 |  | (0)字符串-Text | 表格数据 | false |
+| helpText | 帮助文本 |  | (0)字符串-Text |  | false |
+| winSize | 窗口尺寸/位置 | 设置选择窗口的最大尺寸，格式为：宽度，高度。。支持像素数值或屏幕宽高百分比，详情请参考模块文档。 | (0)字符串-Text |  | false |
+
+</details>
+<details>
+<summary>传出参数</summary>
+
+| Key | Name | Description | Type |
+| :----: | :----: | :----: | :----: |
+| isSuccess | 是否成功 | 操作是否成功 | (2)布尔值-Boolean |
+| rows | 行列表 | 符合条件的行的数组 | | (99)任意类型-Any |
+| columns | 列的列表 | 表格的列的信息列表（DataTable.Columns) | | (99)任意类型-Any |
+| rowCount | 行数 | 表格内的数据行数 | (12)数字(整数)-Integer |
+| firstRow | 第一行/结果行 | 第一个符合条件的行或新添加的行，可输出为词典对象 | (99)任意类型-Any |
+| affectedRowCount | 影响行数 | 更新或删除、筛选的行数 | (0)字符串-Text |
+| isConfirmed | 是否确认 | 是否点击了确认按钮 | (2)布尔值-Boolean |
+| selectedRows | 选择的行列表 | 选择的所有行的列表 | (99)任意类型-Any |
+
+</details>
+<details>
+<summary>范例</summary>
+
+**根据汇总表和模板表将汇总表中的每行数据填充到模板中生成Excel文件。**
+```json
+{
+  "Variables": [
+    {
+      "Key": "dataSourceFilePath",
+      "Type": 0,
+      "Desc": "汇总表路径",
+      "DefaultValue": "E:\\CloudStation\\Drive\\Quicker\\_docs\\表格读写测试文件\\总表.xlsx",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "templateFilePath",
+      "Type": 0,
+      "Desc": "模板文件路径",
+      "DefaultValue": "E:\\CloudStation\\Drive\\Quicker\\_docs\\表格读写测试文件\\模板.xlsx",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "outputFolder",
+      "Type": 0,
+      "Desc": "输出文件路径",
+      "DefaultValue": "E:\\CloudStation\\Drive\\Quicker\\_docs\\表格读写测试文件\\输出",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "fileNameField",
+      "Type": 0,
+      "Desc": "文件名列",
+      "DefaultValue": "%Index",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "autoDeleteOld",
+      "Type": 2,
+      "Desc": "是否删除旧文件",
+      "DefaultValue": "1",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "table",
+      "Type": 13,
+      "Desc": "总表",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "rowCount",
+      "Type": 12,
+      "Desc": "行数",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "rowIndex",
+      "Type": 12,
+      "Desc": "行号",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "rowDict",
+      "Type": 10,
+      "Desc": "每一行数据的词典",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "rowFilePath",
+      "Type": 0,
+      "Desc": "对某一行数据生成的目标路径",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "workbook",
+      "Type": 99,
+      "Desc": "工作簿",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "sheet",
+      "Type": 99,
+      "Desc": "工作表",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "autoPrint",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "0",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "每次启动时允许用户选择模板和总表文件。"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:form",
+      "InputParams": {
+        "title": {
+          "VarKey": null,
+          "Value": "填写表单"
+        },
+        "formDef": {
+          "VarKey": null,
+          "Value": "{\"Fields\":[{\"FieldKey\":\"dataSourceFilePath\",\"Label\":\"汇总表路径\",\"HelpText\":\"第一个工作表存储汇总数据。第一行为列名，列名单元格里面不要有空格。\",\"HelpLink\":null,\"InputMethod\":1,\"SelectionItems\":\"\",\"IsRequired\":true,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"SelectSingleFile\",\"VisibleExpression\":\"\"},{\"FieldKey\":\"templateFilePath\",\"Label\":\"模板文件路径\",\"HelpText\":\"模板文件中使用{{列名}}作为待替换的占位符。\",\"HelpLink\":null,\"InputMethod\":1,\"SelectionItems\":\"\",\"IsRequired\":true,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"SelectSingleFile\",\"VisibleExpression\":\"\"},{\"FieldKey\":\"outputFolder\",\"Label\":\"输出文件路径\",\"HelpText\":\"输出文件保存的目录，需清理里面的文件避免生成失败。\",\"HelpLink\":null,\"InputMethod\":1,\"SelectionItems\":\"\",\"IsRequired\":true,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"SelectSingleFolder\",\"VisibleExpression\":\"\"},{\"FieldKey\":\"fileNameField\",\"Label\":\"文件名列名\",\"HelpText\":\"指定作为文件名的列。%Index表示行序号。\",\"HelpLink\":null,\"InputMethod\":1,\"SelectionItems\":\"\",\"IsRequired\":true,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"VisibleExpression\":\"\"},{\"FieldKey\":\"autoDeleteOld\",\"Label\":\"自动删除旧文件\",\"HelpText\":\"如果输出位置已经存在旧文件会造成失败。\",\"HelpLink\":null,\"InputMethod\":6,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"VisibleExpression\":\"\"},{\"FieldKey\":\"autoPrint\",\"Label\":\"自动打印\",\"HelpText\":\"自动打印生成的文件（本选项不保存）\",\"HelpLink\":null,\"InputMethod\":6,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"VisibleExpression\":\"\"}]}"
+        },
+        "help": {
+          "VarKey": null,
+          "Value": "请设置好停止动作快捷键，以便于出现异常情况的时候停止动作。"
+        },
+        "titleColumnWidth": {
+          "VarKey": null,
+          "Value": "100"
+        },
+        "windowWidth": {
+          "VarKey": null,
+          "Value": "700"
+        },
+        "restoreFocus": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "markdownhelp": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "将汇总表加载到表格中"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:tableoperation",
+      "InputParams": {
+        "table": {
+          "VarKey": "table",
+          "Value": null
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "importExcel"
+        },
+        "excelFilePath": {
+          "VarKey": "dataSourceFilePath",
+          "Value": null
+        },
+        "sheetName": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "startRowNum": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "rowCount": "rowCount"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "遍历表格的每一行，将数据写入rawDict中，并对该行数据进行处理"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:each",
+      "InputParams": {
+        "input": {
+          "VarKey": null,
+          "Value": "$={table}.Rows"
+        },
+        "useMultiThread": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "item": "rowDict",
+        "count": "rowIndex"
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "生成输出文件的完整路径"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": "$= \r\nvar fileName = {fileNameField} == \"%Index\" \r\n\t? ({rowIndex} + 2).ToString()\r\n\t: {rowDict}[{fileNameField}];\r\n\t\r\nreturn Path.Combine({outputFolder}, fileName +\".xlsx\");\t"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "rowFilePath"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "根据设定，删除可能存在的旧文件"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:simpleIf",
+          "InputParams": {
+            "condition": {
+              "VarKey": "autoDeleteOld",
+              "Value": null
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:fileOperation",
+              "InputParams": {
+                "type": {
+                  "VarKey": null,
+                  "Value": "deleteFile"
+                },
+                "path": {
+                  "VarKey": "rowFilePath",
+                  "Value": null
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "0"
+                }
+              },
+              "OutputParams": {
+                "isSuccess": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "将模板复制一份"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:fileOperation",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "copyTo"
+            },
+            "path": {
+              "VarKey": "templateFilePath",
+              "Value": null
+            },
+            "dstPath": {
+              "VarKey": "rowFilePath",
+              "Value": null
+            },
+            "overwrite": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "resultPath": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "读取结果文件（模板复制出来的一个副本）"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:excelreadwrite",
+          "InputParams": {
+            "operation": {
+              "VarKey": null,
+              "Value": "load"
+            },
+            "filePath": {
+              "VarKey": "rowFilePath",
+              "Value": null
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "workbook": "workbook",
+            "numberOfSheets": null,
+            "worksheetNameList": null,
+            "sheet": "sheet",
+            "firstRow": null,
+            "lastRow": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "将行数据填充到文件中"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:excelreadwrite",
+          "InputParams": {
+            "operation": {
+              "VarKey": null,
+              "Value": "batchReplace"
+            },
+            "worksheet": {
+              "VarKey": "sheet",
+              "Value": null
+            },
+            "replaceDict": {
+              "VarKey": "rowDict",
+              "Value": null
+            },
+            "replacePrefixSuffix": {
+              "VarKey": null,
+              "Value": "{{\r\n}}"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "保存文件"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:excelreadwrite",
+          "InputParams": {
+            "operation": {
+              "VarKey": null,
+              "Value": "save"
+            },
+            "filePath": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "workbook": {
+              "VarKey": "workbook",
+              "Value": null
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "根据设定打印文件"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:simpleIf",
+          "InputParams": {
+            "condition": {
+              "VarKey": "autoPrint",
+              "Value": null
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:shelloperation",
+              "InputParams": {
+                "operation": {
+                  "VarKey": null,
+                  "Value": "execverb"
+                },
+                "pathList": {
+                  "VarKey": "rowFilePath",
+                  "Value": null
+                },
+                "verb": {
+                  "VarKey": null,
+                  "Value": "print"
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "isSuccess": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:break",
+          "InputParams": {},
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": null,
+          "Disabled": true,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "msg": {
+          "VarKey": null,
+          "Value": "完成"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        },
+        "clickAction": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "style": {
+          "VarKey": null,
+          "Value": "Default"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "打开输出文件所在的文件夹"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:run",
+      "InputParams": {
+        "path": {
+          "VarKey": "outputFolder",
+          "Value": null
+        },
+        "arg": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "runas": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "alternativePath": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "setWorkingDir": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "windowStyle": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "waitInputIdle": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "waitExit": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "username": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "password": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "pid": null,
+        "mainWinHandle": null,
+        "mainWinTitle": null,
+        "stdout": null
       },
       "IfSteps": null,
       "ElseSteps": null,
