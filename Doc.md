@@ -1034,29 +1034,30 @@ Manual: `自定义位置`
 
 ***
 
-## 6.第三方云对象存储服务
+## 6.第三方云存储/图床
 
 **功能描述**
-> 操作第三方云服务商的对象存储上传和下载文件。
+> 使用第三方云服务上传文件。
 
 **官方文档**
-> https://getquicker.net/KC/Help/Doc/cloudObjectOperation
+> https://getquicker.net/KC/Help/Doc/cloud_oss
 
 **内部名称**
-> sys:cloudObjectOperation
+> sys:cloud_oss
 
 <details>
 <summary>传入参数</summary>
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| type | 操作类型 |  | (9)选项-Enum（upload_file: 上传文件; upload_var: 上传变量内容; delete: 删除对象） | upload_file | True |
-| vendor | 服务商 |  | (9)选项-Enum | aliyun | True |
-| endpoint | Endpoint | 存储目标区域网址 | (0)字符串-Text |  | False |
-| objectKey | Key | 存储对象的Key。可以不填写（自动生成key），或填写以/结尾的前缀。 | (0)字符串-Text |  | False |
-| content | 上传内容 | 要上传到对象存储的内容。如果为路径则上传文件。 | (99)任意类型-Any |  | False |
-| extraHeaders | 附加的Http头 |  | (0)字符串-Text |  | False |
-| expireSeconds | 超时时间 | 请求超时时间（秒数） | (1)数字(小数)-Number | 100 | False |
+| operation | 操作类型 |  | (9)选项-Enum（Upload: 上传） | Upload | True |
+| vendor | 服务商 |  | (9)选项-Enum（Aliyun: 阿里云OSS; Tencent: 腾讯云COS; Qiniu: 七牛云） | Aliyun | True |
+| vendorSettings | 服务商参数 |  | (0)字符串-Text |  | False |
+| key | 对象名 | 可选。留空时自动生成对象名。如果以/结尾，则在此基础上自动生成对象名。 | (0)字符串-Text |  | False |
+| content | 上传内容 | 要上传的文件路径、其它文本内容或图片变量。 | (99)任意类型-Any |  | False |
+| customDomain | 自定义域名 | 如"https://files.example.com" | (0)字符串-Text |  | False |
+| extraHeaders | 额外的请求头 | 可选。设置厂商相关的特定http头。 | (0)字符串-Text |  | False |
+| expireSeconds | 超时时间 | 请求超时时间（秒数） | (12)数字(整数)-Integer | 180 | True |
 
 </details>
 <details>
@@ -1064,16 +1065,1279 @@ Manual: `自定义位置`
 
 | Key | Name | Description | Type |
 | :----: | :----: | :----: | :----: |
-| objectUrl | 对象网址 | 对象存储后生成的网址 | (0)字符串-Text |
 | isSuccess | 是否成功 | 操作是否成功 | (2)布尔值-Boolean |
+| vendorUrl | 服务商网址 |  | (0)字符串-Text |
+| customUrl | 对象网址 | 设置了自定义域名时会生成此网址。 | (0)字符串-Text |
 
 </details>
 <details>
 <summary>范例</summary>
 
-**范例1**
+**从剪贴板上传图片到阿里云OSS，并返回MarkDown格式引用链接**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "返回网址",
+      "Type": 0,
+      "Desc": "默认的文本变量",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "剪贴板图片",
+      "Type": 3,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "是否为图片",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "当前时间",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "剪贴板文件",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "是否为文件",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "文件类型匹配",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "文件后缀",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "对象路径",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "img/",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "EndPoint",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "服务节点，如：oss-cn-beijing.aliyuncs.com",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "AccessKey",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "您的AccessKey",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "AccessKeySecret",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "您的AccessKeySecret",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "Bucket",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "Bucket的名称",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "操作结果",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "打开次数",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "0",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "上传成功",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$= {打开次数} == 0"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:customwindow",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "ShowAndWaitClose"
+            },
+            "windowMarkup": {
+              "VarKey": null,
+              "Value": "<Window xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"\r\n        xmlns:d=\"http://schemas.microsoft.com/expression/blend/2008\"\r\n        xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"\r\n        xmlns:hc=\"https://handyorg.github.io/handycontrol\"\r\n        xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\"\r\n        xmlns:qk=\"https://getquicker.net\"\r\n        Width=\"450\"\r\n        Height=\"350\"\r\n        Title=\"图库 Lite\"\r\n        ResizeMode=\"NoResize\"\r\n        mc:Ignorable=\"d\">\r\n    <Grid Width=\"450\">\r\n        <TabControl>\r\n            <TabItem Header=\"阿里云 OSS\" FontSize=\"14\" FontWeight=\"Bold\">\r\n                <Grid Background=\"#FFE5E5E5\" HorizontalAlignment=\"Left\" Width=\"450\">\r\n                    <TextBox HorizontalAlignment=\"Left\" Margin=\"149,25,0,0\" TextWrapping=\"Wrap\" Text=\"{Binding [EndPoint]}\" VerticalAlignment=\"Top\" Width=\"250\" FontWeight=\"Normal\"/>\r\n                    <TextBox HorizontalAlignment=\"Left\" Margin=\"149,65,0,0\" TextWrapping=\"Wrap\" Text=\"{Binding [AccessKey]}\" VerticalAlignment=\"Top\" Width=\"250\" FontWeight=\"Normal\"/>\r\n                    <TextBox HorizontalAlignment=\"Left\" Margin=\"149,105,0,0\" TextWrapping=\"Wrap\" Text=\"{Binding [AccessKeySecret]}\" VerticalAlignment=\"Top\" Width=\"250\" FontWeight=\"Normal\"/>\r\n                    <TextBox HorizontalAlignment=\"Left\" Margin=\"149,145,0,0\" TextWrapping=\"Wrap\" Text=\"{Binding [Bucket]}\" VerticalAlignment=\"Top\" Width=\"250\" FontWeight=\"Normal\"/>\r\n                    <TextBox HorizontalAlignment=\"Left\" Margin=\"149,185,0,0\" TextWrapping=\"Wrap\" Text=\"{Binding [对象路径]}\" VerticalAlignment=\"Top\" Width=\"250\" FontWeight=\"Normal\"/>\r\n                    <TextBlock HorizontalAlignment=\"Left\" Margin=\"80,30,0,0\" TextWrapping=\"Wrap\" Text=\"EndPoint\" VerticalAlignment=\"Top\" FontSize=\"14\" FontWeight=\"Bold\"/>\r\n                    <TextBlock HorizontalAlignment=\"Left\" Margin=\"51,70,0,0\" TextWrapping=\"Wrap\" Text=\"AccessKey ID\" VerticalAlignment=\"Top\" FontSize=\"14\" FontWeight=\"Bold\"/>\r\n                    <TextBlock HorizontalAlignment=\"Left\" Margin=\"23,110,0,0\" TextWrapping=\"Wrap\" Text=\"AccessKey Secret\" VerticalAlignment=\"Top\" FontSize=\"14\" FontWeight=\"Bold\"/>\r\n                    <TextBlock HorizontalAlignment=\"Left\" Margin=\"50,150,0,0\" TextWrapping=\"Wrap\" Text=\"Bucket Name\" VerticalAlignment=\"Top\" FontSize=\"14\" FontWeight=\"Bold\"/>\r\n                    <Button Content=\"确定\" HorizontalAlignment=\"Left\" Margin=\"136,230,0,0\" VerticalAlignment=\"Top\" qk:Att.Action=\"close:Yes\"/>\r\n                    <Button Content=\"取消\" HorizontalAlignment=\"Left\" Margin=\"280,230,0,0\" VerticalAlignment=\"Top\" qk:Att.Action=\"close:\"/>\r\n                    <TextBlock HorizontalAlignment=\"Left\" Margin=\"88,190,0,0\" TextWrapping=\"Wrap\" Text=\"对象路径\" VerticalAlignment=\"Top\" FontSize=\"14\" FontWeight=\"Bold\"/>\r\n                </Grid>\r\n            </TabItem>\r\n        </TabControl>\r\n\r\n    </Grid>\r\n\r\n</Window>"
+            },
+            "dataMapping": {
+              "VarKey": null,
+              "Value": "EndPoint:{EndPoint}\r\nAccessKey:{AccessKey}\r\nAccessKeySecret:{AccessKeySecret}\r\nBucket:{Bucket}\r\n对象路径:{对象路径}"
+            },
+            "windowId": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "closeWhenDeactivate": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "cscode": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "events": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "autoCloseTime": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "activateMode": {
+              "VarKey": null,
+              "Value": "AutoActivate"
+            },
+            "winLocation": {
+              "VarKey": null,
+              "Value": "CenterScreen"
+            },
+            "winSize": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "result": "操作结果",
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:simpleIf",
+          "InputParams": {
+            "condition": {
+              "VarKey": null,
+              "Value": "$= {操作结果} == \"\""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:notify",
+              "InputParams": {
+                "type": {
+                  "VarKey": null,
+                  "Value": "Error"
+                },
+                "msg": {
+                  "VarKey": null,
+                  "Value": "未完善信息"
+                },
+                "maxLines": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "style": {
+                  "VarKey": null,
+                  "Value": "Default"
+                },
+                "clickAction": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:stop",
+              "InputParams": {
+                "method": {
+                  "VarKey": null,
+                  "Value": "default"
+                },
+                "isError": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "return": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "showMessage": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": true,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:compute",
+      "InputParams": {
+        "expression": {
+          "VarKey": null,
+          "Value": "$${打开次数}+1"
+        },
+        "evalVar": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "打开次数",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:getClipboardImage",
+      "InputParams": {
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": "是否为图片",
+        "output": "剪贴板图片",
+        "elapsedMs": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:getCurrentTime",
+      "InputParams": {
+        "source": {
+          "VarKey": null,
+          "Value": "currTime"
+        },
+        "useUtc": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addDays": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addHours": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addMinutes": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addSeconds": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addMonths": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "format": {
+          "VarKey": null,
+          "Value": "yyyy-MM-dd HH:mm:ss"
+        },
+        "outputCulture": {
+          "VarKey": null,
+          "Value": "CURRENT"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": null,
+        "strValue": "当前时间",
+        "timeStamp": null,
+        "timeStampMs": null,
+        "year": null,
+        "month": null,
+        "day": null,
+        "hour": null,
+        "minute": null,
+        "second": null,
+        "dayOfWeek": null,
+        "dayOfYear": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:regexExtract",
+      "InputParams": {
+        "getGroup": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "data": {
+          "VarKey": "当前时间",
+          "Value": null
+        },
+        "pattern": {
+          "VarKey": null,
+          "Value": "\\d+"
+        },
+        "ignoreCase": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "singleLine": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "multiLine": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "rightToLeft": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "matches": "当前时间",
+        "match1 ": null,
+        "match2 ": null,
+        "match3 ": null,
+        "match4 ": null,
+        "match5 ": null,
+        "matchesCollection": null,
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:joinList",
+      "InputParams": {
+        "list": {
+          "VarKey": "当前时间",
+          "Value": null
+        },
+        "separator": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "escapeSeparator": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "output": "当前时间"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$= {是否为图片}"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:cloud_oss",
+          "InputParams": {
+            "operation": {
+              "VarKey": null,
+              "Value": "Upload"
+            },
+            "vendor": {
+              "VarKey": null,
+              "Value": "Aliyun"
+            },
+            "vendorSettings": {
+              "VarKey": null,
+              "Value": "$$Endpoint:https://{EndPoint}\r\nAccessKey:{AccessKey}\r\nAccessKeySecret:{AccessKeySecret}\r\nBucketName:{Bucket}"
+            },
+            "key": {
+              "VarKey": null,
+              "Value": "$${对象路径}{当前时间}.png"
+            },
+            "content": {
+              "VarKey": "剪贴板图片",
+              "Value": null
+            },
+            "customDomain": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "extraHeaders": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "expireSeconds": {
+              "VarKey": null,
+              "Value": "180"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "0"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": "上传成功",
+            "vendorUrl": "返回网址",
+            "customUrl": null,
+            "err": null,
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:if",
+          "InputParams": {
+            "condition": {
+              "VarKey": null,
+              "Value": "$= {上传成功}"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:notify",
+              "InputParams": {
+                "type": {
+                  "VarKey": null,
+                  "Value": "Success"
+                },
+                "msg": {
+                  "VarKey": null,
+                  "Value": "上传成功"
+                },
+                "maxLines": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "style": {
+                  "VarKey": null,
+                  "Value": "Default"
+                },
+                "clickAction": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": [
+            {
+              "StepRunnerKey": "sys:notify",
+              "InputParams": {
+                "type": {
+                  "VarKey": null,
+                  "Value": "Error"
+                },
+                "msg": {
+                  "VarKey": null,
+                  "Value": "上传失败，请检查网络或信息是否填写正确"
+                },
+                "maxLines": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "style": {
+                  "VarKey": null,
+                  "Value": "Default"
+                },
+                "clickAction": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:stop",
+              "InputParams": {
+                "method": {
+                  "VarKey": null,
+                  "Value": "default"
+                },
+                "isError": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "return": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "showMessage": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:getClipboardFiles",
+          "InputParams": {
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "0"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": "是否为文件",
+            "output": "剪贴板文件",
+            "elapsedMs": null,
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:if",
+          "InputParams": {
+            "condition": {
+              "VarKey": null,
+              "Value": "$= {是否为文件}"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:regexExtract",
+              "InputParams": {
+                "getGroup": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "data": {
+                  "VarKey": "剪贴板文件",
+                  "Value": null
+                },
+                "pattern": {
+                  "VarKey": null,
+                  "Value": ".*\\.(jpg|png|gif|jpeg|tif|tiff|tga|bmp|dds|svg|eps|hdr|raw|avif)$"
+                },
+                "ignoreCase": {
+                  "VarKey": null,
+                  "Value": "false"
+                },
+                "singleLine": {
+                  "VarKey": null,
+                  "Value": "false"
+                },
+                "multiLine": {
+                  "VarKey": null,
+                  "Value": "false"
+                },
+                "rightToLeft": {
+                  "VarKey": null,
+                  "Value": "false"
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "matches": null,
+                "match1 ": null,
+                "match2 ": null,
+                "match3 ": null,
+                "match4 ": null,
+                "match5 ": null,
+                "matchesCollection": null,
+                "isSuccess": "文件类型匹配",
+                "errMessage": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:if",
+              "InputParams": {
+                "condition": {
+                  "VarKey": null,
+                  "Value": "$= {文件类型匹配}"
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": [
+                {
+                  "StepRunnerKey": "sys:regexExtract",
+                  "InputParams": {
+                    "getGroup": {
+                      "VarKey": null,
+                      "Value": "0"
+                    },
+                    "data": {
+                      "VarKey": "剪贴板文件",
+                      "Value": null
+                    },
+                    "pattern": {
+                      "VarKey": null,
+                      "Value": "\\.([^\\\\/]+)"
+                    },
+                    "ignoreCase": {
+                      "VarKey": null,
+                      "Value": "true"
+                    },
+                    "singleLine": {
+                      "VarKey": null,
+                      "Value": "false"
+                    },
+                    "multiLine": {
+                      "VarKey": null,
+                      "Value": "false"
+                    },
+                    "rightToLeft": {
+                      "VarKey": null,
+                      "Value": "false"
+                    },
+                    "stopIfFail": {
+                      "VarKey": null,
+                      "Value": "0"
+                    }
+                  },
+                  "OutputParams": {
+                    "matches": null,
+                    "match1 ": "文件后缀",
+                    "match2 ": null,
+                    "match3 ": null,
+                    "match4 ": null,
+                    "match5 ": null,
+                    "matchesCollection": null,
+                    "isSuccess": null,
+                    "errMessage": null
+                  },
+                  "IfSteps": null,
+                  "ElseSteps": null,
+                  "Note": "",
+                  "Disabled": false,
+                  "Collapsed": false,
+                  "DelayMs": 0
+                },
+                {
+                  "StepRunnerKey": "sys:cloud_oss",
+                  "InputParams": {
+                    "operation": {
+                      "VarKey": null,
+                      "Value": "Upload"
+                    },
+                    "vendor": {
+                      "VarKey": null,
+                      "Value": "Aliyun"
+                    },
+                    "vendorSettings": {
+                      "VarKey": null,
+                      "Value": "$$Endpoint:https://{EndPoint}\r\nAccessKey:{AccessKey}\r\nAccessKeySecret:{AccessKeySecret}\r\nBucketName:{Bucket}"
+                    },
+                    "key": {
+                      "VarKey": null,
+                      "Value": "$${对象路径}{当前时间}{文件后缀}"
+                    },
+                    "content": {
+                      "VarKey": "剪贴板文件",
+                      "Value": null
+                    },
+                    "customDomain": {
+                      "VarKey": null,
+                      "Value": ""
+                    },
+                    "extraHeaders": {
+                      "VarKey": null,
+                      "Value": ""
+                    },
+                    "expireSeconds": {
+                      "VarKey": null,
+                      "Value": "180"
+                    },
+                    "stopIfFail": {
+                      "VarKey": null,
+                      "Value": "0"
+                    }
+                  },
+                  "OutputParams": {
+                    "isSuccess": "上传成功",
+                    "vendorUrl": "返回网址",
+                    "customUrl": null,
+                    "err": null,
+                    "errMessage": null
+                  },
+                  "IfSteps": null,
+                  "ElseSteps": null,
+                  "Note": "",
+                  "Disabled": false,
+                  "Collapsed": false,
+                  "DelayMs": 0
+                },
+                {
+                  "StepRunnerKey": "sys:if",
+                  "InputParams": {
+                    "condition": {
+                      "VarKey": null,
+                      "Value": "$= {上传成功}"
+                    }
+                  },
+                  "OutputParams": {},
+                  "IfSteps": [
+                    {
+                      "StepRunnerKey": "sys:notify",
+                      "InputParams": {
+                        "type": {
+                          "VarKey": null,
+                          "Value": "Success"
+                        },
+                        "msg": {
+                          "VarKey": null,
+                          "Value": "上传成功"
+                        },
+                        "maxLines": {
+                          "VarKey": null,
+                          "Value": "0"
+                        },
+                        "style": {
+                          "VarKey": null,
+                          "Value": "Default"
+                        },
+                        "clickAction": {
+                          "VarKey": null,
+                          "Value": ""
+                        }
+                      },
+                      "OutputParams": {},
+                      "IfSteps": null,
+                      "ElseSteps": null,
+                      "Note": "",
+                      "Disabled": false,
+                      "Collapsed": false,
+                      "DelayMs": 0
+                    }
+                  ],
+                  "ElseSteps": [
+                    {
+                      "StepRunnerKey": "sys:notify",
+                      "InputParams": {
+                        "type": {
+                          "VarKey": null,
+                          "Value": "Error"
+                        },
+                        "msg": {
+                          "VarKey": null,
+                          "Value": "上传失败，请检查网络或信息是否填写正确"
+                        },
+                        "maxLines": {
+                          "VarKey": null,
+                          "Value": "0"
+                        },
+                        "style": {
+                          "VarKey": null,
+                          "Value": "Default"
+                        },
+                        "clickAction": {
+                          "VarKey": null,
+                          "Value": ""
+                        }
+                      },
+                      "OutputParams": {},
+                      "IfSteps": null,
+                      "ElseSteps": null,
+                      "Note": "",
+                      "Disabled": false,
+                      "Collapsed": false,
+                      "DelayMs": 0
+                    },
+                    {
+                      "StepRunnerKey": "sys:stop",
+                      "InputParams": {
+                        "method": {
+                          "VarKey": null,
+                          "Value": "default"
+                        },
+                        "isError": {
+                          "VarKey": null,
+                          "Value": "0"
+                        },
+                        "return": {
+                          "VarKey": null,
+                          "Value": ""
+                        },
+                        "showMessage": {
+                          "VarKey": null,
+                          "Value": ""
+                        }
+                      },
+                      "OutputParams": {},
+                      "IfSteps": null,
+                      "ElseSteps": null,
+                      "Note": "",
+                      "Disabled": false,
+                      "Collapsed": false,
+                      "DelayMs": 0
+                    }
+                  ],
+                  "Note": "",
+                  "Disabled": false,
+                  "Collapsed": false,
+                  "DelayMs": 0
+                }
+              ],
+              "ElseSteps": [
+                {
+                  "StepRunnerKey": "sys:notify",
+                  "InputParams": {
+                    "type": {
+                      "VarKey": null,
+                      "Value": "Error"
+                    },
+                    "msg": {
+                      "VarKey": null,
+                      "Value": "未获取到剪贴板图片"
+                    },
+                    "maxLines": {
+                      "VarKey": null,
+                      "Value": "0"
+                    },
+                    "style": {
+                      "VarKey": null,
+                      "Value": "Default"
+                    },
+                    "clickAction": {
+                      "VarKey": null,
+                      "Value": ""
+                    }
+                  },
+                  "OutputParams": {},
+                  "IfSteps": null,
+                  "ElseSteps": null,
+                  "Note": "",
+                  "Disabled": false,
+                  "Collapsed": false,
+                  "DelayMs": 0
+                },
+                {
+                  "StepRunnerKey": "sys:stop",
+                  "InputParams": {
+                    "method": {
+                      "VarKey": null,
+                      "Value": "default"
+                    },
+                    "isError": {
+                      "VarKey": null,
+                      "Value": "0"
+                    },
+                    "return": {
+                      "VarKey": null,
+                      "Value": ""
+                    },
+                    "showMessage": {
+                      "VarKey": null,
+                      "Value": ""
+                    }
+                  },
+                  "OutputParams": {},
+                  "IfSteps": null,
+                  "ElseSteps": null,
+                  "Note": "",
+                  "Disabled": false,
+                  "Collapsed": false,
+                  "DelayMs": 0
+                }
+              ],
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": [
+            {
+              "StepRunnerKey": "sys:notify",
+              "InputParams": {
+                "type": {
+                  "VarKey": null,
+                  "Value": "Error"
+                },
+                "msg": {
+                  "VarKey": null,
+                  "Value": "未获取到剪贴板图片"
+                },
+                "maxLines": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "style": {
+                  "VarKey": null,
+                  "Value": "Default"
+                },
+                "clickAction": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:stop",
+              "InputParams": {
+                "method": {
+                  "VarKey": null,
+                  "Value": "default"
+                },
+                "isError": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "return": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "showMessage": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:writeClipboard",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "auto"
+        },
+        "input": {
+          "VarKey": null,
+          "Value": "$$![]({返回网址})"
+        },
+        "successMsg": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -18550,9 +19814,551 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**获取SSL证书到期时间**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "domainList",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "getquicker.net\r\nbaidu.com",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "result",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "domain",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "expireTime",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "port",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "domainWithPort",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$={quicker_in_param} == \"settings\""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:userInput",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "multiline"
+            },
+            "prompt": {
+              "VarKey": null,
+              "Value": "请输入域名，每行一个，如：baidu.com"
+            },
+            "defaultValue": {
+              "VarKey": "domainList",
+              "Value": null
+            },
+            "pattern": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "isRequired": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "submitWithReturn": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "restoreFocus": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "closeOnDeactivated": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "topMost": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "texttools": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "extraSettings": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "fontfamily": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "fontsize": {
+              "VarKey": null,
+              "Value": "14"
+            },
+            "winLocation": {
+              "VarKey": null,
+              "Value": "CenterScreen"
+            },
+            "imeState": {
+              "VarKey": null,
+              "Value": "NO_CONTROL"
+            },
+            "help": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "textValue": "domainList",
+            "isEmpty": null,
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:each",
+      "InputParams": {
+        "input": {
+          "VarKey": "domainList",
+          "Value": null
+        },
+        "useMultiThread": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "item": "domainWithPort",
+        "count": null,
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "expireTime",
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:if",
+          "InputParams": {
+            "condition": {
+              "VarKey": null,
+              "Value": "$={domainWithPort}.Contains(\":\")"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:assign",
+              "InputParams": {
+                "input": {
+                  "VarKey": null,
+                  "Value": "$=int.Parse({domainWithPort}.SplitToList(':')[1])"
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "isSuccess": null,
+                "output": "port",
+                "errMessage": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:assign",
+              "InputParams": {
+                "input": {
+                  "VarKey": null,
+                  "Value": "$={domainWithPort}.SplitToList(':')[0]"
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "isSuccess": null,
+                "output": "domain",
+                "errMessage": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": [
+            {
+              "StepRunnerKey": "sys:assign",
+              "InputParams": {
+                "input": {
+                  "VarKey": "domainWithPort",
+                  "Value": null
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "isSuccess": null,
+                "output": "domain",
+                "errMessage": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:assign",
+              "InputParams": {
+                "input": {
+                  "VarKey": null,
+                  "Value": "443"
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "isSuccess": null,
+                "output": "port",
+                "errMessage": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:csscript",
+          "InputParams": {
+            "mode": {
+              "VarKey": null,
+              "Value": "normal"
+            },
+            "script": {
+              "VarKey": null,
+              "Value": "//.cs  文件类型，便于外部编辑时使用\r\n// 引用必要的命名空间\r\nusing System;\r\nusing System.Net.Security;\r\nusing System.Net.Sockets;\r\nusing System.Security.Cryptography.X509Certificates;\r\n\r\n// Quicker将会调用的函数。可以根据需要修改返回值类型。\r\npublic static void Exec(Quicker.Public.IStepContext context)\r\n{\r\n\t//var oldValue = context.GetVarValue(\"varName\");  // 读取动作里的变量值\r\n\t//MessageBox.Show(oldValue as string);\r\n\t//context.SetVarValue(\"varName\", \"从脚本输出的内容。\"); // 向变量里输出值\r\n\t//MessageBox.Show(\"Hello World!\");\r\n\t\r\n\tstring host = (string)context.GetVarValue(\"domain\");\r\n\tint port = (int)(long)context.GetVarValue(\"port\"); // SSL端口通常为443\r\n\tvar client = new TcpClient(host, port);\r\n\tvar sslStream = new SslStream(client.GetStream(), false,\r\n\t                              new RemoteCertificateValidationCallback(ValidateServerCertificate), null);\r\n\r\n\ttry\r\n\t{\r\n\t\tsslStream.AuthenticateAsClient(host);\r\n\t\tvar certificate = sslStream.RemoteCertificate;\r\n\t\tvar x509Certificate = new X509Certificate2(certificate);\r\n\t\t//Console.WriteLine(\"Certificate Expiry Date: \" + x509Certificate.GetExpirationDateString());\r\n\t\tcontext.SetVarValue(\"expireTime\", x509Certificate.GetExpirationDateString());\r\n\t}\r\n\tcatch (Exception e)\r\n\t{\r\n\t\tConsole.WriteLine(e.Message);\r\n\t\t\r\n\t\tcontext.SetVarValue(\"expireTime\", \"Error:\" + e.Message);\r\n\t}\r\n\tfinally\r\n\t{\r\n\t\tsslStream.Close();\r\n\t\tclient.Close();\r\n\t}\r\n\t\r\n\t\r\n}\r\n\r\n\r\n\r\n// 用于SSL验证的回调方法，这里简单通过所有验证\r\npublic static bool ValidateServerCertificate(\r\n\tobject sender,\r\n\tX509Certificate certificate,\r\n\tX509Chain chain,\r\n\tSslPolicyErrors sslPolicyErrors)\r\n{\r\n\treturn true; // 通过所有服务器证书\r\n    }"
+            },
+            "reference": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "runOnUiThread": {
+              "VarKey": null,
+              "Value": "auto"
+            },
+            "enableCache": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "rtn": null,
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": "$={result} + {domainWithPort} + \":\\t\" + {expireTime} + \"\\t\" + ((int)(DateTime.Parse({expireTime}) - DateTime.Now).TotalDays) + \"天\" + \"\\r\\n\""
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "result",
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showText",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "NO_WAIT"
+        },
+        "text": {
+          "VarKey": "result",
+          "Value": null
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "证书到期时间"
+        },
+        "autoCloseKey": {
+          "VarKey": null,
+          "Value": "="
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "winSize": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "14"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "bgColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "textColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "highlight": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "autoSaveToState": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "enableEscClose": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "closeWhenLostFocus": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "showLineNum": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "autoWrap": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "showBuildInToolbar": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "copyWholeLine": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "caretPosition": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "advancedSettings": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "updateIfExists": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "windowHandle": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -18574,13 +20380,7 @@ Manual: `自定义位置`
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| script | 脚本内容 | 要运行的脚本内容 | (0)字符串-Text | //.js 主函数 exec()
-function exec(){
- var localName = quickerGetVar('text');  // 读取text变量值, (text 是动作里的变量)
- quickerSetVar('text', 'Hello, ' + localName ); //输出修改后的值到text变量中。
- return 0; //返回0表示成功。返回其他数字表示失败。
-}
- | True |
+| script | 脚本内容 | 要运行的脚本内容 | (0)字符串-Text | //.js 主函数 exec()<br>function exec(){<br> var localName = quickerGetVar('text');  // 读取text变量值, (text 是动作里的变量)<br> quickerSetVar<br>'text', 'Hello, ' + localName ); //输出修改后的值到text变量中。<br> return 0; //返回0表示成功。返回其他数字表示失败。<br>}<br> | True |
 | allClr | 允许访问.Net程序集 | 是否需要在js代码中访问.Net程序集 | (2)布尔值-Boolean | False | False |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
 
@@ -18597,9 +20397,605 @@ function exec(){
 <details>
 <summary>范例</summary>
 
-**范例1**
+**将这种格式：3(NH4)2S + Sb2S5 -> 6NH4+ + 2SbS4 3+转换为：3(NH₄)₂S + Sb₂S₅ → 6NH₄⁺ + 2SbS₄³⁺；自动转换元素符号大小写（避免输入时频繁切换大小写字符，在输入后由动作统一处理替换）。**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "origin",
+      "Type": 0,
+      "Desc": "ASC格式书写的",
+      "DefaultValue": "3(NH4)2S + Sb2S5 -> 6NH4+ + 2SbS4 3+",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "result",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "resultHtml",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "元素表",
+      "Type": 10,
+      "Desc": "",
+      "DefaultValue": "氢:H\r\n氦:He\r\n锂:Li\r\n铍:Be\r\n硼:B\r\n碳:C\r\n氮:N\r\n氧:O\r\n氟:F\r\n氖:Ne\r\n钠:Na\r\n镁:Mg\r\n铝:Al\r\n硅:Si\r\n磷:P\r\n硫:S\r\n氯:Cl\r\n氩:Ar\r\n钾:K\r\n钙:Ca\r\n钪:Sc\r\n钛:Ti\r\n钒:V\r\n铬:Cr\r\n锰:Mn\r\n铁:Fe\r\n镍:Ni\r\n铜:Cu\r\n锌:Zn\r\n镓:Ga\r\n锗:Ge\r\n砷:As\r\n硒:Se\r\n溴:Br\r\n氪:Kr\r\n铷:Rb\r\n锶:Sr\r\n钇:Y\r\n锆:Zr\r\n铌:Nb\r\n钼:Mo\r\n锝:Tc\r\n钌:Ru\r\n铑:Rh\r\n钯:Pd\r\n银:Ag\r\n镉:Cd\r\n铟:In\r\n锡:Sn\r\n锑:Sb\r\n碲:Te\r\n碘:I\r\n氙:Xe\r\n铯:Cs\r\n钡:Ba\r\n镧:La\r\n铈:Ce\r\n镨:Pr\r\n钕:Nd\r\n钷:Pm\r\n钐:Sm\r\n铕:Eu\r\n钆:Gd\r\n铽:Tb\r\n镝:Dy\r\n钬:Ho\r\n铒:Er\r\n铥:Tm\r\n镱:Yb\r\n镥:Lu\r\n铪:Hf\r\n钽:Ta\r\n钨:W\r\n铼:Re\r\n锇:Os\r\n铱:Ir\r\n铂:Pt\r\n金:Au\r\n汞:Hg\r\n铊:Tl\r\n铅:Pb\r\n铋:Bi\r\n砹:At\r\n氡:Rn\r\n钫:Fr\r\n镭:Ra\r\n锕:Ac\r\n钍:Th\r\n镤:Pa\r\n铀:U\r\n镎:NP\r\n钚:Pu\r\n镅:Am\r\n锔:Cm\r\n锫:Bk\r\n锎:Cf\r\n锿:Es\r\n镄:Fm\r\n钔:Md\r\n铹:Lr",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "format",
+      "Type": 0,
+      "Desc": "选择的输出格式",
+      "DefaultValue": "unicode",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "enableReplaceChar",
+      "Type": 2,
+      "Desc": "自动转换大小写",
+      "DefaultValue": "0",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "动作设置处理"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$={quicker_in_param} == \"settings\""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:form",
+          "InputParams": {
+            "title": {
+              "VarKey": null,
+              "Value": "填写表单"
+            },
+            "formDef": {
+              "VarKey": null,
+              "Value": "{\"Fields\":[{\"FieldKey\":\"enableReplaceChar\",\"Label\":\"自动转换大小写\",\"HelpText\":\"自动转换化学元素的大小写\",\"HelpLink\":null,\"InputMethod\":6,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"VisibleExpression\":\"\"},{\"FieldKey\":\"format\",\"Label\":\"输出格式\",\"HelpText\":\"选择的输出格式\",\"HelpLink\":null,\"InputMethod\":3,\"SelectionItems\":\"Unicode特殊符号（纯文本，支持所有编辑器）|unicode\\r\\nHTML上下标标记（支持word编辑器）|html\",\"IsRequired\":true,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"VisibleExpression\":\"\"}]}"
+            },
+            "help": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "titleColumnWidth": {
+              "VarKey": null,
+              "Value": "100"
+            },
+            "windowWidth": {
+              "VarKey": null,
+              "Value": "500"
+            },
+            "restoreFocus": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "topMost": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:stop",
+          "InputParams": {
+            "method": {
+              "VarKey": null,
+              "Value": "default"
+            },
+            "isError": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "return": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "showMessage": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:getSelectedText",
+      "InputParams": {
+        "format": {
+          "VarKey": null,
+          "Value": "UnicodeText"
+        },
+        "repeat": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "output": "origin",
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "转换为unicode符号"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:jsscript",
+      "InputParams": {
+        "script": {
+          "VarKey": null,
+          "Value": "\r\nfunction ord(s)\r\n{\r\n    return s.charCodeAt();\r\n}\r\n\r\nfunction chr(i)\r\n{\r\n    return String.fromCharCode(i);\r\n}\r\n\r\nfunction Script(s)\r\n{\r\n    this[\"+\"] = s[0];\r\n    this[\"-\"] = s[1];\r\n    for (var i = 0; i < 10; i++) {\r\n        var c = chr(ord(\"0\") + i)\r\n        this[c] = s[2 + i];\r\n    }\r\n}\r\n\r\nScript.prototype.translate = function(s) {\r\n    var script = this;\r\n    var trans_char = function(c) {\r\n        var t = script[c];\r\n        if (t === undefined)\r\n            t = c;\r\n        return t;\r\n    }\r\n    return s.replace(/./g, trans_char);\r\n}\r\n\r\nvar sup = new Script(\"⁺⁻⁰¹²³⁴⁵⁶⁷⁸⁹\");\r\nvar sub = new Script(\"₊₋₀₁₂₃₄₅₆₇₈₉\");\r\nvar misc = {\r\n    \"->\": \"→\",\r\n    \"=\": \"⇌\",\r\n    \".\": \"·\",\r\n    \"*\": \"·\",\r\n};\r\n\r\nvar _regexp = [\r\n    /([\\]\\)A-Za-z])([0-9]*)([+-]?)/,\r\n    /(\\s+)([0-9]+[+-])/,\r\n    /(->|[=.*])/\r\n];\r\n_regexp = _regexp.map(function(re) { return re.source }).join(\"|\");\r\n_regexp = new RegExp(_regexp, \"g\");\r\n\r\nfunction translate(formula)\r\n{\r\n    var translate_one = function(match, g1, g1a, g1b, g2, g2a, g3)\r\n    {\r\n        if (g1 !== undefined)\r\n            return g1 + sub.translate(g1a) + sup.translate(g1b);\r\n        if (g2 !== undefined)\r\n            return sup.translate(g2a);\r\n        if (g3 !== undefined)\r\n            return misc[g3];\r\n    }\r\n    return formula.replace(_regexp, translate_one);\r\n}\r\n\r\n\r\n// 主函数 exec()\r\nfunction exec(){\r\n var asc = quickerGetVar('origin');  // 读取context变量值, (context 是动作里的变量)\r\n var result = translate(asc);\r\n quickerSetVar('result', result ); //输出修改后的值到name变量中。\r\n return 0; //返回0表示成功。返回其他数字表示失败。\r\n}\r\n"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "return": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": "enableReplaceChar",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "除 (C|N|P)o 中的 o，所有字母大写"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:jsscript",
+          "InputParams": {
+            "script": {
+              "VarKey": null,
+              "Value": "//.js 主函数 exec()\r\nfunction exec(){\r\n var input = quickerGetVar('result');  // 读取text变量值, (text 是动作里的变量)\r\n var temp = input.replace(/(?<!C|N|P)o|[abcdefghijklmnpqrstuvwxyz]/g, function(a){\r\n   return a.toUpperCase();})\r\n quickerSetVar('result', temp); //输出修改后的值到text变量中。\r\n return 0; //返回0表示成功。返回其他数字表示失败。\r\n}\r\n"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "return": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "双字母元素大小写\r\n{元素表} 剔除了 Co No Po"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": "$=\r\nvar yuansuList = {元素表}.Values.Cast<string>().Where(s => s.Length > 1).ToList();\r\n\r\nvar text = {result};\r\nforeach(var item in yuansuList){\r\n\ttext = text.Replace(item.ToUpper(), item);\r\n}\r\n\r\nreturn text;"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "result"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "选择输出哪种格式"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$= {format} == \"unicode\""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:outputText",
+          "InputParams": {
+            "content": {
+              "VarKey": "result",
+              "Value": null
+            },
+            "method": {
+              "VarKey": null,
+              "Value": "paste"
+            },
+            "delayBeforePaste": {
+              "VarKey": null,
+              "Value": "50"
+            },
+            "delayAfterPaste": {
+              "VarKey": null,
+              "Value": "10"
+            },
+            "appendReturn": {
+              "VarKey": null,
+              "Value": "0"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "使用上下标格式，则替换为html代码，写入剪贴板后粘贴"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:strReplace",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "batch"
+            },
+            "input": {
+              "VarKey": "result",
+              "Value": null
+            },
+            "batchReplaceData": {
+              "VarKey": null,
+              "Value": "([⁺⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+)|||<sup>$1</sup>\r\n([₊₋₀₁₂₃₄₅₆₇₈₉]+)|||<sub>$1</sub>"
+            },
+            "escapeOld": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "replaceEscapes": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "useRegex": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "ignoreCase": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "singleLine": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "multiLine": {
+              "VarKey": null,
+              "Value": "0"
+            }
+          },
+          "OutputParams": {
+            "output": "resultHtml"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:strReplace",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "batch"
+            },
+            "input": {
+              "VarKey": "resultHtml",
+              "Value": null
+            },
+            "batchReplaceData": {
+              "VarKey": null,
+              "Value": "⁺|+\r\n⁻|-\r\n⁰|0\r\n¹|1\r\n²|2\r\n³|3\r\n⁴|4\r\n⁵|5\r\n⁶|6\r\n⁷|7\r\n⁸|8\r\n⁹|9\r\n₊|+\r\n₋|-\r\n₀|0\r\n₁|1\r\n₂|2\r\n₃|3\r\n₄|4\r\n₅|5\r\n₆|6\r\n₇|7\r\n₈|8\r\n₉|9"
+            },
+            "escapeOld": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "replaceEscapes": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "useRegex": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "ignoreCase": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "singleLine": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "multiLine": {
+              "VarKey": null,
+              "Value": "0"
+            }
+          },
+          "OutputParams": {
+            "output": "resultHtml"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:writeClipboard",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "html"
+            },
+            "html": {
+              "VarKey": "resultHtml",
+              "Value": null
+            },
+            "text": {
+              "VarKey": "resultHtml",
+              "Value": null
+            },
+            "successMsg": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:keyInput",
+          "InputParams": {
+            "keys": {
+              "VarKey": null,
+              "Value": "{\"CtrlKeys\":[162],\"Keys\":[86]}"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "选择了unicode格式",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -18621,9 +21017,7 @@ function exec(){
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| script | 脚本内容 | 要运行的脚本内容 | (0)字符串-Text | ##.py 
-quicker.context.SetVarValue('text', 'hello world')
- | True |
+| script | 脚本内容 | 要运行的脚本内容 | (0)字符串-Text | ##.py <br>quicker.context.SetVarValue<br>'text', 'hello world')<br> | True |
 | stopIfFail | 失败后停止 | 失败后是否停止动作 | (2)布尔值-Boolean | True | False |
 
 </details>
@@ -18638,9 +21032,83 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "text",
+      "Type": 0,
+      "Desc": "默认的文本变量",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:pythonscript",
+      "InputParams": {
+        "script": {
+          "VarKey": null,
+          "Value": "##.py \r\nquicker.context.SetVarValue('text', 'hello world')\r\n"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "msg": {
+          "VarKey": "text",
+          "Value": null
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        },
+        "clickAction": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "style": {
+          "VarKey": null,
+          "Value": "Default"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -18690,9 +21158,107 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
+**按下按键后显示键名和键值。按Esc退出**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "keyValue",
+      "Type": 1,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "keyName",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:repeat",
+      "InputParams": {
+        "count": {
+          "VarKey": null,
+          "Value": "-1"
+        },
+        "stopCondition": {
+          "VarKey": null,
+          "Value": "$${keyValue} == 27"
+        }
+      },
+      "OutputParams": {
+        "count": null
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:waitKeyboard",
+          "InputParams": {
+            "help": {
+              "VarKey": null,
+              "Value": "请按键...\r\nA：执行A功能，B：执行B功能。\r\nEsc退出。\r\n"
+            }
+          },
+          "OutputParams": {
+            "keyCode": "keyName",
+            "keyValue": "keyValue"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "msg": {
+              "VarKey": null,
+              "Value": "$${keyName}  --- {keyValue}"
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -18748,10 +21314,635 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "坐标",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "控件文本",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "控件名称",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "控件类型",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "选项",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "菜单",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "菜单列表",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "controlXPath",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "XP",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "专业版",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:mouse",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "getMouseCurrentPosition"
+        }
+      },
+      "OutputParams": {
+        "mouseLocation": "坐标",
+        "mouseX": null,
+        "mouseY": null,
+        "cursorType": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:getSysInfo",
+      "InputParams": {},
+      "OutputParams": {
+        "MachineName": null,
+        "userName": null,
+        "userDomainName": null,
+        "OsVersion": null,
+        "isWin10": null,
+        "isWin11": null,
+        "isAutoRun": null,
+        "startupSeconds": null,
+        "isLocked": null,
+        "sysEnv": null,
+        "primaryScreenRes": null,
+        "isFullscreen": null,
+        "isNetworkConnected": null,
+        "lanIp": null,
+        "quickerVersion": null,
+        "isPro": "专业版",
+        "unionId": null,
+        "hasBaiduAccount": null,
+        "runnedSeconds": null,
+        "actionId": null,
+        "actionName": null,
+        "sharedActionId": null,
+        "sharedActionRevision": null,
+        "actionCount": null,
+        "isDebugging": null,
+        "trigger": null,
+        "textParam": null,
+        "imageParam": null,
+        "isWinInDarkMode": null,
+        "quickerThemeMode": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:uiautomation",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "GetCursorPointControlInfo"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "value": null,
+        "controlText": "控件文本",
+        "rect": null,
+        "controlName": "控件名称",
+        "controlType": "控件类型",
+        "controlIsEnabled": null,
+        "controlIsVisible": null,
+        "controlNativeWindowHandle": null,
+        "controlTypeId": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:flauiautomation",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "GetControlInfoByPosition"
+        },
+        "pointLocation": {
+          "VarKey": "坐标",
+          "Value": null
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "value": null,
+        "controlText": null,
+        "rect": null,
+        "controlName": null,
+        "controlType": null,
+        "controlXPath": "controlXPath",
+        "controlTypeId": null,
+        "controlInfo": null,
+        "controlIsEnabled": null,
+        "controlIsVisible": null,
+        "element": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:stringProcess",
+      "InputParams": {
+        "data": {
+          "VarKey": "controlXPath",
+          "Value": null
+        },
+        "method": {
+          "VarKey": null,
+          "Value": "substring"
+        },
+        "start": {
+          "VarKey": null,
+          "Value": "-30"
+        },
+        "length": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "output": "XP",
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$={控件名称} == \"\" || {控件文本} == \"\""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:flauiautomation",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "GetControlInfo"
+            },
+            "window": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "control": {
+              "VarKey": "controlXPath",
+              "Value": null
+            },
+            "controlType": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "0"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "value": null,
+            "controlText": "控件文本",
+            "rect": null,
+            "controlName": "控件名称",
+            "controlType": null,
+            "controlXPath": null,
+            "controlTypeId": null,
+            "controlInfo": null,
+            "controlIsEnabled": null,
+            "controlIsVisible": null,
+            "element": null,
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": "专业版",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:splitString",
+          "InputParams": {
+            "data": {
+              "VarKey": null,
+              "Value": "$${控件文本}\r\n{控件名称}\r\n类型：{控件类型}\r\n路径: ...{XP}({controlXPath})|{controlXPath}"
+            },
+            "separator": {
+              "VarKey": null,
+              "Value": "\\r\\n"
+            },
+            "escapeSeparator": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "multiSeparator": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "removeEmpty": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "output": "菜单列表"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:splitString",
+          "InputParams": {
+            "data": {
+              "VarKey": null,
+              "Value": "$${控件文本}\r\n{控件名称}\r\n类型：{控件类型}"
+            },
+            "separator": {
+              "VarKey": null,
+              "Value": "\\r\\n"
+            },
+            "escapeSeparator": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "multiSeparator": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "removeEmpty": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "output": "菜单列表"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": true,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:listOperations",
+      "InputParams": {
+        "list": {
+          "VarKey": "菜单列表",
+          "Value": null
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "distinct"
+        }
+      },
+      "OutputParams": {
+        "value": "菜单",
+        "isEmpty": null,
+        "length": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showmenu",
+      "InputParams": {
+        "menuData": {
+          "VarKey": "菜单",
+          "Value": null
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "12"
+        },
+        "iconsize": {
+          "VarKey": null,
+          "Value": "16"
+        },
+        "maxHeight": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "useFocus": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "waitMenuClose": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "selectedItemData": "选项",
+        "selectedItem": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:strReplace",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "batch"
+        },
+        "input": {
+          "VarKey": "选项",
+          "Value": null
+        },
+        "batchReplaceData": {
+          "VarKey": null,
+          "Value": "C:\\|\r\nD:\\|\r\nE:\\|\r\nF:\\|\r\nG\\|\r\nH:\\|\r\nI:\\|"
+        },
+        "escapeOld": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "replaceEscapes": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "useRegex": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "ignoreCase": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "singleLine": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "multiLine": {
+          "VarKey": null,
+          "Value": "false"
+        }
+      },
+      "OutputParams": {
+        "output": "选项"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:writeClipboard",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "auto"
+        },
+        "input": {
+          "VarKey": "选项",
+          "Value": null
+        },
+        "successMsg": {
+          "VarKey": null,
+          "Value": "$$已复制：\r\n{选项}"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
+
 </details>
 
 ***
@@ -18790,10 +21981,136 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
+**判断W是否按下，如未按下则按下1500毫秒然后松开**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "isDown",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:keyoperation",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "get_key_state"
+        },
+        "key": {
+          "VarKey": null,
+          "Value": "W"
+        },
+        "getRealMouseState": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isDown": "isDown",
+        "isToggled": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$=!{isDown}"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:keyoperation",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "key_down"
+            },
+            "key": {
+              "VarKey": null,
+              "Value": "W"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:delay",
+          "InputParams": {
+            "delayMs": {
+              "VarKey": null,
+              "Value": "1500"
+            },
+            "monitorWaitWin": {
+              "VarKey": null,
+              "Value": "0"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:keyoperation",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "key_up"
+            },
+            "key": {
+              "VarKey": null,
+              "Value": "W"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
+
 </details>
 
 ***
@@ -18848,10 +22165,321 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
+**资源管理器里切换到超大图标视图**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:uiautomation",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "TriggerControl"
+        },
+        "window": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "control": {
+          "VarKey": null,
+          "Value": "查看"
+        },
+        "controlType": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "controlOperation": {
+          "VarKey": null,
+          "Value": "Auto"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "切换到“查看”标签页",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:uiautomation",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "TriggerControl"
+        },
+        "window": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "control": {
+          "VarKey": null,
+          "Value": "超大图标"
+        },
+        "controlType": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "controlOperation": {
+          "VarKey": null,
+          "Value": "Auto"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "点击“超大图标”视图类型",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
+
+**切换Win10的蓝牙开关**
+```json
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:run",
+      "InputParams": {
+        "path": {
+          "VarKey": null,
+          "Value": "ms-settings:"
+        },
+        "arg": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "setWorkingDir": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "windowStyle": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "runas": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "waitInputIdle": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "waitExit": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "alternativePath": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "pid": null,
+        "mainWinHandle": null,
+        "mainWinTitle": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:delay",
+      "InputParams": {
+        "delayMs": {
+          "VarKey": null,
+          "Value": "500"
+        },
+        "monitorWaitWin": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:uiautomation",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "TriggerControl"
+        },
+        "window": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "control": {
+          "VarKey": null,
+          "Value": "设备"
+        },
+        "controlType": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "controlOperation": {
+          "VarKey": null,
+          "Value": "Auto"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:delay",
+      "InputParams": {
+        "delayMs": {
+          "VarKey": null,
+          "Value": "100"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": null,
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:uiautomation",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "TriggerControl"
+        },
+        "window": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "control": {
+          "VarKey": null,
+          "Value": "蓝牙和其他设备"
+        },
+        "controlType": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "controlOperation": {
+          "VarKey": null,
+          "Value": "Auto"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:delay",
+      "InputParams": {
+        "delayMs": {
+          "VarKey": null,
+          "Value": "100"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": null,
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:uiautomation",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "TriggerControl"
+        },
+        "window": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "control": {
+          "VarKey": null,
+          "Value": "蓝牙"
+        },
+        "controlType": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "controlOperation": {
+          "VarKey": null,
+          "Value": "Auto"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
 </details>
 
 ***
@@ -18891,9 +22519,67 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "pinyinFirstChar",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "pinyin",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:charInfo",
+      "InputParams": {
+        "char": {
+          "VarKey": null,
+          "Value": "中"
+        }
+      },
+      "OutputParams": {
+        "unicodeNum": null,
+        "unicodeHex": null,
+        "pinyinFirstChar": "pinyinFirstChar",
+        "pinyin": "pinyin",
+        "pinyinFirstCharAll": null,
+        "pinyinAll": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -18934,10 +22620,294 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
+**数字变量进行格式化处理，输出为文本**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "context",
+      "Type": 0,
+      "Desc": "默认的文本变量",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "number",
+      "Type": 1,
+      "Desc": "",
+      "DefaultValue": "12345.6789",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:formatString",
+      "InputParams": {
+        "formatString": {
+          "VarKey": null,
+          "Value": "提示：请查看动作定义了解使用方法\r\n组合成文本模块的说明：https://www.yuque.com/quicker/help/formatstring\r\n\r\n默认格式: {0}\r\n\r\n--- 标准格式---\r\n参考网址：https://docs.microsoft.com/zh-cn/dotnet/standard/base-types/standard-numeric-format-strings\r\n货币格式C: C=> {0:C}   C2=> {0:C2}  C4=> {0:C4}\r\n十进制D 不支持（Quicker中的数字为decimal类型，d只适合于int类型）\r\n指数E: E=> {0:E}  E2=> {0:E2}\r\n定点F: F=> {0:F}  F2=> {0:F2}\r\n常规G: G=> {0:G}  G2=> {0:G2}\r\n数字N: N=> {0:N}  N2=> {0:N2}\r\n百分比P:P=> {0:P}  P1=> {0:P1} P2=> {0:P2} P3=> {0:P3}\r\n十六进制X:不支持\r\n\r\n---自定义格式---\r\n参考网址：https://docs.microsoft.com/zh-cn/dotnet/standard/base-types/custom-numeric-format-strings\r\n0 零占位符，用对应的数字（如果存在）替换零；否则，将在结果字符串中显示零。\r\n  00000000.000000 => {0:00000000.000000}\r\n# 数字占位符：用对应的数字（如果存在）替换“#”符号；否则，不会在结果字符串中显示任何数字。\r\n  ##### => {0:#####}    #.## => {0:#.##}\r\n. 确定小数点分隔符在结果字符串中的位置。\r\n  0.00 => {0:0.00}\r\n% 百分比占位符\t将数字乘以 100，并在结果字符串中插入本地化的百分比符号。\r\n  ##.0% => {0:##.0%}  ##,#.0%=>{0:##,#.0%}\r\n\r\n\r\n  "
+        },
+        "p0": {
+          "VarKey": "number",
+          "Value": null
+        },
+        "p1": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p2": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p3": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p4": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "output": "context"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showText",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "NO_WAIT"
+        },
+        "text": {
+          "VarKey": "context",
+          "Value": null
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "结果内容"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "14"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": "Consolas"
+        }
+      },
+      "OutputParams": {
+        "selectedOperation": null,
+        "resultText": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
+
+**将数字转换为选择的格式；可以根据需要添加更多的格式转换，请参考c# 数字格式化为字符串的文档**
+```json
+{
+  "Variables": [
+    {
+      "Key": "context",
+      "Type": 0,
+      "Desc": "默认的文本变量",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "num",
+      "Type": 1,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSelectedText",
+      "InputParams": {
+        "format": {
+          "VarKey": null,
+          "Value": "UnicodeText"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "output": "context",
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": null,
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:compute",
+      "InputParams": {
+        "expression": {
+          "VarKey": null,
+          "Value": "$${context}"
+        }
+      },
+      "OutputParams": {
+        "output": "num"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": null,
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:formatString",
+      "InputParams": {
+        "formatString": {
+          "VarKey": null,
+          "Value": "{0:N}\r\n{0:C}\r\n{0:P}\r\n{0:.00‰}\r\n{0:00.00}"
+        },
+        "p0": {
+          "VarKey": "num",
+          "Value": null
+        },
+        "p1": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p2": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p3": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p4": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "output": "context"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": null,
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:select",
+      "InputParams": {
+        "prompt": {
+          "VarKey": null,
+          "Value": "请选择格式"
+        },
+        "items": {
+          "VarKey": null,
+          "Value": "$${context}"
+        },
+        "defaultValue": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "textValue": "context"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": null,
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:outputText",
+      "InputParams": {
+        "content": {
+          "VarKey": "context",
+          "Value": null
+        },
+        "method": {
+          "VarKey": null,
+          "Value": "input"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": null,
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
 </details>
 
 ***
@@ -18982,9 +22952,319 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
+**将指定网址生成markdown，并写入剪贴板**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "markdown",
+      "Type": 0,
+      "Desc": "生成的markdown内容",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "title",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "url",
+      "Type": 0,
+      "Desc": "网址",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "html",
+      "Type": 0,
+      "Desc": "html内容",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "description",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "获取网页HTML内容"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:http",
+      "InputParams": {
+        "url": {
+          "VarKey": "url",
+          "Value": null
+        },
+        "method": {
+          "VarKey": null,
+          "Value": "GET"
+        },
+        "header": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "cookie": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "resultType": {
+          "VarKey": null,
+          "Value": "Text"
+        },
+        "ua": {
+          "VarKey": null,
+          "Value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36"
+        },
+        "expireSeconds": {
+          "VarKey": null,
+          "Value": "100"
+        },
+        "noAutoRedirect": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "statusCode": null,
+        "respHeaders": null,
+        "respCookies": null,
+        "content": "html",
+        "imgResult": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "提取网页的Title和Description"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:htmlExtract",
+      "InputParams": {
+        "source": {
+          "VarKey": "html",
+          "Value": null
+        },
+        "xpath": {
+          "VarKey": null,
+          "Value": "html/head/title"
+        },
+        "selectTarget": {
+          "VarKey": null,
+          "Value": "single"
+        },
+        "returnType": {
+          "VarKey": null,
+          "Value": "InnerText"
+        },
+        "attribute": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "value": "title"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "提取标题",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:htmlExtract",
+      "InputParams": {
+        "source": {
+          "VarKey": "html",
+          "Value": null
+        },
+        "xpath": {
+          "VarKey": null,
+          "Value": "//meta[@name='description']"
+        },
+        "selectTarget": {
+          "VarKey": null,
+          "Value": "single"
+        },
+        "returnType": {
+          "VarKey": null,
+          "Value": "Attribute"
+        },
+        "attribute": {
+          "VarKey": null,
+          "Value": "content"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "value": "description"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "提取description",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "拼接为MarkDown链接，写入剪贴板"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:assign",
+      "InputParams": {
+        "input": {
+          "VarKey": null,
+          "Value": "$$[{title}]({url} '{description}')"
+        }
+      },
+      "OutputParams": {
+        "output": "markdown"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:writeClipboard",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "text"
+        },
+        "text": {
+          "VarKey": "markdown",
+          "Value": null
+        },
+        "successMsg": {
+          "VarKey": null,
+          "Value": "$$已写入剪贴板：\r\n{markdown}"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -19022,9 +23302,71 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
+**转换结果为：a挨着b挨着c挨着d**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "list",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "a\r\nb\r\nc\r\nd",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "output",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:joinList",
+      "InputParams": {
+        "list": {
+          "VarKey": "list",
+          "Value": null
+        },
+        "separator": {
+          "VarKey": null,
+          "Value": "挨着"
+        },
+        "escapeSeparator": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "output": "output"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -19073,9 +23415,656 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "json",
+      "Type": 0,
+      "Desc": "json内容",
+      "DefaultValue": "{\r\n  'Stores': [\r\n    'Lambton Quay',\r\n    'Willis Street'\r\n  ],\r\n  'Manufacturers': [\r\n    {\r\n      'Name': 'Acme Co',\r\n      'Products': [\r\n        {\r\n          'Name': 'Anvil',\r\n          'Price': 50\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      'Name': 'Contoso',\r\n      'Products': [\r\n        {\r\n          'Name': 'Elbow Grease',\r\n          'Price': 99.95\r\n        },\r\n        {\r\n          'Name': 'Headlight Fluid',\r\n          'Price': 4\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "list",
+      "Type": 99,
+      "Desc": "Manufacture对象列表",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "item",
+      "Type": 99,
+      "Desc": "列表的一项",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "rootToken",
+      "Type": 99,
+      "Desc": "根JToken对象，对应整个Json数据",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "oneName",
+      "Type": 0,
+      "Desc": "某个Manufacture的Name属性",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "index",
+      "Type": 12,
+      "Desc": "序号",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "nameList",
+      "Type": 99,
+      "Desc": "Name列表",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "提取所有的Manufacture对象到列表\r\n对列表中的每个Manufacture，显示其Name属性的值。"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:jsonExtract",
+      "InputParams": {
+        "data": {
+          "VarKey": "json",
+          "Value": null
+        },
+        "p0": {
+          "VarKey": null,
+          "Value": "Manufacturers"
+        },
+        "p1": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p2": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p3": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p4": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "v0": "list",
+        "v1": null,
+        "v2": null,
+        "v3": null,
+        "v4": null,
+        "rootToken": "rootToken"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:MsgBox",
+      "InputParams": {
+        "message": {
+          "VarKey": null,
+          "Value": "提取所有的Manufacture对象到列表\r\n对列表中的每个Manufacture，显示其Name属性的值。"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "Quicker"
+        },
+        "icon": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "buttons": {
+          "VarKey": null,
+          "Value": "OK"
+        }
+      },
+      "OutputParams": {
+        "result": null,
+        "okOrYes": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:each",
+      "InputParams": {
+        "input": {
+          "VarKey": "list",
+          "Value": null
+        }
+      },
+      "OutputParams": {
+        "item": "item",
+        "count": "index"
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "msg": {
+              "VarKey": null,
+              "Value": "$= \"序号\" + {index}.ToString() + \" \" + {item}[\"Name\"]"
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:delay",
+      "InputParams": {
+        "delayMs": {
+          "VarKey": null,
+          "Value": "2000"
+        },
+        "monitorWaitWin": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "提取所有的Manufacture对象的Name属性到一个存放了所有Name的列表，\r\n对列表中的每个Name，显示其值。"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:jsonExtract",
+      "InputParams": {
+        "data": {
+          "VarKey": "json",
+          "Value": null
+        },
+        "p0": {
+          "VarKey": null,
+          "Value": "Manufacturers[*].Name"
+        },
+        "p1": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p2": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p3": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p4": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "v0": "nameList",
+        "v1": null,
+        "v2": null,
+        "v3": null,
+        "v4": null,
+        "rootToken": "rootToken"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:MsgBox",
+      "InputParams": {
+        "message": {
+          "VarKey": null,
+          "Value": "提取所有的Manufacture对象的Name属性到一个列表，\r\n对列表中的每个Name，显示其值。"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "Quicker"
+        },
+        "icon": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "buttons": {
+          "VarKey": null,
+          "Value": "OK"
+        }
+      },
+      "OutputParams": {
+        "result": null,
+        "okOrYes": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:each",
+      "InputParams": {
+        "input": {
+          "VarKey": "nameList",
+          "Value": null
+        }
+      },
+      "OutputParams": {
+        "item": "item",
+        "count": "index"
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "msg": {
+              "VarKey": null,
+              "Value": "$= \"序号\" + {index}.ToString() + \" \" + {item}"
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:delay",
+      "InputParams": {
+        "delayMs": {
+          "VarKey": null,
+          "Value": "2000"
+        },
+        "monitorWaitWin": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "使用第一次提取时候保存的rootToken，提取json中的单个值"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:MsgBox",
+      "InputParams": {
+        "message": {
+          "VarKey": null,
+          "Value": "提取单个值 Manufacturers[0].Name"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "Quicker"
+        },
+        "icon": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "buttons": {
+          "VarKey": null,
+          "Value": "OK"
+        }
+      },
+      "OutputParams": {
+        "result": null,
+        "okOrYes": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:jsonExtract",
+      "InputParams": {
+        "data": {
+          "VarKey": "rootToken",
+          "Value": null
+        },
+        "p0": {
+          "VarKey": null,
+          "Value": "Manufacturers[0].Name"
+        },
+        "p1": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p2": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p3": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "p4": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "v0": "oneName",
+        "v1": null,
+        "v2": null,
+        "v3": null,
+        "v4": null,
+        "rootToken": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "msg": {
+          "VarKey": "oneName",
+          "Value": null
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:delay",
+      "InputParams": {
+        "delayMs": {
+          "VarKey": null,
+          "Value": "2000"
+        },
+        "monitorWaitWin": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "使用表达式，读取第二个Manufacture的Name\r\n使用了两种写法。"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:MsgBox",
+      "InputParams": {
+        "message": {
+          "VarKey": null,
+          "Value": "使用表达式访问JToken中的内容\r\n$= \"方法1:\" + (string){rootToken}.SelectToken(\"Manufacturers[1].Name\")\r\n$= \"方法2\" + (string){rootToken}[\"Manufacturers\"][1][\"Name\"]"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "Quicker"
+        },
+        "icon": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "buttons": {
+          "VarKey": null,
+          "Value": "OK"
+        }
+      },
+      "OutputParams": {
+        "result": null,
+        "okOrYes": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "msg": {
+          "VarKey": null,
+          "Value": "$= \"方法1:\" + (string){rootToken}.SelectToken(\"Manufacturers[1].Name\")"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "msg": {
+          "VarKey": null,
+          "Value": "$= \"方法2\" + (string){rootToken}[\"Manufacturers\"][1][\"Name\"]"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -19125,9 +24114,251 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "name",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "nameNoExt",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "ext",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "path",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "resultPath",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:pathExtraction",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "getInfo"
+        },
+        "path": {
+          "VarKey": null,
+          "Value": "D:\\Work\\Quicker\\doc\\icon.psd"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "name": "name",
+        "nameNoExt": "nameNoExt",
+        "ext": "ext",
+        "path": "path"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:pathExtraction",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "changeExt"
+        },
+        "path": {
+          "VarKey": null,
+          "Value": "D:\\Work\\Quicker\\doc\\icon.psd"
+        },
+        "newExtension": {
+          "VarKey": null,
+          "Value": ".jpg"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "resultPath": "resultPath"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:pathExtraction",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "changeName"
+        },
+        "path": {
+          "VarKey": null,
+          "Value": "D:\\Work\\Quicker\\doc\\icon.psd"
+        },
+        "newFileName": {
+          "VarKey": null,
+          "Value": "icon_save_20220506_112233.psd"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "resultPath": "resultPath"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:pathExtraction",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "changeDir"
+        },
+        "path": {
+          "VarKey": null,
+          "Value": "D:\\Work\\Quicker\\doc\\icon.psd"
+        },
+        "newDir": {
+          "VarKey": null,
+          "Value": "D:\\Backup\\20220105"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "resultPath": "resultPath"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:pathExtraction",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "combine"
+        },
+        "path": {
+          "VarKey": null,
+          "Value": "d:\\Work"
+        },
+        "path2": {
+          "VarKey": null,
+          "Value": "media"
+        },
+        "path3": {
+          "VarKey": null,
+          "Value": "20220506"
+        },
+        "path4": {
+          "VarKey": null,
+          "Value": "abc.gif"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "resultPath": "resultPath"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -19178,9 +24409,540 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "source",
+      "Type": 0,
+      "Desc": "原始文本内容",
+      "DefaultValue": "a1 b2 c3 d4\r\ne5 f6 g7 h8",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "allMatches",
+      "Type": 4,
+      "Desc": "所有匹配项的值列表",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "match1",
+      "Type": 99,
+      "Desc": "匹配项1",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "match2",
+      "Type": 0,
+      "Desc": "匹配项2",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "match3",
+      "Type": 0,
+      "Desc": "匹配项3",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "match4",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "match5",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "matchCollection",
+      "Type": 99,
+      "Desc": "Match对象集合",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "regExpression",
+      "Type": 0,
+      "Desc": "正则表达式",
+      "DefaultValue": "([a-z])([0-9])",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "matchObj",
+      "Type": 99,
+      "Desc": "原始Match对象",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:regexExtract",
+      "InputParams": {
+        "getGroup": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "data": {
+          "VarKey": "source",
+          "Value": null
+        },
+        "pattern": {
+          "VarKey": "regExpression",
+          "Value": null
+        },
+        "ignoreCase": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "singleLine": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "multiLine": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "matches": "allMatches",
+        "match1 ": "match1",
+        "match2 ": "match2",
+        "match3 ": "match3",
+        "match4 ": "match4",
+        "match5 ": "match5",
+        "matchesCollection": null,
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showText",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "WAIT"
+        },
+        "text": {
+          "VarKey": null,
+          "Value": "$$\r\n原始内容：{source}\r\n正则表达式：{regExpression}\r\n提取内容：各匹配项的值\r\n===================\r\n所有匹配项列表：\r\n{allMatches}\r\n===================\r\n匹配1:{match1}\r\n匹配2:{match2}\r\n匹配3:{match3}\r\n匹配4:{match4}\r\n匹配5:{match5}\r\n"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "结果内容"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "14"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "selectedOperation": null,
+        "resultText": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "提取首个匹配项的组"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:regexExtract",
+      "InputParams": {
+        "getGroup": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "data": {
+          "VarKey": "source",
+          "Value": null
+        },
+        "pattern": {
+          "VarKey": "regExpression",
+          "Value": null
+        },
+        "ignoreCase": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "singleLine": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "multiLine": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "matches": "allMatches",
+        "match1 ": "match1",
+        "match2 ": "match2",
+        "match3 ": "match3",
+        "match4 ": "match4",
+        "match5 ": "match5",
+        "matchObj": "matchObj",
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showText",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "WAIT"
+        },
+        "text": {
+          "VarKey": null,
+          "Value": "$$\r\n原始内容：{source}\r\n正则表达式：{regExpression}\r\n提取内容：第一个匹配项的组\r\n===================\r\n所有匹配项列表：\r\n{allMatches}\r\n===================\r\n匹配1:{match1}\r\n匹配2:{match2}\r\n匹配3:{match3}\r\n匹配4:{match4}\r\n匹配5:{match5}\r\n"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "结果内容"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "14"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "selectedOperation": null,
+        "resultText": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "提取所有匹配项的组"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:regexExtract",
+      "InputParams": {
+        "getGroup": {
+          "VarKey": null,
+          "Value": "2"
+        },
+        "data": {
+          "VarKey": "source",
+          "Value": null
+        },
+        "pattern": {
+          "VarKey": "regExpression",
+          "Value": null
+        },
+        "ignoreCase": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "singleLine": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "multiLine": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "rightToLeft": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "matches": "allMatches",
+        "match1 ": "match1",
+        "match2 ": "match2",
+        "match3 ": "match3",
+        "match4 ": "match4",
+        "match5 ": "match5",
+        "matchesCollection": "matchCollection",
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showText",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "WAIT"
+        },
+        "text": {
+          "VarKey": null,
+          "Value": "$$\r\n原始内容：{source}\r\n正则表达式：{regExpression}\r\n提取内容：所有匹配项的组\r\n===================\r\n所有匹配项列表：\r\n{allMatches}\r\n===================\r\n匹配1:{match1}\r\n匹配2:{match2}\r\n匹配3:{match3}\r\n匹配4:{match4}\r\n匹配5:{match5}\r\n"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "结果内容"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "14"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "selectedOperation": null,
+        "resultText": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "在表达式中使用原始c#对象。"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "msg": {
+          "VarKey": null,
+          "Value": "$= \"MatchCollection中Match对象数量=\" + {matchCollection}.Count + \"\\n\" \r\n+ \"首个Match的值：\" + {matchCollection}[0].Value"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "msg": {
+          "VarKey": null,
+          "Value": "$= \"Match对象的Groupshul =\" + {matchObj}.Groups.Count + \"\\n\" \r\n+ \"首个group的值：\" + {matchObj}.Groups[1].Value"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -19246,9 +25008,166 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "context",
+      "Type": 0,
+      "Desc": "默认的文本变量",
+      "DefaultValue": "aaaa\r\nbbbb",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "list",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:form",
+      "InputParams": {
+        "title": {
+          "VarKey": null,
+          "Value": "填写表单"
+        },
+        "formDef": {
+          "VarKey": null,
+          "Value": "{\"Fields\":[{\"FieldKey\":\"context\",\"Label\":\"testt_t\",\"HelpText\":\"\",\"HelpLink\":null,\"InputMethod\":1,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"MaxLength\":0},{\"FieldKey\":\"list\",\"Label\":\"test_e\",\"HelpText\":\"test\",\"HelpLink\":null,\"InputMethod\":8,\"SelectionItems\":\"aaa\\r\\nbbb\\r\\nccc\\r\\nddd\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"MaxLength\":0}]}"
+        },
+        "help": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "restoreFocus": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:getSelectedText",
+      "InputParams": {
+        "format": {
+          "VarKey": null,
+          "Value": "UnicodeText"
+        },
+        "repeat": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "output": "context",
+        "outputEncoded": null,
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showText",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "WAIT"
+        },
+        "text": {
+          "VarKey": "context",
+          "Value": null
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "结果内容"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": "[fa:Solid_Cog33:#339900]转大写(将选中的文字转换为大写)|call:s$rs$in$toUpper\r\n【*】|call:s$rs$sp$文本添加首尾内容?head=【&end=】\r\n[+][fa:Solid_Pen:#FF0000]菜单(这里是tooltip内容)\r\n[-][fa:Light_LaughBeam:#0000FF]添加[*](选中的内容包围在中括号中)|call:s$rs$sp$文本添加首尾内容?head=[&end=]\r\n[fa:Solid_Cog:#339900]转小写(将选中的文字转换为大写)|call:s$rs$in$toLower\r\nEcho服务|call:all$rs$cloud$echo\r\n[fa:Light_SignOut:#BB0000](关闭窗口)|Exit"
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "14"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "highlight": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "closeWhenLostFocus": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "showLineNum": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "selectedOperation": null,
+        "resultText": null,
+        "selectedText": "context"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -19288,9 +25207,204 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
+**按字母顺序排序多行文本**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "context",
+      "Type": 0,
+      "Desc": "默认的文本变量",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "list",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSelectedText",
+      "InputParams": {
+        "format": {
+          "VarKey": null,
+          "Value": "UnicodeText"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "output": "context",
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:splitString",
+      "InputParams": {
+        "data": {
+          "VarKey": "context",
+          "Value": null
+        },
+        "separator": {
+          "VarKey": null,
+          "Value": "\\n"
+        },
+        "escapeSeparator": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "removeEmpty": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "output": "list"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$={quicker_in_param} == \"desc\""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:listOperations",
+          "InputParams": {
+            "list": {
+              "VarKey": "list",
+              "Value": null
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "sortDesc"
+            }
+          },
+          "OutputParams": {
+            "value": "list",
+            "isEmpty": null,
+            "length": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:listOperations",
+          "InputParams": {
+            "list": {
+              "VarKey": "list",
+              "Value": null
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "sortAsc"
+            },
+            "list2": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "pos": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "length": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "item": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {
+            "isEmpty": null,
+            "length": null,
+            "value": "list"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:outputText",
+      "InputParams": {
+        "content": {
+          "VarKey": "list",
+          "Value": null
+        },
+        "method": {
+          "VarKey": null,
+          "Value": "paste"
+        },
+        "appendReturn": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -19336,9 +25450,99 @@ quicker.context.SetVarValue('text', 'hello world')
 <details>
 <summary>范例</summary>
 
-**范例1**
+**去除英文**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "去除的变量",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "去除后",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:strReplace",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "single"
+        },
+        "input": {
+          "VarKey": "去除的变量",
+          "Value": null
+        },
+        "old": {
+          "VarKey": null,
+          "Value": "[a-zA-Z]"
+        },
+        "new": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "escapeOld": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "replaceEscapes": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "useRegex": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "ignoreCase": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "singleLine": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "multiLine": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "output": "去除后"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -19375,13 +25579,6 @@ quicker.context.SetVarValue('text', 'hello world')
 
 </details>
 <details>
-<summary>范例</summary>
-
-**范例1**
-```json
-
-```
-</details>
 
 ***
 
