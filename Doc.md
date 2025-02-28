@@ -7238,6 +7238,876 @@ Manual: `自定义位置`
   "SubPrograms": []
 }
 ```
+
+**一键获取临时邮箱**
+```json
+{
+  "Variables": [
+    {
+      "Key": "返回结果",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "email",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "配置_保存的邮箱",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "选择的操作",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "res",
+      "Type": 99,
+      "Desc": "返回结果的JObject",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:group",
+      "InputParams": {
+        "skipErr": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "skipWhenDebugging": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "useMultiThread": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "waitAny": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errorMessage": null
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:simpleIf",
+          "InputParams": {
+            "condition": {
+              "VarKey": null,
+              "Value": "$= String.Equals({quicker_in_param}, \"已保存邮箱列表\", StringComparison.OrdinalIgnoreCase)"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:manageList",
+              "InputParams": {
+                "list": {
+                  "VarKey": "配置_保存的邮箱",
+                  "Value": null
+                },
+                "winTitle": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "note": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "parseData": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "seperator": {
+                  "VarKey": null,
+                  "Value": "|"
+                },
+                "windowSize": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "allowAdd": {
+                  "VarKey": null,
+                  "Value": "1"
+                },
+                "allowEdit": {
+                  "VarKey": null,
+                  "Value": "1"
+                },
+                "allowDelete": {
+                  "VarKey": null,
+                  "Value": "1"
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "help": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "titleDelegate": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {
+                "isSuccess": null,
+                "errMessage": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:stop",
+              "InputParams": {
+                "method": {
+                  "VarKey": null,
+                  "Value": "default"
+                },
+                "isError": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "return": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "showMessage": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": true,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [],
+      "Note": "动作右键",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:form",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "variables"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "选择操作"
+        },
+        "formDef": {
+          "VarKey": null,
+          "Value": "{\"Fields\":[{\"FieldKey\":\"email\",\"DictVarType\":null,\"Label\":\"邮箱\",\"HelpText\":\"输入或下拉选择保存的邮箱后可以查看邮件\",\"HelpLink\":null,\"InputMethod\":11,\"SelectionItems\":\"$${配置_保存的邮箱}\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"ExtraSettings\":\"\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"ColumnWidth\":0.0,\"OnlyDate\":false,\"ReadOnly\":false,\"Group\":\"\"}]}"
+        },
+        "help": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "titleColumnWidth": {
+          "VarKey": null,
+          "Value": "100"
+        },
+        "windowWidth": {
+          "VarKey": null,
+          "Value": "500"
+        },
+        "windowHeight": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "restoreFocus": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "disableEnterSubmit": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "markdownhelp": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "defaultInputWidth": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "confirm": {
+          "VarKey": null,
+          "Value": "📬查看邮件"
+        },
+        "customButtons": {
+          "VarKey": null,
+          "Value": "获取新邮箱|获取新邮箱"
+        },
+        "selectedGroup": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "winSize": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "button": "选择的操作",
+        "selectedGroup": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$= String.IsNullOrWhiteSpace({选择的操作})"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:simpleIf",
+          "InputParams": {
+            "condition": {
+              "VarKey": null,
+              "Value": "$= String.IsNullOrWhiteSpace({email})"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:notify",
+              "InputParams": {
+                "type": {
+                  "VarKey": null,
+                  "Value": "Error"
+                },
+                "msg": {
+                  "VarKey": null,
+                  "Value": "邮箱不能为空！"
+                },
+                "maxLines": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "style": {
+                  "VarKey": null,
+                  "Value": "Default"
+                },
+                "clickAction": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:stop",
+              "InputParams": {
+                "method": {
+                  "VarKey": null,
+                  "Value": "default"
+                },
+                "isError": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "return": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "showMessage": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": true,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            },
+            "msg": {
+              "VarKey": null,
+              "Value": "正在获取邮件中..."
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            },
+            "clickAction": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:webview2",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "OpenUrl"
+            },
+            "url": {
+              "VarKey": null,
+              "Value": "$$<!DOCTYPE html>\r\n<html lang='zh'>\r\n<head>\r\n    <meta charset='UTF-8'>\r\n    <meta name='viewport' content='width=device-width, initial-scale=1.0'>\r\n    <title>邮箱收件箱</title>\r\n    <style>\r\n        :root {\r\n            --primary-color: #1a73e8;\r\n            --bg-color: #f8fafc;\r\n            --text-color: #333;\r\n            --hover-color: #f0f2f5;\r\n            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);\r\n            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);\r\n            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);\r\n            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\r\n        }\r\n\r\n        * {\r\n            margin: 0;\r\n            padding: 0;\r\n            box-sizing: border-box;\r\n            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;\r\n        }\r\n\r\n        body {\r\n            background-color: var(--bg-color);\r\n            color: var(--text-color);\r\n        }\r\n\r\n        .header {\r\n            background: rgba(255, 255, 255, 0.9);\r\n            backdrop-filter: blur(10px);\r\n            -webkit-backdrop-filter: blur(10px);\r\n            padding: 1.2rem 2rem;\r\n            box-shadow: var(--shadow-sm);\r\n            position: fixed;\r\n            width: 100%;\r\n            top: 0;\r\n            z-index: 100;\r\n            transition: var(--transition);\r\n        }\r\n\r\n        .header:hover {\r\n            box-shadow: var(--shadow-md);\r\n        }\r\n\r\n        .header-content {\r\n            display: flex;\r\n            justify-content: space-between;\r\n            align-items: center;\r\n            max-width: 1200px;\r\n            margin: 0 auto;\r\n        }\r\n\r\n        .email-address {\r\n            font-size: 1.2rem;\r\n            color: var(--primary-color);\r\n            font-weight: 500;\r\n            opacity: 0;\r\n            animation: slideIn 0.5s ease forwards;\r\n        }\r\n\r\n        .email-count {\r\n            background: var(--primary-color);\r\n            color: white;\r\n            padding: 0.5rem 1.2rem;\r\n            border-radius: 20px;\r\n            font-size: 0.9rem;\r\n            box-shadow: var(--shadow-sm);\r\n            transition: var(--transition);\r\n            opacity: 0;\r\n            animation: slideIn 0.5s ease 0.2s forwards;\r\n        }\r\n\r\n        .email-count:hover {\r\n            transform: translateY(-2px);\r\n            box-shadow: var(--shadow-md);\r\n        }\r\n\r\n        .container {\r\n            max-width: 1200px;\r\n            margin: 100px auto 0;\r\n            padding: 20px;\r\n        }\r\n\r\n        .email-list {\r\n            background: white;\r\n            border-radius: 16px;\r\n            box-shadow: var(--shadow-sm);\r\n            overflow: hidden;\r\n            opacity: 0;\r\n            animation: fadeIn 0.8s ease 0.4s forwards;\r\n        }\r\n\r\n        .email-item {\r\n            padding: 1.2rem 1.8rem;\r\n            border-bottom: 1px solid #eee;\r\n            cursor: pointer;\r\n            transition: var(--transition);\r\n            display: flex;\r\n            justify-content: space-between;\r\n            align-items: center;\r\n            opacity: 0;\r\n            animation: slideUp 0.5s ease forwards;\r\n            animation-delay: calc(var(--index) * 0.1s);\r\n        }\r\n\r\n        .email-item:hover {\r\n            background-color: var(--hover-color);\r\n            transform: translateX(5px);\r\n            box-shadow: inset 4px 0 0 var(--primary-color);\r\n        }\r\n\r\n        .email-item:last-child {\r\n            border-bottom: none;\r\n        }\r\n\r\n        .email-left {\r\n            flex: 1;\r\n        }\r\n\r\n        .email-subject {\r\n            font-weight: 500;\r\n            margin-bottom: 0.5rem;\r\n        }\r\n\r\n        .email-from {\r\n            color: #666;\r\n            font-size: 0.9rem;\r\n        }\r\n\r\n        .email-right {\r\n            text-align: right;\r\n            min-width: 150px;\r\n        }\r\n\r\n        .email-time {\r\n            color: #666;\r\n            font-size: 0.9rem;\r\n        }\r\n\r\n        .email-size {\r\n            color: #999;\r\n            font-size: 0.8rem;\r\n            margin-top: 0.3rem;\r\n        }\r\n\r\n        .modal {\r\n            display: none;\r\n            position: fixed;\r\n            top: 0;\r\n            left: 0;\r\n            width: 100%;\r\n            height: 100%;\r\n            background: rgba(0,0,0,0.5);\r\n            z-index: 1000;\r\n            opacity: 0;\r\n            transition: opacity 0.3s ease;\r\n        }\r\n\r\n        .modal.show {\r\n            opacity: 1;\r\n        }\r\n\r\n        .modal-content {\r\n            position: relative;\r\n            background: white;\r\n            margin: 50px auto;\r\n            padding: 25px;\r\n            width: 90%;\r\n            max-width: 800px;\r\n            max-height: 80vh;\r\n            overflow-y: auto;\r\n            border-radius: 16px;\r\n            box-shadow: var(--shadow-lg);\r\n            transform: translateY(-20px);\r\n            opacity: 0;\r\n            transition: var(--transition);\r\n        }\r\n\r\n        .modal.show .modal-content {\r\n            transform: translateY(0);\r\n            opacity: 1;\r\n        }\r\n\r\n        .close {\r\n            position: absolute;\r\n            right: 20px;\r\n            top: 10px;\r\n            font-size: 28px;\r\n            cursor: pointer;\r\n            color: #666;\r\n        }\r\n\r\n        .close:hover {\r\n            color: #333;\r\n        }\r\n\r\n        .modal-header {\r\n            margin-bottom: 20px;\r\n            padding-bottom: 10px;\r\n            border-bottom: 1px solid #eee;\r\n        }\r\n\r\n        .modal-subject {\r\n            font-size: 1.5rem;\r\n            margin-bottom: 10px;\r\n        }\r\n\r\n        .modal-info {\r\n            color: #666;\r\n            font-size: 0.9rem;\r\n        }\r\n\r\n        .modal-body {\r\n            line-height: 1.6;\r\n        }\r\n\r\n        @keyframes slideIn {\r\n            from {\r\n                transform: translateX(-20px);\r\n                opacity: 0;\r\n            }\r\n            to {\r\n                transform: translateX(0);\r\n                opacity: 1;\r\n            }\r\n        }\r\n\r\n        @keyframes fadeIn {\r\n            from {\r\n                opacity: 0;\r\n            }\r\n            to {\r\n                opacity: 1;\r\n            }\r\n        }\r\n\r\n        @keyframes slideUp {\r\n            from {\r\n                transform: translateY(20px);\r\n                opacity: 0;\r\n            }\r\n            to {\r\n                transform: translateY(0);\r\n                opacity: 1;\r\n            }\r\n        }\r\n        \r\n\r\n        /* 添加加载状态样式 */\r\n        .loading {\r\n            position: fixed;\r\n            top: 0;\r\n            left: 0;\r\n            right: 0;\r\n            bottom: 0;\r\n            background: rgba(255, 255, 255, 0.9);\r\n            display: flex;\r\n            justify-content: center;\r\n            align-items: center;\r\n            z-index: 2000;\r\n        }\r\n\r\n        .loading-spinner {\r\n            width: 50px;\r\n            height: 50px;\r\n            border: 3px solid var(--primary-color);\r\n            border-radius: 50%;\r\n            border-top-color: transparent;\r\n            animation: spin 1s linear infinite;\r\n        }\r\n\r\n        .empty-state {\r\n            text-align: center;\r\n            padding: 40px;\r\n            color: #666;\r\n        }\r\n\r\n        @keyframes spin {\r\n            to {\r\n                transform: rotate(360deg);\r\n            }\r\n        }\r\n\r\n        /* 修改刷新按钮位置和样式 */\r\n        .refresh-container {\r\n            position: relative;\r\n            margin-left: 20px;\r\n            display: inline-flex;\r\n            align-items: center;\r\n        }\r\n\r\n        .refresh-button {\r\n            width: 40px;\r\n            height: 40px;\r\n            position: relative;\r\n            border-radius: 50%;\r\n            background: var(--primary-color);\r\n            border: none;\r\n            cursor: pointer;\r\n            box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);\r\n            transition: all 0.3s ease;\r\n            overflow: hidden;\r\n        }\r\n\r\n        .refresh-button:hover {\r\n            transform: translateY(-2px);\r\n            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);\r\n        }\r\n\r\n        .refresh-button:active {\r\n            transform: translateY(0);\r\n        }\r\n\r\n        .refresh-icon {\r\n            position: absolute;\r\n            top: 50%;\r\n            left: 50%;\r\n            transform: translate(-50%, -50%);\r\n            width: 24px;\r\n            height: 24px;\r\n            color: white;\r\n        }\r\n\r\n        /* 修改旋转动画 */\r\n        .refresh-button.loading .refresh-icon {\r\n            animation: refreshRotate 1s infinite linear;\r\n        }\r\n\r\n        @keyframes refreshRotate {\r\n            from {\r\n                transform: translate(-50%, -50%) rotate(0deg);\r\n            }\r\n            to {\r\n                transform: translate(-50%, -50%) rotate(360deg);\r\n            }\r\n        }\r\n\r\n        .refresh-ripple {\r\n            position: absolute;\r\n            top: 50%;\r\n            left: 50%;\r\n            transform: translate(-50%, -50%);\r\n            width: 0;\r\n            height: 0;\r\n            background: rgba(255, 255, 255, 0.4);\r\n            border-radius: 50%;\r\n            opacity: 1;\r\n            transition: all 0.6s ease-out;\r\n        }\r\n\r\n        .refresh-button.clicked .refresh-ripple {\r\n            width: 150%;\r\n            height: 150%;\r\n            opacity: 0;\r\n        }\r\n\r\n        /* 添加提示文字样式 */\r\n        .refresh-tooltip {\r\n            position: absolute;\r\n            bottom: -30px;\r\n            left: 50%;\r\n            transform: translateX(-50%);\r\n            background: rgba(0, 0, 0, 0.8);\r\n            color: white;\r\n            padding: 5px 10px;\r\n            border-radius: 4px;\r\n            font-size: 12px;\r\n            opacity: 0;\r\n            visibility: hidden;\r\n            transition: all 0.3s ease;\r\n            white-space: nowrap;\r\n        }\r\n\r\n        .refresh-button:hover .refresh-tooltip {\r\n            opacity: 1;\r\n            visibility: visible;\r\n            transform: translateX(-50%) translateY(0);\r\n        }\r\n\r\n        @keyframes success-scale {\r\n            0% { transform: scale(1); }\r\n            50% { transform: scale(1.2); }\r\n            100% { transform: scale(1); }\r\n        }\r\n\r\n        /* 添加邮件列表刷新动画 */\r\n        .email-list.refreshing .email-item {\r\n            animation: itemRefresh 0.5s ease-out;\r\n            opacity: 0.5;\r\n            pointer-events: none;\r\n        }\r\n\r\n        @keyframes itemRefresh {\r\n            0% {\r\n                transform: translateX(0);\r\n                opacity: 1;\r\n            }\r\n            50% {\r\n                transform: translateX(-10px);\r\n                opacity: 0.5;\r\n            }\r\n            100% {\r\n                transform: translateX(0);\r\n                opacity: 0.5;\r\n            }\r\n        }\r\n\r\n        /* 修改加载动画样式 */\r\n        .loading-overlay {\r\n            position: absolute;\r\n            top: 0;\r\n            left: 0;\r\n            right: 0;\r\n            bottom: 0;\r\n            background: rgba(255, 255, 255, 0.8);\r\n            display: flex;\r\n            justify-content: center;\r\n            align-items: center;\r\n            opacity: 0;\r\n            visibility: hidden;\r\n            transition: all 0.3s ease;\r\n        }\r\n\r\n        .loading-overlay.show {\r\n            opacity: 1;\r\n            visibility: visible;\r\n        }\r\n\r\n        .loading-dots {\r\n            display: flex;\r\n            gap: 8px;\r\n        }\r\n\r\n        .loading-dots span {\r\n            width: 8px;\r\n            height: 8px;\r\n            background: var(--primary-color);\r\n            border-radius: 50%;\r\n            animation: dotPulse 1s infinite;\r\n        }\r\n\r\n        .loading-dots span:nth-child(2) {\r\n            animation-delay: 0.2s;\r\n        }\r\n\r\n        .loading-dots span:nth-child(3) {\r\n            animation-delay: 0.4s;\r\n        }\r\n\r\n        @keyframes dotPulse {\r\n            0%, 100% { transform: scale(1); opacity: 0.3; }\r\n            50% { transform: scale(1.2); opacity: 1; }\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n    <div id=\"loading\" class=\"loading\">\r\n        <div class=\"loading-spinner\"></div>\r\n    </div>\r\n\r\n    <header class='header'>\r\n        <div class='header-content'>\r\n            <div class='email-address' id=\"emailAddress\"></div>\r\n            <div style=\"display: flex; align-items: center;\">\r\n                <div class='email-count' id=\"emailCount\"></div>\r\n                <div class=\"refresh-container\">\r\n                    <button class=\"refresh-button\" id=\"refreshButton\" onclick=\"handleRefresh()\">\r\n                        <svg class=\"refresh-icon\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\r\n                            <path d=\"M17.65 6.35C16.2 4.9 14.21 4 12 4C7.58 4 4.01 7.58 4.01 12C4.01 16.42 7.58 20 12 20C15.73 20 18.84 17.45 19.73 14H17.65C16.83 16.33 14.61 18 12 18C8.69 18 6 15.31 6 12C6 8.69 8.69 6 12 6C13.66 6 15.14 6.69 16.22 7.78L13 11H20V4L17.65 6.35Z\" fill=\"currentColor\"/>\r\n                        </svg>\r\n                        <div class=\"refresh-ripple\"></div>\r\n                        <span class=\"refresh-tooltip\">刷新邮件列表</span>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </header>\r\n\r\n    <div class='container'>\r\n        <div class='email-list' id=\"emailList\">\r\n            <!-- 邮件列表将通过 JavaScript 动态插入 -->\r\n        </div>\r\n        <div class=\"loading-overlay\" id=\"listLoadingOverlay\">\r\n            <div class=\"loading-dots\">\r\n                <span></span>\r\n                <span></span>\r\n                <span></span>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div id='emailModal' class='modal'>\r\n        <div class='modal-content'>\r\n            <span class='close'>&times;</span>\r\n            <div class='modal-header'>\r\n                <h2 class='modal-subject' id='modalSubject'></h2>\r\n                <div class='modal-info' id='modalInfo'></div>\r\n            </div>\r\n            <div class='modal-body' id='modalBody'></div>\r\n        </div>\r\n    </div>\r\n\r\n    <script>\r\n        const EMAIL = '{email}';\r\n        const API_URL = `https://api.pearktrue.cn/api/email?type=receive&email=${ EMAIL}`;\r\n\r\n        // 初始化页面\r\n        async function initializeEmailViewer() {\r\n            const loadingOverlay = document.getElementById('listLoadingOverlay');\r\n            loadingOverlay.classList.add('show');\r\n            \r\n            try {\r\n                // 添加错误处理和超时控制\r\n                const controller = new AbortController();\r\n                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时\r\n\r\n                const response = await fetch(API_URL, {\r\n                    method: 'GET',\r\n                    signal: controller.signal,\r\n                    // 添加必要的请求头\r\n                    headers: {\r\n                        'Accept': 'application/json',\r\n                        'Origin': 'null'\r\n                    },\r\n                    // 允许跨域请求\r\n                    mode: 'cors'\r\n                });\r\n\r\n                clearTimeout(timeoutId);\r\n\r\n                if (!response.ok) {\r\n                    throw new Error(`HTTP error! status: ${ response.status}`);\r\n                }\r\n\r\n                const data = await response.json();\r\n                \r\n                // 更新邮箱地址\r\n                document.getElementById('emailAddress').textContent = EMAIL;\r\n\r\n                if (data.msg === \"暂无邮件\") {\r\n                    // 显示空状态\r\n                    document.getElementById('emailCount').style.display = 'none';\r\n                    document.getElementById('emailList').innerHTML = `\r\n                        <div class=\"empty-state\">\r\n                            <h2>暂无邮件</h2>\r\n                            <p>当前邮箱没有收到任何邮件</p>\r\n                        </div>\r\n                    `;\r\n                } else {\r\n                    // 显示邮件数量\r\n                    document.getElementById('emailCount').textContent = `共 ${ data.count} 封邮件`;\r\n                    \r\n                    // 对邮件按时间排序（最新的在前）\r\n                    const sortedEmails = data.receivedata.sort((a, b) => {\r\n                        const timeA = new Date(a.time.replace(/-/g, '/'));\r\n                        const timeB = new Date(b.time.replace(/-/g, '/'));\r\n                        return timeB - timeA; // 降序排列\r\n                    });\r\n                    \r\n                    // 生成邮件列表\r\n                    const emailListHtml = sortedEmails.map((email, index) => `\r\n                        <div class='email-item' style=\"--index: ${index + 1}\">\r\n                            <div class='email-left'>\r\n                                <div class='email-subject'>${ email.subject}</div>\r\n                                <div class='email-from'>${ email.from}</div>\r\n                            </div>\r\n                            <div class='email-right'>\r\n                                <div class='email-time'>${ email.time}</div>\r\n                                <div class='email-size'>${ email.size}</div>\r\n                            </div>\r\n                        </div>\r\n                    `).join('');\r\n                    \r\n                    document.getElementById('emailList').innerHTML = emailListHtml;\r\n\r\n                    // 添加点击事件时也使用排序后的数组\r\n                    document.querySelectorAll('.email-item').forEach((item, index) => {\r\n                        item.addEventListener('click', () => {\r\n                            const email = sortedEmails[index];\r\n                            document.getElementById('modalSubject').textContent = email.subject;\r\n                            document.getElementById('modalInfo').innerHTML = `\r\n                                从: ${ email.from}<br>\r\n                                时间: ${ email.time}<br>\r\n                                大小: ${ email.size}\r\n                            `;\r\n                            document.getElementById('modalBody').innerHTML = email.body.html || email.body.text;\r\n                            \r\n                            const modal = document.getElementById('emailModal');\r\n                            modal.style.display = 'block';\r\n                            requestAnimationFrame(() => {\r\n                                modal.classList.add('show');\r\n                            });\r\n                        });\r\n                    });\r\n                }\r\n            } catch (error) {\r\n                console.error('获取邮件失败:', error);\r\n                \r\n                // 提供更详细的错误信息\r\n                let errorMessage = '获取邮件数据时出现错误';\r\n                if (error.name === 'AbortError') {\r\n                    errorMessage = '请求超时，请检查网络连接';\r\n                } else if (error.message.includes('Failed to fetch')) {\r\n                    errorMessage = '网络请求失败，请检查网络连接或跨域设置';\r\n                }\r\n\r\n                document.getElementById('emailList').innerHTML = `\r\n                    <div class=\"empty-state\">\r\n                        <h2>加载失败</h2>\r\n                        <p>${ errorMessage}</p>\r\n                        <button onclick=\"retryLoad()\" style=\"\r\n                            margin-top: 20px;\r\n                            padding: 10px 20px;\r\n                            background: var(--primary-color);\r\n                            color: white;\r\n                            border: none;\r\n                            border-radius: 5px;\r\n                            cursor: pointer;\r\n                        \">重试</button>\r\n                    </div>\r\n                `;\r\n            } finally {\r\n                loadingOverlay.classList.remove('show');\r\n                document.getElementById('loading').style.display = 'none';\r\n            }\r\n        }\r\n\r\n        // 添加重试功能\r\n        function retryLoad() {\r\n            document.getElementById('loading').style.display = 'flex';\r\n            initializeEmailViewer();\r\n        }\r\n\r\n        // 模态框关闭逻辑\r\n        const modal = document.getElementById('emailModal');\r\n        const closeBtn = document.getElementsByClassName('close')[0];\r\n\r\n        closeBtn.onclick = function() {\r\n            modal.classList.remove('show');\r\n            setTimeout(() => {\r\n                modal.style.display = 'none';\r\n            }, 300);\r\n        }\r\n\r\n        window.onclick = function(event) {\r\n            if (event.target == modal) {\r\n                closeBtn.onclick();\r\n            }\r\n        }\r\n\r\n        // 修改刷新处理函数\r\n        async function handleRefresh() {\r\n            const button = document.getElementById('refreshButton');\r\n            const ripple = button.querySelector('.refresh-ripple');\r\n            const emailList = document.getElementById('emailList');\r\n            const loadingOverlay = document.getElementById('listLoadingOverlay');\r\n            \r\n            if (button.classList.contains('loading')) return;\r\n            \r\n            // 添加刷新效果\r\n            button.classList.add('clicked', 'loading');\r\n            emailList.classList.add('refreshing');\r\n            loadingOverlay.classList.add('show');\r\n            \r\n            // 重置波纹效果\r\n            setTimeout(() => {\r\n                button.classList.remove('clicked');\r\n                ripple.style.width = '0';\r\n                ripple.style.height = '0';\r\n            }, 600);\r\n\r\n            try {\r\n                await initializeEmailViewer();\r\n                \r\n                // 成功动画\r\n                button.classList.remove('loading');\r\n                button.style.animation = 'success-scale 0.5s ease';\r\n                setTimeout(() => {\r\n                    button.style.animation = '';\r\n                }, 500);\r\n            } catch (error) {\r\n                button.classList.remove('loading');\r\n            } finally {\r\n                emailList.classList.remove('refreshing');\r\n                loadingOverlay.classList.remove('show');\r\n            }\r\n        }\r\n\r\n        // 页面加载完成后初始化\r\n        document.addEventListener('DOMContentLoaded', initializeEmailViewer);\r\n    </script>\r\n</body>\r\n</html> "
+            },
+            "additionalBrowserArguments": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "virtualHostToFolder": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "userAgent": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "title": {
+              "VarKey": null,
+              "Value": "临时邮箱"
+            },
+            "icon": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "defaultBgColor": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "autoCloseKey": {
+              "VarKey": null,
+              "Value": "="
+            },
+            "modeForExists": {
+              "VarKey": null,
+              "Value": "SkipThisStep"
+            },
+            "script": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "winLocation": {
+              "VarKey": null,
+              "Value": "CenterScreen"
+            },
+            "winSize": {
+              "VarKey": null,
+              "Value": "50%,50%"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "defaultDownloadFolderPath": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "profileName": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "topMost": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "showInTaskbar": {
+              "VarKey": null,
+              "Value": "true"
+            },
+            "noActivate": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "closeWhenLostFocus": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "escCloseWindow": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "showToolbar": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "windowStyle": {
+              "VarKey": null,
+              "Value": "normal"
+            },
+            "clearCookies": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "addDevTool": {
+              "VarKey": null,
+              "Value": "0"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "hWnd": null,
+            "webView": null,
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "选择【查看邮件】",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$= String.Equals({选择的操作}, \"获取新邮箱\", StringComparison.OrdinalIgnoreCase)"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:http",
+          "InputParams": {
+            "url": {
+              "VarKey": null,
+              "Value": "$$https://api.pearktrue.cn/api/email/?type=get"
+            },
+            "method": {
+              "VarKey": null,
+              "Value": "GET"
+            },
+            "header": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "cookie": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "resultType": {
+              "VarKey": null,
+              "Value": "Text"
+            },
+            "ua": {
+              "VarKey": null,
+              "Value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+            },
+            "expireSeconds": {
+              "VarKey": null,
+              "Value": "100"
+            },
+            "noAutoRedirect": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "showProgress": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "skipCertVerify": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "forceProxy": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "useSSE": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "sseSpName": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "statusCode": null,
+            "respHeaders": null,
+            "respCookies": null,
+            "content": "返回结果",
+            "imgResult": null,
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": "$= return JsonConvert.DeserializeObject<Dictionary<string, string>>({返回结果});"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "res",
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:MsgBox",
+          "InputParams": {
+            "operation": {
+              "VarKey": null,
+              "Value": "custom"
+            },
+            "message": {
+              "VarKey": null,
+              "Value": "$= \"成功获取临时邮箱：\" + \"\\n\" +\r\n{res}[\"email\"]"
+            },
+            "title": {
+              "VarKey": null,
+              "Value": "下一步操作"
+            },
+            "customIcon": {
+              "VarKey": null,
+              "Value": "Information"
+            },
+            "customButtons": {
+              "VarKey": null,
+              "Value": "[fa:Solid_Copy:#4caf50]复制|copy\r\n[fa:Solid_Save:#dc3545]保存|save"
+            },
+            "defaultButton": {
+              "VarKey": null,
+              "Value": "copy"
+            },
+            "restoreFocus": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "result": "选择的操作"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:simpleIf",
+          "InputParams": {
+            "condition": {
+              "VarKey": null,
+              "Value": "$= String.Equals({选择的操作}, \"copy\", StringComparison.OrdinalIgnoreCase)"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:writeClipboard",
+              "InputParams": {
+                "type": {
+                  "VarKey": null,
+                  "Value": "auto"
+                },
+                "input": {
+                  "VarKey": null,
+                  "Value": "$= {res}[\"email\"]"
+                },
+                "successMsg": {
+                  "VarKey": null,
+                  "Value": "复制成功！"
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "isSuccess": null,
+                "errMessage": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:stop",
+              "InputParams": {
+                "method": {
+                  "VarKey": null,
+                  "Value": "default"
+                },
+                "isError": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "return": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "showMessage": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": null,
+          "Note": "选择【copy】",
+          "Disabled": false,
+          "Collapsed": true,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:simpleIf",
+          "InputParams": {
+            "condition": {
+              "VarKey": null,
+              "Value": "$= String.Equals({选择的操作}, \"save\", StringComparison.OrdinalIgnoreCase)"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:listOperations",
+              "InputParams": {
+                "list": {
+                  "VarKey": "配置_保存的邮箱",
+                  "Value": null
+                },
+                "type": {
+                  "VarKey": null,
+                  "Value": "append"
+                },
+                "item": {
+                  "VarKey": null,
+                  "Value": "$={res}[\"email\"]"
+                }
+              },
+              "OutputParams": {
+                "isEmpty": null,
+                "length": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:notify",
+              "InputParams": {
+                "type": {
+                  "VarKey": null,
+                  "Value": "Success"
+                },
+                "msg": {
+                  "VarKey": null,
+                  "Value": "保存成功！"
+                },
+                "maxLines": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "style": {
+                  "VarKey": null,
+                  "Value": "Default"
+                },
+                "clickAction": {
+                  "VarKey": null,
+                  "Value": ""
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": null,
+          "Note": "选择【save】",
+          "Disabled": false,
+          "Collapsed": true,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "选择【获取新邮箱】",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
 </details>
 
 ***
@@ -12104,9 +12974,108 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**num最终值会是“233”，text最终值将是“233.abc”**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "list",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "233\r\n123",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "num",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "text",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:assign",
+      "InputParams": {
+        "input": {
+          "VarKey": null,
+          "Value": "$=int.Parse({list}[0])"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "num",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:assign",
+      "InputParams": {
+        "input": {
+          "VarKey": null,
+          "Value": "$${num}.abc"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "text",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -12115,7 +13084,7 @@ Manual: `自定义位置`
 ## 81.注释
 
 **功能描述**
-> 使用注释将步骤分组，描述后续步骤的目的。
+> 使用注释来描述后续步骤的目的。
 
 **官方文档**
 > https://getquicker.net/KC/Help/Doc/comment
@@ -12138,9 +13107,29 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "这是一行注释"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -12179,10 +13168,817 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**简单范例**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "result",
+      "Type": 99,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "a",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "5",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "b",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "6",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "计算数学公式"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:compute",
+      "InputParams": {
+        "expression": {
+          "VarKey": null,
+          "Value": "1+1"
+        },
+        "evalVar": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "result"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "msg": {
+          "VarKey": "result",
+          "Value": null
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "计算包含变量的表达式"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:compute",
+      "InputParams": {
+        "expression": {
+          "VarKey": null,
+          "Value": "{a} * {b} "
+        },
+        "evalVar": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "result"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "msg": {
+          "VarKey": "result",
+          "Value": null
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "返回其他类型的值"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:compute",
+      "InputParams": {
+        "expression": {
+          "VarKey": null,
+          "Value": "{a} > {b} "
+        },
+        "evalVar": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "result"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "msg": {
+          "VarKey": "result",
+          "Value": null
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "使用Math对象"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:compute",
+      "InputParams": {
+        "expression": {
+          "VarKey": null,
+          "Value": "Math.Pow({a},{b})"
+        },
+        "evalVar": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "result"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "msg": {
+          "VarKey": "result",
+          "Value": null
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
+
+**对每行计算后，在后面显示结果**
+```json
+{
+  "Variables": [
+    {
+      "Key": "context",
+      "Type": 0,
+      "Desc": "默认的文本变量",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "lines",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "result",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "lineResult",
+      "Type": 0,
+      "Desc": "每行的结果",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "resultList",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "isSuccess",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSelectedText",
+      "InputParams": {
+        "format": {
+          "VarKey": null,
+          "Value": "UnicodeText"
+        },
+        "waitMs": {
+          "VarKey": null,
+          "Value": "250"
+        },
+        "repeat": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "trim": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "tryNoClipboard": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "useActionParam": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "context",
+        "outputEncoded": null,
+        "url": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "拆分成列表。 支持3种换行。"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:assign",
+      "InputParams": {
+        "input": {
+          "VarKey": null,
+          "Value": "$={context}.SplitToList(\"\\r\\n\",\"\\n\",\"\\r\")"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "lines",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:each",
+      "InputParams": {
+        "input": {
+          "VarKey": "lines",
+          "Value": null
+        },
+        "useMultiThread": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "item": "context",
+        "count": null,
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "如果行不为空，则计算"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:if",
+          "InputParams": {
+            "condition": {
+              "VarKey": null,
+              "Value": "$= !String.IsNullOrWhiteSpace({context})"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:compute",
+              "InputParams": {
+                "expression": {
+                  "VarKey": "context",
+                  "Value": null
+                },
+                "evalVar": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "0"
+                }
+              },
+              "OutputParams": {
+                "isSuccess": "isSuccess",
+                "output": "lineResult",
+                "errMessage": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:comment",
+              "InputParams": {
+                "note": {
+                  "VarKey": null,
+                  "Value": "如果计算成功，则输出结果，否则原样输出"
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:if",
+              "InputParams": {
+                "condition": {
+                  "VarKey": "isSuccess",
+                  "Value": null
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": [
+                {
+                  "StepRunnerKey": "sys:listOperations",
+                  "InputParams": {
+                    "list": {
+                      "VarKey": "resultList",
+                      "Value": null
+                    },
+                    "type": {
+                      "VarKey": null,
+                      "Value": "append"
+                    },
+                    "item": {
+                      "VarKey": null,
+                      "Value": "$${context} = {lineResult}"
+                    }
+                  },
+                  "OutputParams": {
+                    "isEmpty": null,
+                    "length": null
+                  },
+                  "IfSteps": null,
+                  "ElseSteps": null,
+                  "Note": "",
+                  "Disabled": false,
+                  "Collapsed": false,
+                  "DelayMs": 0
+                }
+              ],
+              "ElseSteps": [
+                {
+                  "StepRunnerKey": "sys:listOperations",
+                  "InputParams": {
+                    "list": {
+                      "VarKey": "resultList",
+                      "Value": null
+                    },
+                    "type": {
+                      "VarKey": null,
+                      "Value": "append"
+                    },
+                    "item": {
+                      "VarKey": null,
+                      "Value": "$${context}"
+                    }
+                  },
+                  "OutputParams": {
+                    "isEmpty": null,
+                    "length": null
+                  },
+                  "IfSteps": null,
+                  "ElseSteps": null,
+                  "Note": "",
+                  "Disabled": false,
+                  "Collapsed": false,
+                  "DelayMs": 0
+                }
+              ],
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": [
+            {
+              "StepRunnerKey": "sys:comment",
+              "InputParams": {
+                "note": {
+                  "VarKey": null,
+                  "Value": "空的情况，输出空行"
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:listOperations",
+              "InputParams": {
+                "list": {
+                  "VarKey": "resultList",
+                  "Value": null
+                },
+                "type": {
+                  "VarKey": null,
+                  "Value": "append"
+                },
+                "item": {
+                  "VarKey": null,
+                  "Value": "$${context}"
+                }
+              },
+              "OutputParams": {
+                "isEmpty": null,
+                "length": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:formatString",
+          "InputParams": {
+            "formatString": {
+              "VarKey": null,
+              "Value": "$${result}\r\n{context} = {lineResult}"
+            },
+            "p0": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "p1": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "p2": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "p3": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "p4": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {
+            "output": "result"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": null,
+          "Disabled": true,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:outputText",
+      "InputParams": {
+        "content": {
+          "VarKey": "resultList",
+          "Value": null
+        },
+        "method": {
+          "VarKey": null,
+          "Value": "paste"
+        },
+        "delayBeforePaste": {
+          "VarKey": null,
+          "Value": "50"
+        },
+        "delayAfterPaste": {
+          "VarKey": null,
+          "Value": "10"
+        },
+        "appendReturn": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
 </details>
 
 ***
@@ -12215,14 +14011,7 @@ Manual: `自定义位置`
 | output | 内容 | 将获得的文本写入到变量 | (0)字符串-Text |
 
 </details>
-<details>
-<summary>范例</summary>
 
-**范例1**
-```json
-
-```
-</details>
 
 ***
 
@@ -12278,10 +14067,664 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**动态更新选择类型字段的可选值**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "lastPath",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "item",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:form",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "variables"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "填写表单"
+        },
+        "formDef": {
+          "VarKey": null,
+          "Value": "{\"Fields\":[{\"FieldKey\":\"item\",\"DictVarType\":null,\"Label\":\"item\",\"HelpText\":\"\",\"HelpLink\":null,\"InputMethod\":3,\"SelectionItems\":\"aaa\\r\\nbbb\\r\\nccc\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"ExtraSettings\":\"\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"ColumnWidth\":0.0,\"OnlyDate\":false,\"ReadOnly\":false,\"Group\":\"\"},{\"FieldKey\":\"lastPath\",\"DictVarType\":null,\"Label\":\"lastPath\",\"HelpText\":\"\",\"HelpLink\":null,\"InputMethod\":3,\"SelectionItems\":\"$={item} + \\\"1\\\\r\\\\n\\\"\\r\\n+ {item} + \\\"2\\\\r\\\\n\\\"\\r\\n+ {item} + \\\"3\\\\r\\\\n\\\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"ExtraSettings\":\"refresh_items\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"ColumnWidth\":0.0,\"OnlyDate\":false,\"ReadOnly\":false,\"Group\":\"\"}]}"
+        },
+        "help": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "titleColumnWidth": {
+          "VarKey": null,
+          "Value": "100"
+        },
+        "windowWidth": {
+          "VarKey": null,
+          "Value": "500"
+        },
+        "windowHeight": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "restoreFocus": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "disableEnterSubmit": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "markdownhelp": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "defaultInputWidth": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "confirm": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "customButtons": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "selectedGroup": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "winSize": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "button": null,
+        "selectedGroup": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
+
+**表单中对个别字段自动计算结果(注意：只能后面的字段依赖靠前的字段)**
+```json
+{
+  "Variables": [
+    {
+      "Key": "x",
+      "Type": 1,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "y",
+      "Type": 1,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "z",
+      "Type": 1,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "distance",
+      "Type": 1,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "hwnd",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "code",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "1",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "height",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:form",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "variables"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "矩形计算器"
+        },
+        "formDef": {
+          "VarKey": null,
+          "Value": "{\"Fields\":[{\"FieldKey\":\"x\",\"DictVarType\":null,\"Label\":\"x\",\"HelpText\":\"\",\"HelpLink\":null,\"InputMethod\":7,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"ExtraSettings\":\"\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"ColumnWidth\":0.0,\"OnlyDate\":false,\"ReadOnly\":false,\"Group\":\"\"},{\"FieldKey\":\"y\",\"DictVarType\":null,\"Label\":\"y\",\"HelpText\":\"\",\"HelpLink\":null,\"InputMethod\":7,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"ExtraSettings\":\"\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"ColumnWidth\":0.0,\"OnlyDate\":false,\"ReadOnly\":false,\"Group\":\"\"},{\"FieldKey\":\"z\",\"DictVarType\":null,\"Label\":\"面积\",\"HelpText\":\"\",\"HelpLink\":null,\"InputMethod\":41,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"ExtraSettings\":\"compute:$={x} * {y}\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"ColumnWidth\":0.0,\"OnlyDate\":false,\"ReadOnly\":false,\"Group\":\"\"},{\"FieldKey\":\"distance\",\"DictVarType\":null,\"Label\":\"斜边长\",\"HelpText\":\"\",\"HelpLink\":null,\"InputMethod\":1,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"ExtraSettings\":\"compute:$=Math.Sqrt({x} * {x} + {y} * {y})\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"ColumnWidth\":0.0,\"OnlyDate\":false,\"ReadOnly\":true,\"Group\":\"\"}]}"
+        },
+        "help": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "titleColumnWidth": {
+          "VarKey": null,
+          "Value": "100"
+        },
+        "windowWidth": {
+          "VarKey": null,
+          "Value": "500"
+        },
+        "windowHeight": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "restoreFocus": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "disableEnterSubmit": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "markdownhelp": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "defaultInputWidth": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "confirm": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "customButtons": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "selectedGroup": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "winSize": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "button": null,
+        "selectedGroup": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:form",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "variables"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "使用depd避免意外更新"
+        },
+        "formDef": {
+          "VarKey": null,
+          "Value": "{\"Fields\":[{\"FieldKey\":\"code\",\"DictVarType\":null,\"Label\":\"页面尺寸\",\"HelpText\":\"\",\"HelpLink\":null,\"InputMethod\":3,\"SelectionItems\":\"1\\r\\n2\\r\\n3\\r\\n4\\r\\n5\\r\\n6\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"ExtraSettings\":\"\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"ColumnWidth\":0.0,\"OnlyDate\":false,\"ReadOnly\":false,\"Group\":\"\"},{\"FieldKey\":\"height\",\"DictVarType\":null,\"Label\":\"水平边距\",\"HelpText\":\"\",\"HelpLink\":null,\"InputMethod\":7,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"ExtraSettings\":\"compute:Convert.ToInt32({code})*2\\r\\ndepd:code\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"ColumnWidth\":0.0,\"OnlyDate\":false,\"ReadOnly\":false,\"Group\":\"\"},{\"FieldKey\":\"hwnd\",\"DictVarType\":null,\"Label\":\"垂直边距\",\"HelpText\":\"\",\"HelpLink\":null,\"InputMethod\":7,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"ExtraSettings\":\"compute:Convert.ToInt32({code})*3\\r\\ndepd:code\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"ColumnWidth\":0.0,\"OnlyDate\":false,\"ReadOnly\":false,\"Group\":\"\"}]}"
+        },
+        "help": {
+          "VarKey": null,
+          "Value": "选择第一个选项后，下面两项可以自由修改。"
+        },
+        "titleColumnWidth": {
+          "VarKey": null,
+          "Value": "100"
+        },
+        "windowWidth": {
+          "VarKey": null,
+          "Value": "500"
+        },
+        "windowHeight": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "restoreFocus": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "disableEnterSubmit": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "markdownhelp": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "defaultInputWidth": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "confirm": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "customButtons": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "selectedGroup": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "winSize": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "button": null,
+        "selectedGroup": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
+**通过Json数据或创建FormField对象列表生成表单**
+```json
+{
+  "Variables": [
+    {
+      "Key": "userInfo",
+      "Type": 10,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:dictOperations",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "setOriginValue"
+        },
+        "dict": {
+          "VarKey": "userInfo",
+          "Value": null
+        },
+        "key": {
+          "VarKey": null,
+          "Value": "age"
+        },
+        "value": {
+          "VarKey": null,
+          "Value": "29"
+        },
+        "ignoreCase": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:form",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "dict_dynamic"
+        },
+        "dictVar": {
+          "VarKey": "userInfo",
+          "Value": null
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "填写表单"
+        },
+        "dynamicFormForDictDef": {
+          "VarKey": null,
+          "Value": "$=new List<Quicker.Public.Forms.FormField>{\r\n\tnew Quicker.Public.Forms.FormField(){\r\n\t\tFieldKey = \"name\",\r\n\t\tLabel  = \"姓名\",\r\n\t\tDictVarType = Quicker.Public.Actions.VarType.Text,\r\n\t\tInputMethod = Quicker.Public.Forms.InputMethod.TextBox,\r\n\t\tGroup = \"基本信息\",\r\n\t\tIsRequired = true\r\n\t},\r\n\tnew Quicker.Public.Forms.FormField(){\r\n\t\tFieldKey = \"age\",\r\n\t\tLabel  = \"年龄\",\r\n\t\tDictVarType = Quicker.Public.Actions.VarType.Integer,\r\n\t\tInputMethod = Quicker.Public.Forms.InputMethod.TextBox,\r\n\t\tGroup = \"基本信息\",\t\t\r\n\t\tIsRequired = true\r\n\t},\r\n\tnew Quicker.Public.Forms.FormField(){\r\n\t\tFieldKey = \"favor\",\r\n\t\tLabel  = \"爱好\",\r\n\t\tDictVarType = Quicker.Public.Actions.VarType.Text,\r\n\t\tInputMethod = Quicker.Public.Forms.InputMethod.DropDown,\r\n\t\tSelectionItems = \"足球\\r\\n篮球\\r\\n排球\\r\\n\",\r\n\t\tGroup = \"隐私信息\",\r\n\t\tIsRequired = true\r\n\t},\r\n\tnew Quicker.Public.Forms.FormField(){\r\n\t\tFieldKey = \"dyna\",\r\n\t\tLabel  = \"动态显示\",\r\n\t\tDictVarType = Quicker.Public.Actions.VarType.Text,\r\n\t\tInputMethod = Quicker.Public.Forms.InputMethod.TextBox,\r\n\t\tSelectionItems = \"\",\r\n\t\tGroup = \"隐私信息\",\r\n\t\tIsRequired = false,\r\n\t\tVisibleExpression = \"$= {favor} == \\\"篮球\\\"\"\r\n\t},\r\n}"
+        },
+        "help": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "titleColumnWidth": {
+          "VarKey": null,
+          "Value": "100"
+        },
+        "windowWidth": {
+          "VarKey": null,
+          "Value": "500"
+        },
+        "windowHeight": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "restoreFocus": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "disableEnterSubmit": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "markdownhelp": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "confirm": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "customButtons": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "button": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showText",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "NO_WAIT"
+        },
+        "text": {
+          "VarKey": null,
+          "Value": "$={userInfo}.ToJson(true);"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "结果内容"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "autoCloseKey": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "winSize": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "14"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "bgColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "textColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "highlight": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "autoSaveToState": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "closeWhenLostFocus": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "showLineNum": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "autoWrap": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "showBuildInToolbar": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "copyWholeLine": {
+          "VarKey": null,
+          "Value": "false"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "windowHandle": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
 </details>
 
 ***
@@ -12313,9 +14756,34 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**简单示例**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:playRecords",
+      "InputParams": {
+        "data": {
+          "VarKey": null,
+          "Value": "816;\tMC;\tLeft,693,2130,1;\r\n559;\tMC;\tLeft,1531,1274,1;\r\n707;\tKP;\tSpace;\r\n207;\tKD;\tLShiftKey;\r\n184;\tKP;\tH;\r\n59;\tKU;\tLShiftKey;\r\n103;\tKP;\tE;\r\n106;\tKP;\tL;\r\n152;\tKP;\tL;\r\n192;\tKP;\tO;\r\n152;\tKP;\tSpace;\r\n130;\tKD;\tLShiftKey;\r\n88;\tKP;\tW;\r\n72;\tKU;\tLShiftKey;\r\n76;\tKP;\tO;\r\n126;\tKP;\tR;\r\n83;\tKP;\tL;\r\n147;\tKP;\tD;\r\n216;\tKD;\tLShiftKey;\r\n131;\tKP;\tD1;\r\n80;\tKU;\tLShiftKey;\r\n71;\tKD;\tLShiftKey;\r\n40;\tKU;\tLShiftKey;"
+        },
+        "speed": {
+          "VarKey": null,
+          "Value": "2"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -12324,7 +14792,7 @@ Manual: `自定义位置`
 ## 86.录制键鼠操作
 
 **功能描述**
-> 录制键鼠操作过程
+> 录制键鼠操作过程，录制的数据使用绝对坐标
 
 **官方文档**
 > https://getquicker.net/KC/Help/Doc/record
@@ -12355,9 +14823,82 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**录制并重放一遍**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "output",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:record",
+      "InputParams": {
+        "autoStart": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "recordMouseMove": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "prepareSeconds": {
+          "VarKey": null,
+          "Value": "3.6"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "output",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:playRecords",
+      "InputParams": {
+        "data": {
+          "VarKey": "output",
+          "Value": null
+        },
+        "speed": {
+          "VarKey": null,
+          "Value": "2.5"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -12366,7 +14907,7 @@ Manual: `自定义位置`
 ## 87.运行脚本
 
 **功能描述**
-> 运行脚本。
+> 此模块用于执行一段脚本代码。除了CMD命令，其他脚本类型将会在执行时先将脚本存入临时文件，然后执行此临时文件。
 
 **官方文档**
 > https://getquicker.net/KC/Help/Doc/runScript
@@ -12404,11 +14945,828 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**一键断开网络，又一键开启网络**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "text",
+      "Type": 0,
+      "Desc": "默认的文本变量",
+      "DefaultValue": "",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "text2",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "状态开",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getCurrentTime",
+      "InputParams": {
+        "source": {
+          "VarKey": null,
+          "Value": "currTime"
+        },
+        "useUtc": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addDays": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addHours": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addMinutes": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addSeconds": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addMonths": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "format": {
+          "VarKey": null,
+          "Value": "yyyy-MM-dd"
+        },
+        "outputCulture": {
+          "VarKey": null,
+          "Value": "CURRENT"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": null,
+        "strValue": "text2",
+        "timeStamp": null,
+        "timeStampMs": null,
+        "year": null,
+        "month": null,
+        "day": null,
+        "hour": null,
+        "minute": null,
+        "second": null,
+        "dayOfWeek": null,
+        "dayOfYear": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$= {text} != {text2}"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": "text2",
+              "Value": null
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "text",
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": "true"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "状态开",
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            },
+            "msg": {
+              "VarKey": null,
+              "Value": "首次&每日首次使用\r\n默认执行断开网络！"
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            },
+            "clickAction": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": "状态开",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:runScript",
+          "InputParams": {
+            "script": {
+              "VarKey": null,
+              "Value": "@echo off\r\nnetsh interface set interface \"Wi-Fi\" disable\r\nnetsh interface set interface \"以太网\" disable\r\necho 无线网络和有线网络已全部断开连接。"
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "BAT"
+            },
+            "encoding": {
+              "VarKey": null,
+              "Value": "default"
+            },
+            "outputEncoding": {
+              "VarKey": null,
+              "Value": "oem"
+            },
+            "workingDir": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "runAsAdmin": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "waitToExit": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "stdout": null,
+            "stdoutOnly": null,
+            "stderr": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "状态开",
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "Success"
+            },
+            "msg": {
+              "VarKey": null,
+              "Value": "网 络  已 \r\n断 开 连接"
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            },
+            "clickAction": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:runScript",
+          "InputParams": {
+            "script": {
+              "VarKey": null,
+              "Value": "@echo off\r\nnetsh interface set interface \"Wi-Fi\" enable\r\nnetsh interface set interface \"以太网\" enable\r\necho 无线网络和有线网络已全部恢复连接。"
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "BAT"
+            },
+            "encoding": {
+              "VarKey": null,
+              "Value": "default"
+            },
+            "outputEncoding": {
+              "VarKey": null,
+              "Value": "oem"
+            },
+            "workingDir": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "runAsAdmin": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "waitToExit": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "stdout": null,
+            "stdoutOnly": null,
+            "stderr": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": "true"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "状态开",
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            },
+            "msg": {
+              "VarKey": null,
+              "Value": "网络已取消禁用"
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            },
+            "clickAction": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
+
+**安装grep存放在C:\Windows\grep目录下**
+```json
+{
+  "Variables": [
+    {
+      "Key": "cache",
+      "Type": 0,
+      "Desc": "缓存",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "cache2",
+      "Type": 0,
+      "Desc": "缓存2号",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        },
+        "msg": {
+          "VarKey": null,
+          "Value": "开始下载grep"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "style": {
+          "VarKey": null,
+          "Value": "Default"
+        },
+        "clickAction": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:download",
+      "InputParams": {
+        "url": {
+          "VarKey": null,
+          "Value": "http://www.interlog.com/~tcharron/grep20d_win.zip"
+        },
+        "savePath": {
+          "VarKey": null,
+          "Value": "C:\\ProgramData\\Quicker"
+        },
+        "saveName": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "ua": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "header": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "cookie": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "expireSeconds": {
+          "VarKey": null,
+          "Value": "10"
+        },
+        "skipCertVerify": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "showProgress": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "autoRename": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "savedPath": "cache2",
+        "contentMd5": null,
+        "eTag": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "下载并把文件路径 -->{cache2}",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "Success"
+        },
+        "msg": {
+          "VarKey": null,
+          "Value": "下载完成！"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "style": {
+          "VarKey": null,
+          "Value": "Default"
+        },
+        "clickAction": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:zip",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "Unzip"
+        },
+        "sourceZipFile": {
+          "VarKey": "cache2",
+          "Value": null
+        },
+        "outputPath": {
+          "VarKey": null,
+          "Value": "C:\\Windows\\grep"
+        },
+        "password": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "overwrite": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "skipOverwriteError": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "showProgress": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "resultPath": "cache",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "{cache} --> 解压压缩包",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:runScript",
+      "InputParams": {
+        "script": {
+          "VarKey": null,
+          "Value": "$$setx Path \"%Path%;{cache}\" /m"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "CMD_H"
+        },
+        "encoding": {
+          "VarKey": null,
+          "Value": "default"
+        },
+        "outputEncoding": {
+          "VarKey": null,
+          "Value": "oem"
+        },
+        "workingDir": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "runAsAdmin": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "waitToExit": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "stdout": null,
+        "stdoutOnly": null,
+        "stderr": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "添加系统环境变量",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "Success"
+        },
+        "msg": {
+          "VarKey": null,
+          "Value": "安装完成！现在你可以在命令行中使用grep命令了！"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "style": {
+          "VarKey": null,
+          "Value": "Default"
+        },
+        "clickAction": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:fileOperation",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "deleteFile"
+        },
+        "path": {
+          "VarKey": "cache2",
+          "Value": null
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "删除压缩包",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
+**EXCEL将相邻的相同内容单元格合并，支持多列，合并后不破坏原始数据和单元格格式(文本,日期,货币)**
+```json
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:runScript",
+      "InputParams": {
+        "script": {
+          "VarKey": null,
+          "Value": "Dim app, sh, rng, i, k, m\r\n'数组不需要申明，如果申明了，下面赋值时会报错：未引用设置到对象的实例。\r\nSet app = GetObject(, \"Excel.Application\")\r\n'2019WPS是ket.Application;2021WPS是excel.Application\r\n'EXCEL是Excel.Application\r\napp.ScreenUpdating = False\r\napp.DisplayAlerts = False\r\nSet sh = app.ActiveSheet\r\nSet rng = app.Selection\r\n'数组赋值时，要用对象.value\r\narr = rng.value\r\ncolnum = rng.Columns.Count\r\nrownum = rng.Rows.Count\r\nncol = rng.Column\r\nnrow = rng.Row\r\n'HH列有内容时,请修改为无内容列号\r\nLinShiLie = \"HH\"\r\n'If sh.cells(1,linshilie) <> \"\" then\r\n    'MsgBox \"临时调用HH1单元格，发现已有内容存在，请修改列号\",,\"Quicker提示             \"\r\n    'WScript.Quit\r\n'End If\r\nFor j = 1 To colnum\r\n    k = 1\r\n    For i = rownum To 2 Step -1\r\n        If arr(i, j) = arr(i - 1, j) Then\r\n            'k合并几个单元格\r\n            k = k + 1\r\n            If sh.Cells(nrow + rownum - (rownum - i + 1), ncol + j - 1).NumberFormatLocal <> \"G/通用格式\" Then\r\n                CellFormat = sh.Cells(nrow + rownum - (rownum - i + 1), ncol + j - 1).NumberFormatLocal\r\n            End If\r\n        Else\r\n            If k > 1 Then\r\n                up_no = rownum - k - kk + 1\r\n                sh.Cells(1, LinShiLie).Resize(k, 1).Merge\r\n                sh.Cells(1, LinShiLie).Resize(k, 1).Copy\r\n                sh.Cells(nrow + up_no - 1, ncol + j - 1).Resize(k, 1).PasteSpecial -4122\r\n                sh.Cells(1, LinShiLie).Resize(k, 1).UnMerge\r\n                If CellFormat <> \"\" Then\r\n                    sh.Cells(nrow + up_no - 1, ncol + j - 1).NumberFormatLocal = CellFormat\r\n                    CellFormat = \"\"\r\n                End If\r\n            End If\r\n            kk = k + kk\r\n            k = 1\r\n        End If\r\n    Next\r\n    '以下不能删,否则一列最后数据相同时不会合并\r\n    If k > 1 Then\r\n        up_no = rownum - k - kk + 1\r\n        sh.Cells(1, LinShiLie).Resize(k, 1).Merge\r\n        sh.Cells(1, LinShiLie).Resize(k, 1).Copy\r\n        sh.Cells(nrow + up_no - 1, ncol + j - 1).Resize(k, 1).PasteSpecial -4122\r\n        sh.Cells(1, LinShiLie).Resize(k, 1).UnMerge\r\n        If CellFormat <> \"\" Then\r\n            sh.Cells(nrow + up_no - 1, ncol + j - 1).NumberFormatLocal = CellFormat\r\n            CellFormat = \"\"\r\n        End If\r\n    End If\r\n    kk = 0\r\nNext\r\napp.ScreenUpdating = True\r\napp.DisplayAlerts = True\r\nSet app = Nothing\r\nSet sh = Nothing\r\nSet rng = Nothing"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "CUSTOM"
+        },
+        "ext": {
+          "VarKey": null,
+          "Value": "VBS"
+        },
+        "encoding": {
+          "VarKey": null,
+          "Value": "utf-16"
+        },
+        "runner": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "argTemplate": {
+          "VarKey": null,
+          "Value": "%FILE%"
+        },
+        "outputEncoding": {
+          "VarKey": null,
+          "Value": "oem"
+        },
+        "workingDir": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "runAsAdmin": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "waitToExit": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "stdout": null,
+        "stdoutOnly": null,
+        "stderr": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
 
 ***
 
@@ -12454,9 +15812,91 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**将123存入状态abc；读取存储的状态abc，如果读取不到就返回-1，结果保存在value变量**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "value",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:stateStorage",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "saveActionState"
+        },
+        "key": {
+          "VarKey": null,
+          "Value": "abc"
+        },
+        "value": {
+          "VarKey": null,
+          "Value": "123"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:stateStorage",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "readActionState"
+        },
+        "key": {
+          "VarKey": null,
+          "Value": "abc"
+        },
+        "defaultValue": {
+          "VarKey": null,
+          "Value": "-1"
+        },
+        "inputIfEmpty": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "prompt": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "value": "value",
+        "isEmpty": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -12506,9 +15946,207 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**下载并运行**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "savedPath",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "path",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getFolderPath",
+      "InputParams": {
+        "folder": {
+          "VarKey": null,
+          "Value": "ApplicationData"
+        }
+      },
+      "OutputParams": {
+        "path": "path"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:download",
+      "InputParams": {
+        "url": {
+          "VarKey": null,
+          "Value": "https://gitee.com/jinxi100/one/raw/master/%E5%89%AA%E5%88%87%E6%9D%BF%E5%B7%A5%E5%85%B7%20(1).exe"
+        },
+        "savePath": {
+          "VarKey": "path",
+          "Value": null
+        },
+        "saveName": {
+          "VarKey": null,
+          "Value": "剪切板工具.exe"
+        },
+        "ua": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "header": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "cookie": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "expireSeconds": {
+          "VarKey": null,
+          "Value": "10"
+        },
+        "skipCertVerify": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "showProgress": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "autoRename": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "savedPath": "savedPath",
+        "contentMd5": null,
+        "eTag": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:run",
+      "InputParams": {
+        "path": {
+          "VarKey": "savedPath",
+          "Value": null
+        },
+        "arg": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "runas": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "activateWindowIfRunning": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "activateWindowHotkey": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "alternativePath": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "setWorkingDir": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "windowStyle": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "waitInputIdle": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "waitExit": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "username": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "password": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "outputEncoding": {
+          "VarKey": null,
+          "Value": "oem"
+        },
+        "envVariables": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "pid": null,
+        "mainWinHandle": null,
+        "mainWinTitle": null,
+        "stdout": null,
+        "stdoutOnly": null,
+        "stderr": null,
+        "exitCode": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -12558,9 +16196,631 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**截图识别并自动复制结果**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "text",
+      "Type": 0,
+      "Desc": "默认的文本变量",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "img",
+      "Type": 3,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "showWindow",
+      "Type": 2,
+      "Desc": "是否显示文本窗口",
+      "DefaultValue": "1",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "autoCopy",
+      "Type": 2,
+      "Desc": "自动复制",
+      "DefaultValue": "1",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "lang",
+      "Type": 0,
+      "Desc": "语言",
+      "DefaultValue": "",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "设置处理"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$= {quicker_in_param} == \"settings\""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:form",
+          "InputParams": {
+            "operation": {
+              "VarKey": null,
+              "Value": "variables"
+            },
+            "title": {
+              "VarKey": null,
+              "Value": "动作设置"
+            },
+            "formDef": {
+              "VarKey": null,
+              "Value": "{\"Fields\":[{\"FieldKey\":\"lang\",\"DictVarType\":null,\"Label\":\"语言\",\"HelpText\":\"待识别内容的语言\",\"HelpLink\":null,\"InputMethod\":3,\"SelectionItems\":\"中英|\\r\\n英语|ENG\\r\\n韩语|KOR\\r\\n日语|JAP\\r\\n繁体中文|CHT\\r\\n拉丁语|LAT\\r\\n阿拉伯语|ARA\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"Group\":\"\"},{\"FieldKey\":\"autoCopy\",\"DictVarType\":null,\"Label\":\"自动复制识别结果\",\"HelpText\":\"\",\"HelpLink\":null,\"InputMethod\":6,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"Group\":\"\"},{\"FieldKey\":\"showWindow\",\"DictVarType\":null,\"Label\":\"使用文本窗口显示识别结果\",\"HelpText\":\"\",\"HelpLink\":null,\"InputMethod\":6,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"Group\":\"\"}]}"
+            },
+            "help": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "titleColumnWidth": {
+              "VarKey": null,
+              "Value": "100"
+            },
+            "windowWidth": {
+              "VarKey": null,
+              "Value": "500"
+            },
+            "windowHeight": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "restoreFocus": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "topMost": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "disableEnterSubmit": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "markdownhelp": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "confirm": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "customButtons": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "button": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:stateStorage",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "UpdateActionBadge"
+            },
+            "badgeText": {
+              "VarKey": "lang",
+              "Value": null
+            },
+            "badgeColor": {
+              "VarKey": null,
+              "Value": "#428ca7"
+            },
+            "badgeTextColor": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:stop",
+          "InputParams": {
+            "method": {
+              "VarKey": null,
+              "Value": "default"
+            },
+            "isError": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "return": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "showMessage": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "更新按钮上的语言名字"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:stateStorage",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "UpdateActionBadge"
+        },
+        "badgeText": {
+          "VarKey": "lang",
+          "Value": null
+        },
+        "badgeColor": {
+          "VarKey": null,
+          "Value": "#428ca7"
+        },
+        "badgeTextColor": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "截屏"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$= {quicker_in_param}.IsNullOrEmpty() == false \r\n\t&& File.Exists({quicker_in_param})"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:readFile",
+          "InputParams": {
+            "path": {
+              "VarKey": "quicker_in_param",
+              "Value": null
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "image"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "image": "img",
+            "isSuccess": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:screenCapture",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "select"
+            },
+            "delay": {
+              "VarKey": null,
+              "Value": "200"
+            },
+            "toClip": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "img": "img",
+            "rect": null,
+            "isSuccess": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "OCR识别"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:basic-ocr",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "QuickerServerOcr"
+        },
+        "imgVar": {
+          "VarKey": "img",
+          "Value": null
+        },
+        "punctuationType": {
+          "VarKey": null,
+          "Value": "no"
+        },
+        "mergeChapter": {
+          "VarKey": null,
+          "Value": "no"
+        },
+        "lang": {
+          "VarKey": "lang",
+          "Value": null
+        },
+        "offlineMode": {
+          "VarKey": null,
+          "Value": "Auto"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "content": "text",
+        "textList": null,
+        "rawData": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "根据设置复制内容和显示结果"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": "autoCopy",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:writeClipboard",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "auto"
+            },
+            "input": {
+              "VarKey": "text",
+              "Value": null
+            },
+            "successMsg": {
+              "VarKey": null,
+              "Value": "$=\"已复制!\" + {text}.ToShortString(30)"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": "showWindow",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:showText",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "NO_WAIT"
+            },
+            "text": {
+              "VarKey": "text",
+              "Value": null
+            },
+            "title": {
+              "VarKey": null,
+              "Value": "识别结果"
+            },
+            "autoCloseKey": {
+              "VarKey": null,
+              "Value": "="
+            },
+            "topMost": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "operations": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "winLocation": {
+              "VarKey": null,
+              "Value": "CenterScreen"
+            },
+            "winSize": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "fontsize": {
+              "VarKey": null,
+              "Value": "14"
+            },
+            "fontfamily": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "bgColor": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "textColor": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "highlight": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "autoSaveToState": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "closeWhenLostFocus": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "showLineNum": {
+              "VarKey": null,
+              "Value": "true"
+            },
+            "autoWrap": {
+              "VarKey": null,
+              "Value": "true"
+            },
+            "showBuildInToolbar": {
+              "VarKey": null,
+              "Value": "true"
+            },
+            "copyWholeLine": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "caretPosition": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "updateIfExists": {
+              "VarKey": null,
+              "Value": "0"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "windowHandle": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -12569,7 +16829,8 @@ Manual: `自定义位置`
 ## 91.弹窗提示或确认
 
 **功能描述**
-> 弹窗显示提示或确认对话框
+> 弹窗显示提示或确认对话框，这个对话框会占用焦点，并且会在手动关闭之前一直显示在屏幕上。动作也会停留在这个步骤，等待关闭后再继续执行。标准模式：类似于windows内置弹窗，支持固定图标和按钮组合；自定义模式：可自定义图标和按钮，显示内容比较灵活。
+
 
 **官方文档**
 > https://getquicker.net/KC/Help/Doc/msgbox
@@ -12607,9 +16868,204 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "选择的结果",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "是否确认",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": null,
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "result",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:MsgBox",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "default"
+        },
+        "message": {
+          "VarKey": null,
+          "Value": "Hello. 你好，这是一条弹窗提示消息。\r\n两个结果选一个哦~"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "标准风格弹窗"
+        },
+        "icon": {
+          "VarKey": null,
+          "Value": "Question"
+        },
+        "buttons": {
+          "VarKey": null,
+          "Value": "OKCancel"
+        },
+        "restoreFocus": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "result": "选择的结果",
+        "okOrYes": "是否确认"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        },
+        "msg": {
+          "VarKey": null,
+          "Value": "$$标准弹窗选择的结果：{选择的结果}\r\n是否确认：{是否确认}"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "style": {
+          "VarKey": null,
+          "Value": "Default"
+        },
+        "clickAction": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:MsgBox",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "custom"
+        },
+        "message": {
+          "VarKey": null,
+          "Value": "你好，这是一条自定义弹窗提示消息。\r\n第二行。"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "自定义弹窗"
+        },
+        "customIcon": {
+          "VarKey": null,
+          "Value": "fa:Solid_InfoCircle:#FF0000"
+        },
+        "customButtons": {
+          "VarKey": null,
+          "Value": "[fa:Light_Check:#28a745]是(_Y)|Yes\r\n[fa:Light_Times:#dc3545]否(_N)|No\r\n[fa:Light_Undo:#28a745]取消(_C)|Cancel\r\n测试"
+        },
+        "defaultButton": {
+          "VarKey": null,
+          "Value": "Yes"
+        },
+        "restoreFocus": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "result": "result"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        },
+        "msg": {
+          "VarKey": null,
+          "Value": "$$自定义弹窗选择的结果：{result}"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "style": {
+          "VarKey": null,
+          "Value": "Default"
+        },
+        "clickAction": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -12646,9 +17102,51 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "output",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:randomNum",
+      "InputParams": {
+        "min": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "max": {
+          "VarKey": null,
+          "Value": "100"
+        }
+      },
+      "OutputParams": {
+        "output": "output"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -12694,10 +17192,1099 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**选择一个或多个excel文件使用Quicker的excel模块打开，从而可以在Quicker中控制该文件**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "filePath",
+      "Type": 0,
+      "Desc": "一个文件的路径",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "isSuccess",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "files",
+      "Type": 4,
+      "Desc": "选择的文件列表",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "isOpened",
+      "Type": 2,
+      "Desc": "是否打开了文件",
+      "DefaultValue": "0",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSelectedFiles",
+      "InputParams": {
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "files": "files",
+        "firstFile": "filePath",
+        "isSuccess": "isSuccess"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "获取选择的文件，如果有的话，依次打开"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": "isSuccess",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:each",
+          "InputParams": {
+            "input": {
+              "VarKey": "files",
+              "Value": null
+            },
+            "useMultiThread": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "threadDelay": {
+              "VarKey": null,
+              "Value": "5"
+            }
+          },
+          "OutputParams": {
+            "item": "filePath",
+            "count": null
+          },
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:simpleIf",
+              "InputParams": {
+                "condition": {
+                  "VarKey": null,
+                  "Value": "$= {filePath}.ToLower().EndsWith(\".xlsx\") || {filePath}.ToLower().EndsWith(\".xls\")"
+                }
+              },
+              "OutputParams": {},
+              "IfSteps": [
+                {
+                  "StepRunnerKey": "sys:excelObjects",
+                  "InputParams": {
+                    "operation": {
+                      "VarKey": null,
+                      "Value": "OpenFile"
+                    },
+                    "path": {
+                      "VarKey": "filePath",
+                      "Value": null
+                    },
+                    "params": {
+                      "VarKey": null,
+                      "Value": ""
+                    },
+                    "stopIfFail": {
+                      "VarKey": null,
+                      "Value": "1"
+                    }
+                  },
+                  "OutputParams": {
+                    "isSuccess": null,
+                    "activeWorkbook": null,
+                    "activeSheet": null,
+                    "worksheetNames": null,
+                    "worksheets": null,
+                    "application": null
+                  },
+                  "IfSteps": null,
+                  "ElseSteps": null,
+                  "Note": "",
+                  "Disabled": false,
+                  "Collapsed": false,
+                  "DelayMs": 0
+                },
+                {
+                  "StepRunnerKey": "sys:assign",
+                  "InputParams": {
+                    "input": {
+                      "VarKey": null,
+                      "Value": "true"
+                    }
+                  },
+                  "OutputParams": {
+                    "output": "isOpened"
+                  },
+                  "IfSteps": null,
+                  "ElseSteps": null,
+                  "Note": "",
+                  "Disabled": false,
+                  "Collapsed": false,
+                  "DelayMs": 0
+                }
+              ],
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "如果没有打开任何文件，则创建一个"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$= !{isOpened}"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:excelObjects",
+          "InputParams": {
+            "operation": {
+              "VarKey": null,
+              "Value": "CreateWorkbook"
+            },
+            "path": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "params": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "activeWorkbook": null,
+            "activeSheet": null,
+            "worksheets": null,
+            "application": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
+
+**从工作表中选择一个**
+```json
+{
+  "Variables": [
+    {
+      "Key": "useMenu",
+      "Type": 2,
+      "Desc": "是否使用菜单方式",
+      "DefaultValue": "0",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "hideCurrent",
+      "Type": 2,
+      "Desc": "隐藏当前工作表",
+      "DefaultValue": "0",
+      "SaveState": true,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "list",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "worksheet",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "isSuccessUsingExcelObj",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "activeSheet",
+      "Type": 99,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "activeSheetName",
+      "Type": 0,
+      "Desc": "当前工作表名称",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "先取回当前活动工作簿的Sheet名称列表。\r\n第一项为活动工作表名称，后面为所有工作表的名称"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$={quicker_in_param} == \"settings\""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:form",
+          "InputParams": {
+            "operation": {
+              "VarKey": null,
+              "Value": "variables"
+            },
+            "title": {
+              "VarKey": null,
+              "Value": "动作设置"
+            },
+            "formDef": {
+              "VarKey": null,
+              "Value": "{\"Fields\":[{\"FieldKey\":\"useMenu\",\"DictVarType\":null,\"Label\":\"使用菜单方式选择（否则使用选择列表）\",\"HelpText\":\"是：菜单方式选择； 否：列表方式选择；\",\"HelpLink\":null,\"InputMethod\":6,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"ColumnWidth\":0.0,\"Group\":\"\"},{\"FieldKey\":\"hideCurrent\",\"DictVarType\":null,\"Label\":\"隐藏当前工作表\",\"HelpText\":\"在菜单或选择中不显示当前工作表\",\"HelpLink\":null,\"InputMethod\":6,\"SelectionItems\":\"\",\"IsRequired\":false,\"MinValue\":\"\",\"MaxValue\":\"\",\"Pattern\":\"\",\"InputWidth\":\"\",\"MaxLength\":0,\"ImeState\":null,\"TextTools\":\"\",\"VisibleExpression\":\"\",\"DefaultValue\":null,\"ColumnWidth\":0.0,\"Group\":\"\"}]}"
+            },
+            "help": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "titleColumnWidth": {
+              "VarKey": null,
+              "Value": "100"
+            },
+            "windowWidth": {
+              "VarKey": null,
+              "Value": "500"
+            },
+            "windowHeight": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "restoreFocus": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "topMost": {
+              "VarKey": null,
+              "Value": "false"
+            },
+            "disableEnterSubmit": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "markdownhelp": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "confirm": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "customButtons": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "selectedGroup": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "button": null,
+            "selectedGroup": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:stop",
+          "InputParams": {
+            "method": {
+              "VarKey": null,
+              "Value": "default"
+            },
+            "isError": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "return": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "showMessage": {
+              "VarKey": null,
+              "Value": "已保存设置"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:excelObjects",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "ApplicationInfo"
+        },
+        "params": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": "isSuccessUsingExcelObj",
+        "activeWorkbook": null,
+        "activeSheet": "activeSheet",
+        "worksheetNames": "list",
+        "worksheets": null,
+        "workbookPath": null,
+        "application": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": "isSuccessUsingExcelObj",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": "$={activeSheet}.Name"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "activeSheetName"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "低权限模式. 列表第一项为当前活动工作表名称。"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:csscript",
+          "InputParams": {
+            "mode": {
+              "VarKey": null,
+              "Value": "low_permission_roslyn"
+            },
+            "scriptForLp": {
+              "VarKey": null,
+              "Value": "//.cs  文件类型，便于外部编辑时使用\r\n// 引用必要的命名空间\r\nusing System.Windows.Forms;\r\nusing System.Runtime.InteropServices;\r\nusing Excel = Microsoft.Office.Interop.Excel;\r\nusing Microsoft.Office.Interop.Excel;\r\n\r\n// Quicker将会调用的函数\r\npublic static string Exec(string paramValue)\r\n{\r\n\t\r\n\tExcel.Application xlApp = (Excel.Application)Marshal.GetActiveObject(\"Excel.Application\");\r\n\t\r\n\t\r\n\tvar list = new List<string>();\r\n\t\r\n\tlist.Add(((Excel.Worksheet)xlApp.ActiveWorkbook.ActiveSheet).Name);\r\n\t\r\n\tforeach (Worksheet sheet in xlApp.ActiveWorkbook.Worksheets)\r\n\t{\r\n\t\tlist.Add(sheet.Name);\r\n\t}\r\n\r\n\tstring sheets = String.Join(\"\\r\\n\", list);\r\n\t\r\n\t// 不要忘记释放COM对象\r\n\tMarshal.ReleaseComObject(xlApp);\r\n\t\r\n\treturn sheets;\r\n}\r\n"
+            },
+            "paramValue": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "reference": {
+              "VarKey": null,
+              "Value": "Microsoft.Office.Interop.Excel.dll\r\n"
+            },
+            "waitResp": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "waitMs": {
+              "VarKey": null,
+              "Value": "10000"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "resp": "list"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": "$={list}[0]"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "activeSheetName"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": "$={list}.Skip(1)"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "list"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "隐藏当前工作表名称时，从列表中滤除"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": "hideCurrent",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": "$={list}.Where(x => x != {activeSheetName})"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "list"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "选择工作表"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": "useMenu",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:showmenu",
+          "InputParams": {
+            "menuData": {
+              "VarKey": null,
+              "Value": "$={list}"
+            },
+            "fontsize": {
+              "VarKey": null,
+              "Value": "12"
+            },
+            "iconsize": {
+              "VarKey": null,
+              "Value": "16"
+            },
+            "maxHeight": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "useFocus": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "waitMenuClose": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "selectedItemData": "worksheet",
+            "selectedItem": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:select",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "single"
+            },
+            "prompt": {
+              "VarKey": null,
+              "Value": "切换工作表"
+            },
+            "note": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "items": {
+              "VarKey": "list",
+              "Value": null
+            },
+            "defaultValue": {
+              "VarKey": "activeSheetName",
+              "Value": null
+            },
+            "showFilter": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "filterContent": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "winLocation": {
+              "VarKey": null,
+              "Value": "WithMouse1"
+            },
+            "maxWinSize": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "keepLastPos": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "closeOnDeactivated": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "restoreForeground": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "allowOkWhenEmpty": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "enableQuickConfirm": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "stopIfCancel": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "imeState": {
+              "VarKey": null,
+              "Value": "NO_CONTROL"
+            },
+            "operations": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "fontsize": {
+              "VarKey": null,
+              "Value": "12"
+            },
+            "fontfamily": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "iconsize": {
+              "VarKey": null,
+              "Value": "16"
+            },
+            "autoCloseSeconds": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "noKeyboard": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "windowKey": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "help": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "textValue": "worksheet",
+            "selectedIndex": null,
+            "extraOperation": null,
+            "selectedFullItems": null,
+            "selectedItemTitle": null,
+            "filterContent": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "选择工作表"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": "isSuccessUsingExcelObj",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:comment",
+          "InputParams": {
+            "note": {
+              "VarKey": null,
+              "Value": "高权限模式"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:excelObjects",
+          "InputParams": {
+            "operation": {
+              "VarKey": null,
+              "Value": "SelectWorksheet"
+            },
+            "workbook": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "params": {
+              "VarKey": null,
+              "Value": "$$name={worksheet}"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:csscript",
+          "InputParams": {
+            "mode": {
+              "VarKey": null,
+              "Value": "low_permission_roslyn"
+            },
+            "scriptForLp": {
+              "VarKey": null,
+              "Value": "//.cs  文件类型，便于外部编辑时使用\r\n// 引用必要的命名空间\r\nusing System.Windows.Forms;\r\nusing System.Runtime.InteropServices;\r\nusing Excel = Microsoft.Office.Interop.Excel;\r\nusing Microsoft.Office.Interop.Excel;\r\n\r\n// Quicker将会调用的函数\r\npublic static string Exec(string paramValue)\r\n{\r\n\t\r\n\tExcel.Application xlApp = (Excel.Application)Marshal.GetActiveObject(\"Excel.Application\");\r\n\t\r\n\t\r\n\t((Excel.Worksheet)xlApp.ActiveWorkbook.Sheets[paramValue]).Activate();\r\n\t\r\n\t// 不要忘记释放COM对象\r\n\tMarshal.ReleaseComObject(xlApp);\r\n\t\r\n\treturn \"\";\r\n}\r\n"
+            },
+            "paramValue": {
+              "VarKey": "worksheet",
+              "Value": null
+            },
+            "reference": {
+              "VarKey": null,
+              "Value": "Microsoft.Office.Interop.Excel.dll\r\n"
+            },
+            "waitResp": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "waitMs": {
+              "VarKey": null,
+              "Value": "10000"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "resp": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
 </details>
 
 ***
@@ -12705,7 +18292,7 @@ Manual: `自定义位置`
 ## 94.Excel区域操作
 
 **功能描述**
-> 操作Excel的某个区域或单元格
+> 操作Excel的某个区域或单元格，只能操作通过Quicker打开的excel工作簿
 
 **官方文档**
 > https://getquicker.net/KC/Help/Doc/excelrange
@@ -12756,9 +18343,106 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**为区域设置序号**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "row",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:excelRange",
+      "InputParams": {
+        "range": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "subRange": {
+          "VarKey": null,
+          "Value": "FullArea"
+        },
+        "operation": {
+          "VarKey": null,
+          "Value": "GetRangeInfo"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "value": null,
+        "text": null,
+        "formula": null,
+        "numberFormat": null,
+        "address": null,
+        "column": null,
+        "row": "row",
+        "colNum": null,
+        "rowNum": null,
+        "style": null,
+        "range": null,
+        "sheet": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:excelRange",
+      "InputParams": {
+        "range": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "subRange": {
+          "VarKey": null,
+          "Value": "FullArea"
+        },
+        "operation": {
+          "VarKey": null,
+          "Value": "SetFormula"
+        },
+        "value": {
+          "VarKey": null,
+          "Value": "$= \"=row() - \"  + ({row} -1)"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -12794,9 +18478,30 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**切换为英文输入法**
 ```json
-
+{
+  "Variables": [],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:imeControl",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "DISABLE"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -12819,47 +18524,7 @@ Manual: `自定义位置`
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | mode | 运行模式 | 普通模式：在Quicker进程中执行；低权限模式：在单独的进程中执行，可用于COM操作。 | (9)选项-Enum（normal_roslyn: 普通模式v2 (Roslyn); normal: 普通模式v1 (CodeDOM); low_permission_roslyn: 低权限模式v2 (Roslyn); low_permission: 低权限模式v1 (CodeDOM); generate_assembly: 生成程序集） | normal | True |
-| script | 脚本内容 | 要运行的脚本内容 | (0)字符串-Text | //.cs  文件类型，便于外部编辑时使用
-// 引用必要的命名空间
-using System.Windows.Forms;
-
-// Quicker将会调用的函数。可以根据需要修改返回值类型。
-public static void Exec(Quicker.Public.IStepContext context)
-{
-    //var oldValue = context.GetVarValue("varName");  // 读取动作里的变量值
-    //MessageBox.Show(oldValue as string);
-    //context.SetVarValue("varName", "从脚本输出的内容。"); // 向变量里输出值
-    MessageBox.Show("Hello World!");
-}
- | True |
-| scriptForLp | 脚本内容 | 要运行的脚本内容 | (0)字符串-Text | //.cs  文件类型，便于外部编辑时使用
-// 引用必要的命名空间
-using System.Windows.Forms;
-
-// Quicker将会调用的函数
-public static string Exec(string paramValue)
-{
-    System.Windows.Forms.MessageBox.Show("Hello World!");
-    return "Hello World!";
-}
- | True |
-| scriptForAssembly | 脚本内容 | 要运行的脚本内容 | (0)字符串-Text | //.cs  文件类型，便于外部编辑时使用
-// 引用必要的命名空间
-using System.Windows.Forms;
-
-namespace MyNamespace
-{
-    // Quicker将会调用的函数
-    public static class MyClass
-    {
-        public static string Exec(string paramValue)
-        {
-            System.Windows.Forms.MessageBox.Show("Hello World!");
-            return "Hello World!";
-        }
-    }
-}
- | True |
+| script | 脚本内容 | 要运行的脚本内容 | (0)字符串-Text | //.cs  文件类型，便于外部编辑时使用&lt;br /&gt;// 引用必要的命名空间&lt;br /&gt;using System.Windows.Forms;&lt;br /&gt;&lt;br /&gt;// Quicker将会调用的函数。可以根据需要修改返回值类型。&lt;br /&gt;public static void Exec(Quicker.Public.IStepContext context)&lt;br /&gt;{&lt;br /&gt;    //var oldValue = context.GetVarValue("varName");  // 读取动作里的变量值&lt;br /&gt;    //MessageBox.Show(oldValue as string);&lt;br /&gt;    //context.SetVarValue("varName", "从脚本输出的内容。"); // 向变量里输出值&lt;br /&gt;    MessageBox.Show("Hello World!");&lt;br /&gt;}&lt;br /&gt; | True |&lt;br /&gt;| scriptForLp | 脚本内容 | 要运行的脚本内容 | (0)字符串-Text | //.cs  文件类型，便于外部编辑时使用&lt;br /&gt;// 引用必要的命名空间&lt;br /&gt;using System.Windows.Forms;&lt;br /&gt;&lt;br /&gt;// Quicker将会调用的函数&lt;br /&gt;public static string Exec(string paramValue)&lt;br /&gt;{&lt;br /&gt;    System.Windows.Forms.MessageBox.Show("Hello World!");&lt;br /&gt;    return "Hello World!";&lt;br /&gt;}&lt;br /&gt; | True |&lt;br /&gt;| scriptForAssembly | 脚本内容 | 要运行的脚本内容 | (0)字符串-Text | //.cs  文件类型，便于外部编辑时使用&lt;br /&gt;// 引用必要的命名空间&lt;br /&gt;using System.Windows.Forms;&lt;br /&gt;&lt;br /&gt;namespace MyNamespace&lt;br /&gt;{&lt;br /&gt;    // Quicker将会调用的函数&lt;br /&gt;    public static class MyClass&lt;br /&gt;    {&lt;br /&gt;        public static string Exec(string paramValue)&lt;br /&gt;        {&lt;br /&gt;            System.Windows.Forms.MessageBox.Show("Hello World!");&lt;br /&gt;            return "Hello World!";&lt;br /&gt;        }&lt;br /&gt;    }&lt;br /&gt;}&lt;br /&gt; | True |
 | paramValue | 参数值 | 传递给Exec的参数 | (0)字符串-Text |  | True |
 | reference | 引用DLL库 | 要引用的DLL文件，每行一个。 | (0)字符串-Text |  | False |
 | waitResp | 等待返回 | 是否等待脚本返回结果 | (2)布尔值-Boolean | True | False |
