@@ -14,9 +14,19 @@ Quicker的动作可以通过API调用，也可以通过快捷键调用。
 
 ---
 
-# 部分参数说明
+# 模块编写及部分参数说明
 
-**WinLocation**
+**C#代码支持**
+
+Quicker内部使用C#实现，故而原生支持C#代码使用
+
+在任何支持字符串参数输入的模块中，都可以使用C#代码模式或插值模式
+
+$$则使用插值模式，插值模式支持变量字符串混杂拼接，被一对花括号{}包裹的是变量
+
+$=则使用C#代码模式
+
+**参数：WinLocation**
 
 Auto: `系统默认`
 WithMouse1: `跟随鼠标（指针周围）`
@@ -10563,9 +10573,68 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "imgVar",
+      "Type": 3,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "url",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:tempImgBed",
+      "InputParams": {
+        "imgVar": {
+          "VarKey": "imgVar",
+          "Value": null
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "url": "url",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -10605,9 +10674,92 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "imgVar",
+      "Type": 3,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "code",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:imgToBase64",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "imgToBase64"
+        },
+        "img": {
+          "VarKey": "imgVar",
+          "Value": null
+        },
+        "addHeader": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "code": "code"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:imgToBase64",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "base64ToImg"
+        },
+        "base64": {
+          "VarKey": "code",
+          "Value": null
+        }
+      },
+      "OutputParams": {
+        "img": "imgVar"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -10646,9 +10798,60 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "img",
+      "Type": 3,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:WriteImageFile",
+      "InputParams": {
+        "content": {
+          "VarKey": "img",
+          "Value": null
+        },
+        "filePath": {
+          "VarKey": null,
+          "Value": "D:\\1.jpg"
+        },
+        "quality": {
+          "VarKey": null,
+          "Value": "95"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -10695,9 +10898,443 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**显示结果为：小明,19,跑步\r\n小红,18,走路**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "选中的姓名们",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "姓名们",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "小红\r\n小明\r\n小西",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "年龄们",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "18\r\n19\r\n20",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "爱好们",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "走路\r\n跑步\r\n飞行",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "姓名",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "年龄",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "爱好",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "i",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "结果",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:assign",
+      "InputParams": {
+        "input": {
+          "VarKey": null,
+          "Value": "小明\r\n小红"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "选中的姓名们",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:each",
+      "InputParams": {
+        "input": {
+          "VarKey": "选中的姓名们",
+          "Value": null
+        },
+        "useMultiThread": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "item": "姓名",
+        "count": null,
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:listOperations",
+          "InputParams": {
+            "list": {
+              "VarKey": "姓名们",
+              "Value": null
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "indexOf"
+            },
+            "item": {
+              "VarKey": "姓名",
+              "Value": null
+            }
+          },
+          "OutputParams": {
+            "isEmpty": null,
+            "length": null,
+            "index": "i"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:listOperations",
+          "InputParams": {
+            "list": {
+              "VarKey": "年龄们",
+              "Value": null
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "getAt"
+            },
+            "pos": {
+              "VarKey": "i",
+              "Value": null
+            }
+          },
+          "OutputParams": {
+            "value": "年龄",
+            "isEmpty": null,
+            "length": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:listOperations",
+          "InputParams": {
+            "list": {
+              "VarKey": "爱好们",
+              "Value": null
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "getAt"
+            },
+            "pos": {
+              "VarKey": "i",
+              "Value": null
+            }
+          },
+          "OutputParams": {
+            "value": "爱好",
+            "isEmpty": null,
+            "length": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:listOperations",
+          "InputParams": {
+            "list": {
+              "VarKey": "结果",
+              "Value": null
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "append"
+            },
+            "item": {
+              "VarKey": null,
+              "Value": "$${姓名},{年龄},{爱好}"
+            }
+          },
+          "OutputParams": {
+            "isEmpty": null,
+            "length": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "↓ 展示数据"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showText",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "NO_WAIT"
+        },
+        "text": {
+          "VarKey": "结果",
+          "Value": null
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "文本窗口"
+        },
+        "autoCloseKey": {
+          "VarKey": null,
+          "Value": "="
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "winSize": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "14"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "bgColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "textColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "highlight": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "autoSaveToState": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "enableEscClose": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "closeWhenLostFocus": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "showLineNum": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "autoWrap": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "showBuildInToolbar": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "copyWholeLine": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "caretPosition": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "advancedSettings": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "updateIfExists": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "windowHandle": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -10744,9 +11381,693 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
+**将选中文本文件手动调整拼接顺序后进行合并**
 ```json
-
+{
+  "Variables": [
+    {
+      "Key": "选中文件",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "每个文件路径",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "文本内容",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "路径",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "保存",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "确定",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "文件数",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSelectedFiles",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "getSelection"
+        },
+        "waitMs": {
+          "VarKey": null,
+          "Value": "200"
+        },
+        "sortType": {
+          "VarKey": null,
+          "Value": "Origin"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "files": "选中文件",
+        "firstFile": "路径",
+        "fileNames": null,
+        "firstFileName": null,
+        "fileCount": "文件数",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:if",
+      "InputParams": {
+        "condition": {
+          "VarKey": null,
+          "Value": "$= {文件数} <= 1"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "Error"
+            },
+            "msg": {
+              "VarKey": null,
+              "Value": "文件数量错误"
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            },
+            "clickAction": {
+              "VarKey": null,
+              "Value": ""
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [
+        {
+          "StepRunnerKey": "sys:manageList",
+          "InputParams": {
+            "list": {
+              "VarKey": "选中文件",
+              "Value": null
+            },
+            "winTitle": {
+              "VarKey": null,
+              "Value": "排序或删除"
+            },
+            "note": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "parseData": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "seperator": {
+              "VarKey": null,
+              "Value": "|"
+            },
+            "windowSize": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "allowAdd": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "allowEdit": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "allowDelete": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "help": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "titleDelegate": {
+              "VarKey": null,
+              "Value": "Path.GetFileName(x);"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "手动调整拼接顺序",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:pathExtraction",
+          "InputParams": {
+            "operation": {
+              "VarKey": null,
+              "Value": "getInfo"
+            },
+            "path": {
+              "VarKey": "路径",
+              "Value": null
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "name": null,
+            "nameNoExt": null,
+            "ext": null,
+            "path": "路径",
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "提取路径",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:selectFile",
+          "InputParams": {
+            "type": {
+              "VarKey": null,
+              "Value": "saveFile"
+            },
+            "filter": {
+              "VarKey": null,
+              "Value": "文本文件|*.txt|所有文件|*.*"
+            },
+            "defaultExt": {
+              "VarKey": null,
+              "Value": ".txt"
+            },
+            "initDir": {
+              "VarKey": "路径",
+              "Value": null
+            },
+            "initFileName": {
+              "VarKey": null,
+              "Value": "拼接文本"
+            },
+            "title": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "topMost": {
+              "VarKey": null,
+              "Value": "1"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "path": "保存",
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:WriteTextFile",
+          "InputParams": {
+            "content": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "filePath": {
+              "VarKey": "保存",
+              "Value": null
+            },
+            "encoding": {
+              "VarKey": null,
+              "Value": "utf-8"
+            },
+            "addUtf8Bom": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "appendMode": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "addNewLine": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "newLineChars": {
+              "VarKey": null,
+              "Value": ""
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:each",
+          "InputParams": {
+            "input": {
+              "VarKey": "选中文件",
+              "Value": null
+            },
+            "useMultiThread": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "item": "每个文件路径",
+            "count": null,
+            "isSuccess": null,
+            "errMessage": null
+          },
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:readFile",
+              "InputParams": {
+                "path": {
+                  "VarKey": "每个文件路径",
+                  "Value": null
+                },
+                "type": {
+                  "VarKey": null,
+                  "Value": "text"
+                },
+                "encoding": {
+                  "VarKey": null,
+                  "Value": "auto"
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "txt": "文本内容",
+                "isSuccess": null,
+                "errMessage": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:WriteTextFile",
+              "InputParams": {
+                "content": {
+                  "VarKey": "文本内容",
+                  "Value": null
+                },
+                "filePath": {
+                  "VarKey": "保存",
+                  "Value": null
+                },
+                "encoding": {
+                  "VarKey": null,
+                  "Value": "utf-8"
+                },
+                "addUtf8Bom": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "appendMode": {
+                  "VarKey": null,
+                  "Value": "1"
+                },
+                "addNewLine": {
+                  "VarKey": null,
+                  "Value": "1"
+                },
+                "newLineChars": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "isSuccess": null,
+                "errMessage": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": null,
+          "Note": "迭代文件列表",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:MsgBox",
+          "InputParams": {
+            "operation": {
+              "VarKey": null,
+              "Value": "default"
+            },
+            "message": {
+              "VarKey": null,
+              "Value": "是否删除文本中空行？"
+            },
+            "title": {
+              "VarKey": null,
+              "Value": "TXT拼接"
+            },
+            "icon": {
+              "VarKey": null,
+              "Value": "Question"
+            },
+            "buttons": {
+              "VarKey": null,
+              "Value": "OKCancel"
+            },
+            "restoreFocus": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "result": null,
+            "okOrYes": "确定"
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:simpleIf",
+          "InputParams": {
+            "condition": {
+              "VarKey": null,
+              "Value": "$= {确定} == true"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:readFile",
+              "InputParams": {
+                "path": {
+                  "VarKey": "保存",
+                  "Value": null
+                },
+                "type": {
+                  "VarKey": null,
+                  "Value": "text"
+                },
+                "encoding": {
+                  "VarKey": null,
+                  "Value": "auto"
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "txt": "文本内容",
+                "isSuccess": null,
+                "errMessage": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:strReplace",
+              "InputParams": {
+                "type": {
+                  "VarKey": null,
+                  "Value": "single"
+                },
+                "input": {
+                  "VarKey": "文本内容",
+                  "Value": null
+                },
+                "old": {
+                  "VarKey": null,
+                  "Value": "^\\r?\\n"
+                },
+                "new": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "escapeOld": {
+                  "VarKey": null,
+                  "Value": "false"
+                },
+                "replaceEscapes": {
+                  "VarKey": null,
+                  "Value": "false"
+                },
+                "useRegex": {
+                  "VarKey": null,
+                  "Value": "true"
+                },
+                "ignoreCase": {
+                  "VarKey": null,
+                  "Value": "false"
+                },
+                "singleLine": {
+                  "VarKey": null,
+                  "Value": "false"
+                },
+                "multiLine": {
+                  "VarKey": null,
+                  "Value": "true"
+                }
+              },
+              "OutputParams": {
+                "output": "文本内容"
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "查找^\\n替换空",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            },
+            {
+              "StepRunnerKey": "sys:WriteTextFile",
+              "InputParams": {
+                "content": {
+                  "VarKey": "文本内容",
+                  "Value": null
+                },
+                "filePath": {
+                  "VarKey": "保存",
+                  "Value": null
+                },
+                "encoding": {
+                  "VarKey": null,
+                  "Value": "utf-8"
+                },
+                "addUtf8Bom": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "appendMode": {
+                  "VarKey": null,
+                  "Value": "0"
+                },
+                "addNewLine": {
+                  "VarKey": null,
+                  "Value": "1"
+                },
+                "newLineChars": {
+                  "VarKey": null,
+                  "Value": ""
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "isSuccess": null,
+                "errMessage": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
 ```
 </details>
 
@@ -10755,8 +12076,7 @@ Manual: `自定义位置`
 ## 80.赋值
 
 **功能描述**
-> 为变量赋值。
-
+> 为变量赋值。使用频率最高的模块，支持文本字符串或插值格式或C#代码模式。
 **官方文档**
 > https://getquicker.net/KC/Help/Doc/assign
 
