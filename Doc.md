@@ -30061,6 +30061,245 @@ pasteimage 粘贴图片（将图片文件读取为图片后写入剪贴板，然
 
 ***
 
+
+## 123.文件系统监控
+
+**功能描述**
+> 监控指定文件夹下文件或目录的变化（创建/删除/变更/重命名）。支持两种工作方式：1）等待事件发生后继续运行动作。2）持续监控，事件发生后调用设定好的子程序。
+
+**官方文档**
+> https://getquicker.net/KC/Help/Doc/filesystemwatch
+
+**内部名称**
+> sys:fileSystemWatch
+
+<details>
+<summary>传入参数</summary>
+
+| Key | Name | Description | Type | Default | Required |
+| :----: | :----: | :----: | :----: | :----: | :----: |
+| operation | 操作类型 |  | (9)选项-Enum（wait: 等待事件发生; callback: 持续监控（事件发生后调用子程序）） | wait | true |
+| path | 文件夹路径 | 要监控的文件夹路径 | (0)字符串-Text |  | false |
+| includeSubdirectories | 包含子文件夹 |  | (2)布尔值-Boolean | True | false |
+| filter | 文件筛选 | 筛选要监控的文件。可指定文件名（如foo.txt），或使用通配符（如*.txt） | (0)字符串-Text | *.* | false |
+| notifyFilter | 通知筛选 | 可选，设定要监控的变更类型，对应于FileSystemWatcher.NotifyFilter属性（Attributes: 文件或文件夹的属性; CreationTime: 文件或文件夹的创建时间; DirectoryName: 文件夹的名称; FileName: 文件的名称; LastAccess: 文件或文件夹的最后打开时间; LastWrite: 文件或文件夹的最后写入时间; Security: 文件或文件夹的安全设置; Size: 文件或文件夹的大小），可以为使用英文半角逗号(,)连接的这些选项，留空表示默认设置（LastWrite,FileName,DirectoryName）。 | (0)字符串-Text |  | false |
+| waitEvents | 等待的事件 | 多个事件可使用英文半角逗号(,)进行连接，支持created,deleted,changed,renamed | (0)字符串-Text | created | false |
+| waitSeconds | 等待秒数 | 最长等待时间。0表示不限时间。 | (12)数字(整数)-Integer | 0 | false |
+| createdCallback | [创建] 处理子程序 | 文件或文件创建时调用的子程序 | (0)字符串-Text |  | false |
+| changedCallback | [变更]处理子程序 | 文件或文件夹变更时调用的子程序 | (0)字符串-Text |  | false |
+| deletedCallback | [删除]处理子程序 | 文件或文件被删除时调用的子程序 | (0)字符串-Text |  | false |
+| renamedCallback | [重命名]处理子程序 | 文件或文件重命名时调用的子程序 | (0)字符串-Text |  | false |
+
+</details>
+<details>
+<summary>传出参数</summary>
+
+| Key | Name | Description | Type |
+| :----: | :----: | :----: | :----: |
+| isSuccess | 是否成功 | 操作是否成功 | (2)布尔值-Boolean |
+| fullPath | 变更的路径 | 发生变更的文件（夹）路径，或重命名后的新路径 | (0)字符串-Text |
+| changedType | 变更类型 |  | (0)字符串-Text |
+| oldFullPath | 旧路径 | 重命名时的原始路径 | (0)字符串-Text |
+
+
+</details>
+<details>
+<summary>范例</summary>
+
+**在资源管理器窗口上运行，自动监控当前路径60秒。发生文件创建或文件删除时显示提示消息。**
+```json
+{
+  "Variables": [
+    {
+      "Key": "path",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "changedType",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "fullPath",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getExplorerPath",
+      "InputParams": {
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "output": "path",
+        "allPathList": null,
+        "lastPath": null,
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "msg": {
+          "VarKey": null,
+          "Value": "$$开始监控 {path}"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        },
+        "clickAction": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "style": {
+          "VarKey": null,
+          "Value": "Default"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:fileSystemWatch",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "wait"
+        },
+        "path": {
+          "VarKey": "path",
+          "Value": null
+        },
+        "includeSubdirectories": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "filter": {
+          "VarKey": null,
+          "Value": "*.*"
+        },
+        "notifyFilter": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "waitEvents": {
+          "VarKey": null,
+          "Value": "created,deleted"
+        },
+        "waitSeconds": {
+          "VarKey": null,
+          "Value": "60"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "fullPath": "fullPath",
+        "changedType": "changedType",
+        "oldFullPath": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        },
+        "msg": {
+          "VarKey": null,
+          "Value": "$${changedType}: {fullPath}"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "style": {
+          "VarKey": null,
+          "Value": "Default"
+        },
+        "clickAction": {
+          "VarKey": null,
+          "Value": ""
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+</details>
+
+***
+
 # 其他示例动作
 
 <details>
