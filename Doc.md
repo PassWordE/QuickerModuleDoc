@@ -22,9 +22,9 @@ Quicker内部使用C#实现，故而原生支持C#代码使用
 
 在任何支持字符串参数输入的模块中，都可以使用C#代码模式或插值模式
 
-$$则使用插值模式，插值模式支持变量字符串混杂拼接，被一对花括号{}包裹的是变量
+> 使用$$开头则使用插值模式，插值模式支持变量字符串混杂拼接，被一对花括号{}包裹的是变量
 
-$=则使用C#代码模式
+> 使用$=开头则使用C#代码模式
 
 **参数：WinLocation**
 
@@ -6952,7 +6952,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
 {
   "Variables": [],
@@ -11591,7 +11590,6 @@ Manual: `自定义位置`
 <details>
 <summary>范例</summary>
 
-**范例1**
 ```json
 {
   "Variables": [
@@ -16647,7 +16645,7 @@ Manual: `自定义位置`
   "SubPrograms": []
 }
 ```
-</details>
+
 
 **安装grep存放在C:\Windows\grep目录下**
 ```json
@@ -17032,6 +17030,8 @@ Manual: `自定义位置`
   "SubPrograms": []
 }
 ```
+
+</details>
 
 ***
 
