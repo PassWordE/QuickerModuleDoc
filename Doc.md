@@ -28523,6 +28523,1255 @@ Manual: `自定义位置`
 
 ***
 
+## 120.数据库查询
+
+**功能描述**
+> 对数据库执行SQL语句并返回结果
+
+**官方文档**
+> https://getquicker.net/KC/Help/Doc/dboperation
+
+**内部名称**
+> sys:dboperation
+
+<details>
+<summary>传入参数</summary>
+
+| Key | Name | Description | Type | Default | Required |
+| :----: | :----: | :----: | :----: | :----: | :----: |
+| dbType | 数据库连接类型 |  | (9)选项-Enum（sqlserver: SQL Server; mysql: MySQL; sqlite: SQLite; oledb: OleDB; odbc: ODBC） |  | true |
+| connectionString | 连接字符串 | Connection string | (0)字符串-Text |  | false |
+| sql | SQL语句 | 要执行的SQL语句内容 | (0)字符串-Text |  | false |
+| sqlParam | 参数 | 为SQL语句提供的参数 | (99)任意类型-Any |  | false |
+| timeoutSeconds | 超时秒数 | 留空或0表示默认。 | (12)数字(整数)-Integer |  | false |
+| operationType | 执行方式 |  | (9)选项-Enum（Query: Query：查询并返回结果数据; Execute: Execute：执行并返回影响的行数; ExecuteScalar: ExecuteScalar：执行并返回单个值（首行首列的值）） |  | false |
+
+</details>
+<details>
+<summary>传出参数</summary>
+
+| Key | Name | Description | Type |
+| :----: | :----: | :----: | :----: |
+| isSuccess | 是否成功 | 操作是否成功 | (2)布尔值-Boolean |
+| dataTableResult | 查询结果(表格) | 获取表格类型的行结果 | (13)表格-Table |
+| listResult | 查询结果(对象列表) | 获得动态对象列表类型的结果 | (99)任意类型-Any |
+| firstItem | 首项结果 | 如果只需要返回结果的第一行，可以使用此项输出，支持词典或任意对象。没有结果时返回null。 | (99)任意类型-Any |
+| rowCount | 结果行数 |  | (12)数字(整数)-Integer |
+| rowsAffected | 影响行数 |  | (12)数字(整数)-Integer |
+| scalarResult | 单值结果 |  | (0)字符串-Text |
+
+</details>
+<details>
+<summary>范例</summary>
+
+**使用SQLite，默认保存在d盘根目录**
+```json
+{
+  "Variables": [
+    {
+      "Key": "firstItem",
+      "Type": 10,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "item",
+      "Type": 99,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "listResult",
+      "Type": 99,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "path",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "d:\\quicker_test.db",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "rowCount",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "rowsAffected",
+      "Type": 12,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "scalarResult",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "table1",
+      "Type": 13,
+      "Desc": "表格测试",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": {
+        "Fields": []
+      },
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "tableRow",
+      "Type": 99,
+      "Desc": "DataTable的一行数据",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    },
+    {
+      "Key": "temp",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": null
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "创建数据库"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:fileOperation",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "deleteFile"
+        },
+        "path": {
+          "VarKey": "path",
+          "Value": null
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": "temp"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:subprogram",
+      "InputParams": {
+        "subProgram": {
+          "VarKey": null,
+          "Value": "创建SQLite数据库文件"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "var:path": {
+          "VarKey": "path",
+          "Value": null
+        },
+        "summary": {
+          "VarKey": null,
+          "Value": "{path}"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "创建表"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:dboperation",
+      "InputParams": {
+        "dbType": {
+          "VarKey": null,
+          "Value": "sqlite"
+        },
+        "connectionString": {
+          "VarKey": "path",
+          "Value": null
+        },
+        "sql": {
+          "VarKey": null,
+          "Value": "CREATE TABLE IF NOT EXISTS contacts (\r\n\tcontact_id INTEGER PRIMARY KEY,\r\n\tfirst_name TEXT NOT NULL,\r\n\tlast_name TEXT NOT NULL,\r\n\temail TEXT NOT NULL UNIQUE,\r\n\tphone TEXT NOT NULL UNIQUE\r\n);"
+        },
+        "sqlParam": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "timeoutSeconds": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "operationType": {
+          "VarKey": null,
+          "Value": "Execute"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "rowsAffected": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "插入一行数据，词典格式"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:dboperation",
+      "InputParams": {
+        "dbType": {
+          "VarKey": null,
+          "Value": "sqlite"
+        },
+        "connectionString": {
+          "VarKey": "path",
+          "Value": null
+        },
+        "sql": {
+          "VarKey": null,
+          "Value": "insert into contacts (first_name, last_name, email, phone) \r\nvalues(@FirstName, @LastName, @Email, @Phone)"
+        },
+        "sqlParam": {
+          "VarKey": null,
+          "Value": "FirstName:李\r\nLastName:四 \r\nEmail:lisi@getquicker.net\r\nPhone:13888889999"
+        },
+        "timeoutSeconds": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "operationType": {
+          "VarKey": null,
+          "Value": "Execute"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "rowsAffected": "rowsAffected"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "插入一行数据，匿名对象"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:dboperation",
+      "InputParams": {
+        "dbType": {
+          "VarKey": null,
+          "Value": "sqlite"
+        },
+        "connectionString": {
+          "VarKey": "path",
+          "Value": null
+        },
+        "sql": {
+          "VarKey": null,
+          "Value": "insert into contacts (first_name, last_name, email, phone) \r\nvalues(@FirstName, @LastName, @Email, @Phone)"
+        },
+        "sqlParam": {
+          "VarKey": null,
+          "Value": "$= new {FirstName = \"王\", LastName=\"五\", Email=\"wangwu@getquicker.net\", Phone=\"13866666666\"}"
+        },
+        "timeoutSeconds": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "operationType": {
+          "VarKey": null,
+          "Value": "Execute"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "rowsAffected": "rowsAffected"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "查询数据：全部。输出首项到一个词典变量。"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:dboperation",
+      "InputParams": {
+        "dbType": {
+          "VarKey": null,
+          "Value": "sqlite"
+        },
+        "connectionString": {
+          "VarKey": "path",
+          "Value": null
+        },
+        "sql": {
+          "VarKey": null,
+          "Value": "select * from contacts "
+        },
+        "sqlParam": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "timeoutSeconds": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "operationType": {
+          "VarKey": null,
+          "Value": "Query"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "dataTableResult": "table1",
+        "listResult": "listResult",
+        "firstItem": "firstItem",
+        "rowCount": "rowCount"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showText",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "WAIT"
+        },
+        "text": {
+          "VarKey": null,
+          "Value": "$=\r\n\"第一项结果的:\" + {firstItem}[\"first_name\"] + {firstItem}[\"last_name\"]"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "首项结果信息"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "autoCloseKey": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "winSize": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "14"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "bgColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "textColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "highlight": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "autoSaveToState": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "closeWhenLostFocus": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "showLineNum": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "autoWrap": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "showBuildInToolbar": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "copyWholeLine": {
+          "VarKey": null,
+          "Value": "false"
+        }
+      },
+      "OutputParams": {
+        "selectedOperation": null,
+        "resultText": null,
+        "selectedText": null,
+        "windowPosition": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showText",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "WAIT"
+        },
+        "text": {
+          "VarKey": "table1",
+          "Value": null
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "表格赋值给文本"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "autoCloseKey": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "winSize": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "14"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "bgColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "textColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "highlight": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "autoSaveToState": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "closeWhenLostFocus": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "showLineNum": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "autoWrap": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "showBuildInToolbar": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "copyWholeLine": {
+          "VarKey": null,
+          "Value": "false"
+        }
+      },
+      "OutputParams": {
+        "selectedOperation": null,
+        "resultText": null,
+        "selectedText": null,
+        "windowPosition": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showText",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "WAIT"
+        },
+        "text": {
+          "VarKey": "listResult",
+          "Value": null
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "动态对象列表赋值给文本"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "autoCloseKey": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "winSize": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "14"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "bgColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "textColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "highlight": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "autoSaveToState": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "closeWhenLostFocus": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "showLineNum": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "autoWrap": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "showBuildInToolbar": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "copyWholeLine": {
+          "VarKey": null,
+          "Value": "false"
+        }
+      },
+      "OutputParams": {
+        "selectedOperation": null,
+        "resultText": null,
+        "selectedText": null,
+        "windowPosition": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:tableoperation",
+      "InputParams": {
+        "table": {
+          "VarKey": "table1",
+          "Value": null
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "manage"
+        },
+        "isReadOnly": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "rowCount": "item"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "循环获取每一项的信息：方式一，对表格变量的行进行循环"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:each",
+      "InputParams": {
+        "input": {
+          "VarKey": null,
+          "Value": "$= {table1}.Rows"
+        },
+        "useMultiThread": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "item": "tableRow",
+        "count": null
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "msg": {
+              "VarKey": null,
+              "Value": "$= \"表格行：\"  + $\"({{tableRow}.GetType().Name}) \" + \r\n{tableRow}[\"first_name\"] + {tableRow}[\"last_name\"]"
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "循环获取每一项的信息：方式二，对对象列表的每项进行循环"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:each",
+      "InputParams": {
+        "input": {
+          "VarKey": "listResult",
+          "Value": null
+        },
+        "useMultiThread": {
+          "VarKey": null,
+          "Value": "0"
+        }
+      },
+      "OutputParams": {
+        "item": "item",
+        "count": null
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:notify",
+          "InputParams": {
+            "msg": {
+              "VarKey": null,
+              "Value": "$= \"动态对象列表结果条目：\" +\r\n{item}.first_name + {item}.last_name"
+            },
+            "maxLines": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "Info"
+            },
+            "style": {
+              "VarKey": null,
+              "Value": "Default"
+            }
+          },
+          "OutputParams": {},
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "查询数据：条件"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:dboperation",
+      "InputParams": {
+        "dbType": {
+          "VarKey": null,
+          "Value": "sqlite"
+        },
+        "connectionString": {
+          "VarKey": "path",
+          "Value": null
+        },
+        "sql": {
+          "VarKey": null,
+          "Value": "select * from contacts Where first_name = @FirstName"
+        },
+        "sqlParam": {
+          "VarKey": null,
+          "Value": "FirstName:李"
+        },
+        "timeoutSeconds": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "operationType": {
+          "VarKey": null,
+          "Value": "Query"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "dataTableResult": "table1",
+        "listResult": "listResult",
+        "firstItem": "firstItem",
+        "rowCount": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:showText",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "WAIT"
+        },
+        "text": {
+          "VarKey": "table1",
+          "Value": null
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "条件查询结果内容"
+        },
+        "topMost": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "operations": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "autoCloseKey": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "winLocation": {
+          "VarKey": null,
+          "Value": "CenterScreen"
+        },
+        "winSize": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "fontsize": {
+          "VarKey": null,
+          "Value": "14"
+        },
+        "fontfamily": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "bgColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "textColor": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "highlight": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "autoSaveToState": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "closeWhenLostFocus": {
+          "VarKey": null,
+          "Value": "false"
+        },
+        "showLineNum": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "autoWrap": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "showBuildInToolbar": {
+          "VarKey": null,
+          "Value": "true"
+        },
+        "copyWholeLine": {
+          "VarKey": null,
+          "Value": "false"
+        }
+      },
+      "OutputParams": {
+        "selectedOperation": null,
+        "resultText": null,
+        "selectedText": null,
+        "windowPosition": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "ExecuteScalar"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:dboperation",
+      "InputParams": {
+        "dbType": {
+          "VarKey": null,
+          "Value": "sqlite"
+        },
+        "connectionString": {
+          "VarKey": "path",
+          "Value": null
+        },
+        "sql": {
+          "VarKey": null,
+          "Value": "select COUNT(1) from contacts"
+        },
+        "sqlParam": {
+          "VarKey": null,
+          "Value": "FirstName:李"
+        },
+        "timeoutSeconds": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "operationType": {
+          "VarKey": null,
+          "Value": "ExecuteScalar"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "scalarResult": "scalarResult"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "msg": {
+          "VarKey": null,
+          "Value": "$$ ExecuteScalar：共有 {scalarResult} 行数据。"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "type": {
+          "VarKey": null,
+          "Value": "Info"
+        },
+        "style": {
+          "VarKey": null,
+          "Value": "Default"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:comment",
+      "InputParams": {
+        "note": {
+          "VarKey": null,
+          "Value": "删除数据库文件"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:fileOperation",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "deleteFile"
+        },
+        "path": {
+          "VarKey": "path",
+          "Value": null
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+
+</details>
+
+***
+
 # 其他示例动作
 
 <details>
