@@ -22,11 +22,95 @@ Quicker内部使用C#实现，故而原生支持C#代码使用
 
 在任何支持字符串参数输入的模块中，都可以使用C#代码模式或插值模式
 
-> 使用$$开头则使用插值模式，插值模式支持变量字符串混杂拼接，被一对花括号{}包裹的是变量
+> 使用“$$”开头则使用插值模式，插值模式支持变量字符串混杂拼接，被一对花括号{}包裹的是变量，例如：$$今天日期{date}，捡到{money}元
 
-> 使用$=开头则使用C#代码模式
+> 使用“$=”开头则使用C#代码模式
+> 
+> 例子1：$=({mouseX}-100) + "," + ({mouseY}-100) + "," + ({mouseX}+100) + "," + ({mouseY}+100)
+> 
+> 例子2，IF模块中直接进行逻辑判断：$={money} > 200
+> 
+> 例子3，使用return返回值：
+```
+$=
+var a = {money}*2.5;
+var b = a + 3;
+return b;
+```
 
-**参数：WinLocation**
+**JSON格式说明**
+
+```json
+{
+  //使用的变量列表
+  "Variables": [
+    {
+      // 变量名称
+      "Key": "text",
+      // 变量类型编号，例如0就代表字符串类型
+      "Type": 0,
+      // 注释
+      "Desc": "默认文本变量",
+      // 变量初始值
+      "DefaultValue": "123",
+      // 变量的值是否保存到硬盘中
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      // 变量分组名称（方便阅读）
+      "Group": ""
+    }
+  ],
+  //步骤列表
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSelectedText",//模块内部名称
+      // 输入参数列表
+      "InputParams": {
+        "其他输入参数名称": {
+          "VarKey": null,
+          "Value": "UnicodeText"//其他输入参数值
+        },
+        // 步骤运行失败后是否中止动作
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"// 1：中止；0：不中止
+        },
+        //···其他输入参数等等
+      },
+      // 输出参数列表
+      "OutputParams": {
+        // 步骤运行是否成功，布尔值
+        "isSuccess": null,
+        // 步骤运行如果出错，返回的出错信息
+        "errMessage": null,
+        "其他输出参数a": null,// 输出到哪个变量中去，比如"text"(输出到变量的情况下必须包裹在双引号中)，为null则不输出到具体变量中去,
+        "其他输出参数b": null,
+        //···其他输出参数等等，输出参数和输入参数不一样，它没有“VarKey”，所以参数名称后直接就是值
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      // 注释
+      "Note": "",
+      // 步骤是否禁用（被禁用的步骤代码块将不会被运行，类似其他编程语音中的注释）
+      "Disabled": false,
+      // 步骤块是否收缩起来（仅用于可读性），true收缩代码块，false展开代码块
+      "Collapsed": false,
+      // 本步骤运行后延迟多少毫秒运行下一个步骤
+      "DelayMs": 0
+    }
+  ],
+  // 子程序，忽略即可
+  "SubPrograms": []
+}
+```
+
+**某些参数：WinLocation**
 
 Auto: `系统默认`
 WithMouse1: `跟随鼠标（指针周围）`
@@ -42,6 +126,591 @@ LeftCenter: `屏幕左中`
 RightCenter: `屏幕右中`
 FullScreen: `全屏`
 Manual: `自定义位置`
+
+***
+
+# 其他示例动作
+
+ <details>
+ <summary>合并选择的文本文件到以“合并文本”+时间戳+后缀名的新文件中去，合并完成后提示是否删除原文件</summary>
+
+```json
+{
+  "Variables": [
+    {
+      "Key": "files",
+      "Type": 4,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "item",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "txt",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "allFilesText",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "filePath",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "时间戳",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "后缀名",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "okOrYes",
+      "Type": 2,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    },
+    {
+      "Key": "当前删除文件路径",
+      "Type": 0,
+      "Desc": "",
+      "DefaultValue": "",
+      "SaveState": false,
+      "IsInput": false,
+      "IsOutput": false,
+      "ParamName": "",
+      "InputParamInfo": null,
+      "OutputParamInfo": null,
+      "TableDef": null,
+      "CustomType": null,
+      "Group": ""
+    }
+  ],
+  "Steps": [
+    {
+      "StepRunnerKey": "sys:getSelectedFiles",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "getSelection"
+        },
+        "waitMs": {
+          "VarKey": null,
+          "Value": "200"
+        },
+        "sortType": {
+          "VarKey": null,
+          "Value": "Default"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "files": "files",
+        "firstFile": null,
+        "fileNames": null,
+        "firstFileName": null,
+        "fileCount": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:each",
+      "InputParams": {
+        "input": {
+          "VarKey": "files",
+          "Value": null
+        },
+        "useMultiThread": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "item": "item",
+        "count": null,
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:readFile",
+          "InputParams": {
+            "path": {
+              "VarKey": "item",
+              "Value": null
+            },
+            "type": {
+              "VarKey": null,
+              "Value": "text"
+            },
+            "encoding": {
+              "VarKey": null,
+              "Value": "auto"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "txt": "txt",
+            "isSuccess": null,
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        },
+        {
+          "StepRunnerKey": "sys:assign",
+          "InputParams": {
+            "input": {
+              "VarKey": null,
+              "Value": "$={allFilesText}+\"\\n\"+{txt}"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "isSuccess": null,
+            "output": "allFilesText",
+            "errMessage": null
+          },
+          "IfSteps": null,
+          "ElseSteps": null,
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:pathExtraction",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "getInfo"
+        },
+        "path": {
+          "VarKey": null,
+          "Value": "$={files}[0]"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "name": null,
+        "nameNoExt": null,
+        "ext": "后缀名",
+        "path": "filePath",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:getCurrentTime",
+      "InputParams": {
+        "source": {
+          "VarKey": null,
+          "Value": "currTime"
+        },
+        "useUtc": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addDays": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addHours": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addMinutes": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addSeconds": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addMonths": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "format": {
+          "VarKey": null,
+          "Value": "yyyyMMddHHmmss"
+        },
+        "outputCulture": {
+          "VarKey": null,
+          "Value": "CURRENT"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": null,
+        "strValue": "时间戳",
+        "timeStamp": null,
+        "timeStampMs": null,
+        "year": null,
+        "month": null,
+        "day": null,
+        "hour": null,
+        "minute": null,
+        "second": null,
+        "dayOfWeek": null,
+        "dayOfYear": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:assign",
+      "InputParams": {
+        "input": {
+          "VarKey": null,
+          "Value": "$={filePath}+\"\\\\\"+\"合并文本-\"+{时间戳}+{后缀名}"
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "output": "filePath",
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:WriteTextFile",
+      "InputParams": {
+        "content": {
+          "VarKey": "allFilesText",
+          "Value": null
+        },
+        "filePath": {
+          "VarKey": "filePath",
+          "Value": null
+        },
+        "encoding": {
+          "VarKey": null,
+          "Value": "utf-8"
+        },
+        "addUtf8Bom": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "appendMode": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "addNewLine": {
+          "VarKey": null,
+          "Value": "1"
+        },
+        "newLineChars": {
+          "VarKey": null,
+          "Value": ""
+        },
+        "stopIfFail": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "isSuccess": null,
+        "errMessage": null
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:notify",
+      "InputParams": {
+        "type": {
+          "VarKey": null,
+          "Value": "Success"
+        },
+        "msg": {
+          "VarKey": null,
+          "Value": "$$【{filePath}】\r\n\r\n已创建成功！"
+        },
+        "maxLines": {
+          "VarKey": null,
+          "Value": "0"
+        },
+        "style": {
+          "VarKey": null,
+          "Value": "Style2"
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:MsgBox",
+      "InputParams": {
+        "operation": {
+          "VarKey": null,
+          "Value": "default"
+        },
+        "message": {
+          "VarKey": null,
+          "Value": "是否删除源文件？"
+        },
+        "title": {
+          "VarKey": null,
+          "Value": "巴德文件合并"
+        },
+        "icon": {
+          "VarKey": null,
+          "Value": "Question"
+        },
+        "buttons": {
+          "VarKey": null,
+          "Value": "YesNo"
+        },
+        "restoreFocus": {
+          "VarKey": null,
+          "Value": "1"
+        }
+      },
+      "OutputParams": {
+        "result": null,
+        "okOrYes": "okOrYes"
+      },
+      "IfSteps": null,
+      "ElseSteps": null,
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    },
+    {
+      "StepRunnerKey": "sys:simpleIf",
+      "InputParams": {
+        "condition": {
+          "VarKey": "okOrYes",
+          "Value": null
+        }
+      },
+      "OutputParams": {},
+      "IfSteps": [
+        {
+          "StepRunnerKey": "sys:each",
+          "InputParams": {
+            "input": {
+              "VarKey": "files",
+              "Value": null
+            },
+            "useMultiThread": {
+              "VarKey": null,
+              "Value": "0"
+            },
+            "stopIfFail": {
+              "VarKey": null,
+              "Value": "1"
+            }
+          },
+          "OutputParams": {
+            "item": "当前删除文件路径",
+            "count": null,
+            "isSuccess": null,
+            "errMessage": null
+          },
+          "IfSteps": [
+            {
+              "StepRunnerKey": "sys:fileOperation",
+              "InputParams": {
+                "type": {
+                  "VarKey": null,
+                  "Value": "deleteFile"
+                },
+                "path": {
+                  "VarKey": "当前删除文件路径",
+                  "Value": null
+                },
+                "stopIfFail": {
+                  "VarKey": null,
+                  "Value": "1"
+                }
+              },
+              "OutputParams": {
+                "isSuccess": null,
+                "errMessage": null
+              },
+              "IfSteps": null,
+              "ElseSteps": null,
+              "Note": "",
+              "Disabled": false,
+              "Collapsed": false,
+              "DelayMs": 0
+            }
+          ],
+          "ElseSteps": [],
+          "Note": "",
+          "Disabled": false,
+          "Collapsed": false,
+          "DelayMs": 0
+        }
+      ],
+      "ElseSteps": [],
+      "Note": "",
+      "Disabled": false,
+      "Collapsed": false,
+      "DelayMs": 0
+    }
+  ],
+  "SubPrograms": []
+}
+```
+ </details>
 
 ---
 
@@ -27585,7 +28254,7 @@ Manual: `自定义位置`
 | :----: | :----: | :----: | :----: |
 | isSuccess | 是否成功 | 操作是否成功 | (2)布尔值-Boolean |
 | rows | 行列表 | 符合条件的行的数组 | | (99)任意类型-Any |
-| columns | 列的列表 | 表格的列的信息列表（DataTable.Columns) | | (99)任意类型-Any |
+| columns | 列的列表 | 表格的列的信息列表（DataTable.Columns） | | (99)任意类型-Any |
 | rowCount | 行数 | 表格内的数据行数 | (12)数字(整数)-Integer |
 | firstRow | 第一行/结果行 | 第一个符合条件的行或新添加的行，可输出为词典对象 | (99)任意类型-Any |
 | affectedRowCount | 影响行数 | 更新或删除、筛选的行数 | (0)字符串-Text |
@@ -30337,585 +31006,3 @@ pasteimage 粘贴图片（将图片文件读取为图片后写入剪贴板，然
 
 ***
 
-# 其他示例动作
-
-<details>
-<summary>合并选择的文本文件到以“合并文本”+时间戳+后缀名的新文件中去，合并完成后提示是否删除原文件</summary>
-
-```json
-{
-  "Variables": [
-    {
-      "Key": "files",
-      "Type": 4,
-      "Desc": "",
-      "DefaultValue": "",
-      "SaveState": false,
-      "IsInput": false,
-      "IsOutput": false,
-      "ParamName": "",
-      "InputParamInfo": null,
-      "OutputParamInfo": null,
-      "TableDef": null,
-      "CustomType": null,
-      "Group": ""
-    },
-    {
-      "Key": "item",
-      "Type": 0,
-      "Desc": "",
-      "DefaultValue": "",
-      "SaveState": false,
-      "IsInput": false,
-      "IsOutput": false,
-      "ParamName": "",
-      "InputParamInfo": null,
-      "OutputParamInfo": null,
-      "TableDef": null,
-      "CustomType": null,
-      "Group": ""
-    },
-    {
-      "Key": "txt",
-      "Type": 0,
-      "Desc": "",
-      "DefaultValue": "",
-      "SaveState": false,
-      "IsInput": false,
-      "IsOutput": false,
-      "ParamName": "",
-      "InputParamInfo": null,
-      "OutputParamInfo": null,
-      "TableDef": null,
-      "CustomType": null,
-      "Group": ""
-    },
-    {
-      "Key": "allFilesText",
-      "Type": 0,
-      "Desc": "",
-      "DefaultValue": "",
-      "SaveState": false,
-      "IsInput": false,
-      "IsOutput": false,
-      "ParamName": "",
-      "InputParamInfo": null,
-      "OutputParamInfo": null,
-      "TableDef": null,
-      "CustomType": null,
-      "Group": ""
-    },
-    {
-      "Key": "filePath",
-      "Type": 0,
-      "Desc": "",
-      "DefaultValue": "",
-      "SaveState": false,
-      "IsInput": false,
-      "IsOutput": false,
-      "ParamName": "",
-      "InputParamInfo": null,
-      "OutputParamInfo": null,
-      "TableDef": null,
-      "CustomType": null,
-      "Group": ""
-    },
-    {
-      "Key": "时间戳",
-      "Type": 0,
-      "Desc": "",
-      "DefaultValue": "",
-      "SaveState": false,
-      "IsInput": false,
-      "IsOutput": false,
-      "ParamName": "",
-      "InputParamInfo": null,
-      "OutputParamInfo": null,
-      "TableDef": null,
-      "CustomType": null,
-      "Group": ""
-    },
-    {
-      "Key": "后缀名",
-      "Type": 0,
-      "Desc": "",
-      "DefaultValue": "",
-      "SaveState": false,
-      "IsInput": false,
-      "IsOutput": false,
-      "ParamName": "",
-      "InputParamInfo": null,
-      "OutputParamInfo": null,
-      "TableDef": null,
-      "CustomType": null,
-      "Group": ""
-    },
-    {
-      "Key": "okOrYes",
-      "Type": 2,
-      "Desc": "",
-      "DefaultValue": "",
-      "SaveState": false,
-      "IsInput": false,
-      "IsOutput": false,
-      "ParamName": "",
-      "InputParamInfo": null,
-      "OutputParamInfo": null,
-      "TableDef": null,
-      "CustomType": null,
-      "Group": ""
-    },
-    {
-      "Key": "当前删除文件路径",
-      "Type": 0,
-      "Desc": "",
-      "DefaultValue": "",
-      "SaveState": false,
-      "IsInput": false,
-      "IsOutput": false,
-      "ParamName": "",
-      "InputParamInfo": null,
-      "OutputParamInfo": null,
-      "TableDef": null,
-      "CustomType": null,
-      "Group": ""
-    }
-  ],
-  "Steps": [
-    {
-      "StepRunnerKey": "sys:getSelectedFiles",
-      "InputParams": {
-        "operation": {
-          "VarKey": null,
-          "Value": "getSelection"
-        },
-        "waitMs": {
-          "VarKey": null,
-          "Value": "200"
-        },
-        "sortType": {
-          "VarKey": null,
-          "Value": "Default"
-        },
-        "stopIfFail": {
-          "VarKey": null,
-          "Value": "1"
-        }
-      },
-      "OutputParams": {
-        "isSuccess": null,
-        "files": "files",
-        "firstFile": null,
-        "fileNames": null,
-        "firstFileName": null,
-        "fileCount": null,
-        "errMessage": null
-      },
-      "IfSteps": null,
-      "ElseSteps": null,
-      "Note": "",
-      "Disabled": false,
-      "Collapsed": false,
-      "DelayMs": 0
-    },
-    {
-      "StepRunnerKey": "sys:each",
-      "InputParams": {
-        "input": {
-          "VarKey": "files",
-          "Value": null
-        },
-        "useMultiThread": {
-          "VarKey": null,
-          "Value": "0"
-        },
-        "stopIfFail": {
-          "VarKey": null,
-          "Value": "1"
-        }
-      },
-      "OutputParams": {
-        "item": "item",
-        "count": null,
-        "isSuccess": null,
-        "errMessage": null
-      },
-      "IfSteps": [
-        {
-          "StepRunnerKey": "sys:readFile",
-          "InputParams": {
-            "path": {
-              "VarKey": "item",
-              "Value": null
-            },
-            "type": {
-              "VarKey": null,
-              "Value": "text"
-            },
-            "encoding": {
-              "VarKey": null,
-              "Value": "auto"
-            },
-            "stopIfFail": {
-              "VarKey": null,
-              "Value": "1"
-            }
-          },
-          "OutputParams": {
-            "txt": "txt",
-            "isSuccess": null,
-            "errMessage": null
-          },
-          "IfSteps": null,
-          "ElseSteps": null,
-          "Note": "",
-          "Disabled": false,
-          "Collapsed": false,
-          "DelayMs": 0
-        },
-        {
-          "StepRunnerKey": "sys:assign",
-          "InputParams": {
-            "input": {
-              "VarKey": null,
-              "Value": "$={allFilesText}+\"\\n\"+{txt}"
-            },
-            "stopIfFail": {
-              "VarKey": null,
-              "Value": "1"
-            }
-          },
-          "OutputParams": {
-            "isSuccess": null,
-            "output": "allFilesText",
-            "errMessage": null
-          },
-          "IfSteps": null,
-          "ElseSteps": null,
-          "Note": "",
-          "Disabled": false,
-          "Collapsed": false,
-          "DelayMs": 0
-        }
-      ],
-      "ElseSteps": [],
-      "Note": "",
-      "Disabled": false,
-      "Collapsed": false,
-      "DelayMs": 0
-    },
-    {
-      "StepRunnerKey": "sys:pathExtraction",
-      "InputParams": {
-        "operation": {
-          "VarKey": null,
-          "Value": "getInfo"
-        },
-        "path": {
-          "VarKey": null,
-          "Value": "$={files}[0]"
-        },
-        "stopIfFail": {
-          "VarKey": null,
-          "Value": "1"
-        }
-      },
-      "OutputParams": {
-        "isSuccess": null,
-        "name": null,
-        "nameNoExt": null,
-        "ext": "后缀名",
-        "path": "filePath",
-        "errMessage": null
-      },
-      "IfSteps": null,
-      "ElseSteps": null,
-      "Note": "",
-      "Disabled": false,
-      "Collapsed": false,
-      "DelayMs": 0
-    },
-    {
-      "StepRunnerKey": "sys:getCurrentTime",
-      "InputParams": {
-        "source": {
-          "VarKey": null,
-          "Value": "currTime"
-        },
-        "useUtc": {
-          "VarKey": null,
-          "Value": "0"
-        },
-        "addDays": {
-          "VarKey": null,
-          "Value": "0"
-        },
-        "addHours": {
-          "VarKey": null,
-          "Value": "0"
-        },
-        "addMinutes": {
-          "VarKey": null,
-          "Value": "0"
-        },
-        "addSeconds": {
-          "VarKey": null,
-          "Value": "0"
-        },
-        "addMonths": {
-          "VarKey": null,
-          "Value": "0"
-        },
-        "format": {
-          "VarKey": null,
-          "Value": "yyyyMMddHHmmss"
-        },
-        "outputCulture": {
-          "VarKey": null,
-          "Value": "CURRENT"
-        },
-        "stopIfFail": {
-          "VarKey": null,
-          "Value": "1"
-        }
-      },
-      "OutputParams": {
-        "isSuccess": null,
-        "output": null,
-        "strValue": "时间戳",
-        "timeStamp": null,
-        "timeStampMs": null,
-        "year": null,
-        "month": null,
-        "day": null,
-        "hour": null,
-        "minute": null,
-        "second": null,
-        "dayOfWeek": null,
-        "dayOfYear": null,
-        "errMessage": null
-      },
-      "IfSteps": null,
-      "ElseSteps": null,
-      "Note": "",
-      "Disabled": false,
-      "Collapsed": false,
-      "DelayMs": 0
-    },
-    {
-      "StepRunnerKey": "sys:assign",
-      "InputParams": {
-        "input": {
-          "VarKey": null,
-          "Value": "$={filePath}+\"\\\\\"+\"合并文本-\"+{时间戳}+{后缀名}"
-        },
-        "stopIfFail": {
-          "VarKey": null,
-          "Value": "1"
-        }
-      },
-      "OutputParams": {
-        "isSuccess": null,
-        "output": "filePath",
-        "errMessage": null
-      },
-      "IfSteps": null,
-      "ElseSteps": null,
-      "Note": "",
-      "Disabled": false,
-      "Collapsed": false,
-      "DelayMs": 0
-    },
-    {
-      "StepRunnerKey": "sys:WriteTextFile",
-      "InputParams": {
-        "content": {
-          "VarKey": "allFilesText",
-          "Value": null
-        },
-        "filePath": {
-          "VarKey": "filePath",
-          "Value": null
-        },
-        "encoding": {
-          "VarKey": null,
-          "Value": "utf-8"
-        },
-        "addUtf8Bom": {
-          "VarKey": null,
-          "Value": "0"
-        },
-        "appendMode": {
-          "VarKey": null,
-          "Value": "0"
-        },
-        "addNewLine": {
-          "VarKey": null,
-          "Value": "1"
-        },
-        "newLineChars": {
-          "VarKey": null,
-          "Value": ""
-        },
-        "stopIfFail": {
-          "VarKey": null,
-          "Value": "1"
-        }
-      },
-      "OutputParams": {
-        "isSuccess": null,
-        "errMessage": null
-      },
-      "IfSteps": null,
-      "ElseSteps": null,
-      "Note": "",
-      "Disabled": false,
-      "Collapsed": false,
-      "DelayMs": 0
-    },
-    {
-      "StepRunnerKey": "sys:notify",
-      "InputParams": {
-        "type": {
-          "VarKey": null,
-          "Value": "Success"
-        },
-        "msg": {
-          "VarKey": null,
-          "Value": "$$【{filePath}】\r\n\r\n已创建成功！"
-        },
-        "maxLines": {
-          "VarKey": null,
-          "Value": "0"
-        },
-        "style": {
-          "VarKey": null,
-          "Value": "Style2"
-        }
-      },
-      "OutputParams": {},
-      "IfSteps": null,
-      "ElseSteps": null,
-      "Note": "",
-      "Disabled": false,
-      "Collapsed": false,
-      "DelayMs": 0
-    },
-    {
-      "StepRunnerKey": "sys:MsgBox",
-      "InputParams": {
-        "operation": {
-          "VarKey": null,
-          "Value": "default"
-        },
-        "message": {
-          "VarKey": null,
-          "Value": "是否删除源文件？"
-        },
-        "title": {
-          "VarKey": null,
-          "Value": "巴德文件合并"
-        },
-        "icon": {
-          "VarKey": null,
-          "Value": "Question"
-        },
-        "buttons": {
-          "VarKey": null,
-          "Value": "YesNo"
-        },
-        "restoreFocus": {
-          "VarKey": null,
-          "Value": "1"
-        }
-      },
-      "OutputParams": {
-        "result": null,
-        "okOrYes": "okOrYes"
-      },
-      "IfSteps": null,
-      "ElseSteps": null,
-      "Note": "",
-      "Disabled": false,
-      "Collapsed": false,
-      "DelayMs": 0
-    },
-    {
-      "StepRunnerKey": "sys:simpleIf",
-      "InputParams": {
-        "condition": {
-          "VarKey": "okOrYes",
-          "Value": null
-        }
-      },
-      "OutputParams": {},
-      "IfSteps": [
-        {
-          "StepRunnerKey": "sys:each",
-          "InputParams": {
-            "input": {
-              "VarKey": "files",
-              "Value": null
-            },
-            "useMultiThread": {
-              "VarKey": null,
-              "Value": "0"
-            },
-            "stopIfFail": {
-              "VarKey": null,
-              "Value": "1"
-            }
-          },
-          "OutputParams": {
-            "item": "当前删除文件路径",
-            "count": null,
-            "isSuccess": null,
-            "errMessage": null
-          },
-          "IfSteps": [
-            {
-              "StepRunnerKey": "sys:fileOperation",
-              "InputParams": {
-                "type": {
-                  "VarKey": null,
-                  "Value": "deleteFile"
-                },
-                "path": {
-                  "VarKey": "当前删除文件路径",
-                  "Value": null
-                },
-                "stopIfFail": {
-                  "VarKey": null,
-                  "Value": "1"
-                }
-              },
-              "OutputParams": {
-                "isSuccess": null,
-                "errMessage": null
-              },
-              "IfSteps": null,
-              "ElseSteps": null,
-              "Note": "",
-              "Disabled": false,
-              "Collapsed": false,
-              "DelayMs": 0
-            }
-          ],
-          "ElseSteps": [],
-          "Note": "",
-          "Disabled": false,
-          "Collapsed": false,
-          "DelayMs": 0
-        }
-      ],
-      "ElseSteps": [],
-      "Note": "",
-      "Disabled": false,
-      "Collapsed": false,
-      "DelayMs": 0
-    }
-  ],
-  "SubPrograms": []
-}
-```
-</details>
