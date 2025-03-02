@@ -28460,7 +28460,17 @@ Manual: `自定义位置`
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| table | 表格变量 | 要操作的表格变量 | (13)表格-Table |  | True |
+| type | 操作类型 |  | (9)选项-Enum（ShowAndWaitClose: 显示窗口并等待关闭; Show: 显示窗口; Close: 关闭窗口; GetWindows: 获取窗口列表） | ShowAndWaitClose | true |
+| windowMarkup | 窗口XAML代码 | 窗口定义XAML代码 | (0)字符串-Text | <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"<br>        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"<br>        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"<br>        xmlns:hc="https://handyorg.github.io/handycontrol"<br>        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"<br>        xmlns:qk="https://getquicker.net"<br>        Width="637"<br>        Height="556"<br>        Title="Test Window"<br>        mc:Ignorable="d"><br>  <Grid Margin="10"><br>    <StackPanel><br>      <TextBlock Margin="10,50,10,50" Text="Hello World！" FontSize="20" /><br>     <br>      <Button Margin="10" qk:Att.Action="close:result" Style="{StaticResource ButtonPrimary}" Width="50"><br>        关闭<br>      </Button><br>    </StackPanel><br>  </Grid><br></Window> | false |
+| dataMapping | 数据映射 | 将变量与窗口上下文数据进行映射。每行一个，格式为："窗口数据项名称：{动作变量名}”或“窗口数据项：=表达式” | (0)字符串-Text |  | false |
+| windowId | 窗口标识 | 如需单独的步骤关闭窗口，需使用标识查找窗口。 | (0)字符串-Text |  | false |
+| closeWhenDeactivate | 失去焦点后关闭窗口 |  | (9)选项-Enum | false | false |
+| cscode | 辅助C#代码 | 辅助处理窗口事件的代码 | (0)字符串-Text |  | false |
+| events | 事件 |  | (0)字符串-Text |  | false |
+| autoCloseTime | 自动关闭时间（秒） | 自动关闭窗口的时间（秒数）。需大于0.5秒。 | (1)数字(小数)-Number | 0 | false |
+| activateMode | 激活模式 |  | (9)选项-Enum（NotActivatable: 不支持激活（不占用焦点，仅能使用鼠标操作）; NotActivatableMouseThrough: 不支持激活，鼠标穿透; NotActivated: 支持激活，打开时不抢占焦点; AutoActivate: 支持激活，打开时抢占焦点） | AutoActivate | false |
+| winLocation | 窗口位置 |  | (9)选项-Enum | CenterScreen | false |
+| winSize | 窗口尺寸/位置 | 设置选择窗口的最大尺寸，格式为：宽度,高度。支持像素数值或屏幕宽高百分比例如30%,50%代表屏幕宽度的30%和屏幕高度的50%。“窗口位置”类型为“自定义位置”时用于指定显示位置，格式为：left,top,right,bottom | (0)字符串-Text |  | false |
 
 </details>
 <details>
@@ -28469,15 +28479,10 @@ Manual: `自定义位置`
 | Key | Name | Description | Type |
 | :----: | :----: | :----: | :----: |
 | isSuccess | 是否成功 | 操作是否成功 | (2)布尔值-Boolean |
-
-</details>
-<details>
-<summary>范例</summary>
-
-**范例1**
-```json
-
-```
+| result | 窗口结果 | 通过close:result返回的结果 | (0)字符串-Text |
+| windowLocation | 关闭时窗口位置 |  | (0)字符串-Text |
+| windowHandle | 窗口句柄 |  | (12)数字(整数)-Integer |
+| windowList | 窗口对象列表 | IList<Window>对象 | (99)任意类型-Any |
 
 </details>
 
@@ -28499,7 +28504,31 @@ Manual: `自定义位置`
 
 | Key | Name | Description | Type | Default | Required |
 | :----: | :----: | :----: | :----: | :----: | :----: |
-| table | 表格变量 | 要操作的表格变量 | (13)表格-Table |  | True |
+| operation | 操作类型 |  | (9)选项-Enum | show_fixed_panel（show_fixed_panel: 显示操作窗; show_fixed_panel_wait_close: 显示操作窗并等待关闭; close_fixed_panel: 关闭操作窗; toggle_collapse: 切换展开状态; get_panel_info: 获取操作窗状态） | true |
+| operationData | 操作项定义 | 可以为Json/菜单文本格式/IList<CommonOperationltem>对象，详情请参考文档 | (0)字符串-Text |  | false |
+| defaultOperation | 默认Operation | 默认的Operation值或参数组合。提供此值时，操作项可以直接通过“[图标]标题(提示)data”的形式定义。 | (0)字符串-Text |  | false |
+| spacingStr | 按钮之间的间隔 | 可选格式1：5=>四个边都是5；格式2：10,5=>左右10，上下5； | (0)字符串-Text | 5 | false |
+| buttonPadding | 按钮内边距 | 格式1：5=>四个边都是5；格式2：10,5=>左右10，上下5；格式3：7,8，9，10=>分别指定左上右下4边边距。 | (0)字符串-Text | 10,6 | false |
+| columnCount | 列数 | 按钮排列方式为固定列数时，指定列数。0表示自动。 | (12)数字(整数)-Integer | 2 | false |
+| columnWidth | 列宽 | 固定列宽时使用。0表示自动列宽，-1表示不对齐宽度，各子项根据内容自动调整宽度。 | (12)数字(整数)-Integer | 0 | false |
+| groupMode | 分组方式 | 当包含子项时，第一级节点作为分组，第二级节点作为按钮。 | (9)选项-Enum（heading: 标题分组; expander: 可折叠的分组; tab-top: 标签页-顶部; tab-left: 标签页-左侧; tab-right: 标签页-右侧; tab-bottom: 标签页-底部; headingLeft: 多行; columns: 多列; none: 不分组） | heading | false |
+| selectGroup | 选择标签分组 | 标签页分组时切换至设定的标签页标题，留空表示默认。 | (0)字符串-Text |  | false |
+| title | 操作窗标题 | 标题文字，或"[图标]标题"格式。 | (0)字符串-Text |  | false |
+| windowId | 窗口标识 | 如需单独的步骤关闭窗口，需使用标识查找窗口。可使用"="表示当前动作ID。 | (0)字符串-Text |  | false |
+| buttonContextMenuData | 默认的按钮右键菜单 | 可以为Json/菜单文本格式/IList<CommonOperationltem>对象，详情请参考文档 | (0)字符串-Text |  | false |
+| winLocation | 窗口位置 |  | (9)选项-Enum | CenterScreen | false |
+| winSize | 窗口尺寸/位置 | 设置选择窗口的最大尺寸，格式为：宽度,高度。支持像素数值或屏幕宽高百分比例如30%,50%代表屏幕宽度的30%和屏幕高度的50%。“窗口位置”类型为“自定义位置”时用于指定显示位置，格式为：left,top,right,bottom | (0)字符串-Text |  | false |
+| saveState | 记忆位置等状态 | 多次使用操作窗时，保持上一次所在位置和分组 | (2)布尔值-Boolean | 1 | false |
+| horzAlign | 按钮内容对齐方式 |  | (9)选项-Enum（Center: 居中; Left: 左侧; Right: 右侧） | Center | false |
+| bgColor | 背景颜色 |  | (0)字符串-Text |  | false |
+| btnColor | 按钮颜色 |  | (0)字符串-Text |  | false |
+| btnBorderColor | 按钮边框颜色 |  | (0)字符串-Text |  | false |
+| fontColor | 字体颜色 |  | (0)字符串-Text |  | false |
+| fontsize | 字体大小 |  | (12)数字(整数)-Integer | 12 | false |
+| iconsize | 图标大小 | 图标的宽度/高度像素数 | (12)数字(整数)-Integer | 16 | false |
+| contextMenuData | 窗口右键菜单 | 可以为Json/菜单文本格式/IList<CommonOperationltem>对象，详情请参考文档 | (0)字符串-Text |  | false |
+| bindProc | 自动关联到进程 | 要关联的进程名称，输入”-“禁用此功能。当该进程为前台时显示操作窗，否则自动隐藏。 | (0)字符串-Text |  | false |
+| autoCollapse | 自动折叠 |  | (9)选项-Enum（false: 关闭; 1: 开启） | 0 | false |
 
 </details>
 <details>
@@ -28508,6 +28537,14 @@ Manual: `自定义位置`
 | Key | Name | Description | Type |
 | :----: | :----: | :----: | :----: |
 | isSuccess | 是否成功 | 操作是否成功 | (2)布尔值-Boolean |
+| winHandle | 窗口句柄 | 操作窗的窗口句柄 | (12)数字(整数)-Integer |
+| selectedItemData | 选择的操作项数据 | 选择的操作项的data属性数据 | (0)字符串-Text |
+| selectedItem | 选择的操作项 | 选择的操作项的CommonOperationltem对象 | (99)任意类型-Any |
+| currentGroup | 当前标签分组 | 当使用标签分组显示时，关闭窗口时所停留的标签分组名称。 | (99)任意类型-Any |
+| buttonItemData | 按钮操作项数据 | 点击的是按钮的菜单时，所对应按钮的操作项Data数据 | (0)字符串-Text |
+| buttonItem | 按钮操作项 | 点击的是按钮的菜单时，所对应按钮的CommonOperationltem对象 | (99)任意类型-Any |
+| isWindowVisible | 窗口是否可见 | 可能会因为关联进程而隐藏 | (2)布尔值-Boolean |
+| isWindowExpanded | 窗口是否展开 |  | (2)布尔值-Boolean |
 
 </details>
 <details>
